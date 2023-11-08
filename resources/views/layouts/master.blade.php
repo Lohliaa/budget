@@ -13,15 +13,15 @@
 
     <!-- Custom fonts for this template-->
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ asset('/sb_admin_2/bootstrap.min.css') }}">
 
     <!-- Bootstrap JavaScript (Popper.js is required for some components) -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('/sb_admin_2/jquery-3.5.1.slim.min.js') }}"></script>
+    <script src="{{ asset('/sb_admin_2/popper.min.js') }}"></script>
+    <script src="{{ asset('/sb_admin_2/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('/sb_admin_2/sweetalert2@11.js') }}"></script>
     
-    <link href="{{ asset('/sb_admin_2') }}/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="{{ asset('/sb_admin_2/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
@@ -29,7 +29,7 @@
     <!-- Custom styles for this template-->
     <link href="{{ asset('/sb_admin_2/css/sb-admin-2.min.css') }}" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
+    <link rel="stylesheet" href="{{ asset('/sb_admin_2/sweetalert2.min.css') }}">
 
     <link rel="icon" href="{{ asset('img') }}/favicon/laravel.ico">
 
@@ -39,7 +39,7 @@
 </head>
 
 <body id="page-top">
-    @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])
+    @include('sweetalert::alert', ['cdn' => "{{ asset('/sb_admin_2/sweetalert2@9.js') }}"])
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -100,14 +100,14 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="{{ asset('/sb_admin_2') }}/vendor/jquery/jquery.min.js"></script>
-    <script src="{{ asset('/sb_admin_2') }}/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('/sb_admin_2/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('/sb_admin_2/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="{{ asset('/sb_admin_2') }}/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="{{ asset('/sb_admin_2/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="{{ asset('/sb_admin_2') }}/js/sb-admin-2.min.js"></script>
+    <script src="{{ asset('/sb_admin_2/js/sb-admin-2.min.js') }}"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.js"></script>
     @stack('scripts')

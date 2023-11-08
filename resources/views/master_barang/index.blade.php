@@ -312,7 +312,7 @@ document.getElementById('searchp').addEventListener('input', function() {
             if (result.isConfirmed) {
               // Lakukan penghapusan data dengan AJAX
               $.ajax({
-                url: '/delete-mb',
+                url: '{{ url('delete-mb') }}',
                 method: 'POST',
                 data: {
                   _token: '{{ csrf_token() }}',
@@ -330,7 +330,7 @@ document.getElementById('searchp').addEventListener('input', function() {
                   });
       
                   setTimeout(function () {
-                    window.location.href = '/master_barang';
+                    window.location.href = '{{ url('master_barang') }}';
                   }, 2000);
                 },
                 error: function (error) {
@@ -407,7 +407,7 @@ document.getElementById('searchp').addEventListener('input', function() {
             const selectedId = selectedCheckboxes[0].getAttribute('data-id');
     
             $.ajax({
-                url: '/update-mb/' + selectedId,
+                url: '{{ url('update-mb') }}/' + selectedId,
                 method: 'POST',
                 data: {
                     code: code,
@@ -436,7 +436,7 @@ document.getElementById('searchp').addEventListener('input', function() {
                     });
     
                     setTimeout(function () {
-                        window.location.href = '/master_barang'; 
+                        window.location.href = '{{ url('master_barang') }}'; 
                     }, 2000); 
                 },
                 error: function (error) {

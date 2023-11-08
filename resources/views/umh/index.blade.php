@@ -360,7 +360,7 @@ document.getElementById('searchp').addEventListener('input', function() {
             if (result.isConfirmed) {
               // Lakukan penghapusan data dengan AJAX
               $.ajax({
-                url: '/delete-umh',
+                url: '{{ url('delete-umh') }}',
                 method: 'POST',
                 data: {
                   _token: '{{ csrf_token() }}',
@@ -378,7 +378,7 @@ document.getElementById('searchp').addEventListener('input', function() {
                   });
       
                   setTimeout(function () {
-                    window.location.href = '/umh';
+                    window.location.href = '{{ url('umh') }}';
                   }, 2000);
                 },
                 error: function (error) {
@@ -447,7 +447,7 @@ document.getElementById('searchp').addEventListener('input', function() {
             const selectedId = selectedCheckboxes[0].getAttribute('data-id');
     
             $.ajax({
-                url: '/update-umh/' + selectedId,
+                url: '{{ url('update-umh') }}/' + selectedId,
                 method: 'POST',
                 data: {
                     month: month,
@@ -468,7 +468,7 @@ document.getElementById('searchp').addEventListener('input', function() {
                     });
     
                     setTimeout(function () {
-                        window.location.href = '/umh';
+                        window.location.href = '{{ url('umh') }}/';
                     }, 2000);
                 },
                 error: function (error) {
@@ -483,36 +483,6 @@ document.getElementById('searchp').addEventListener('input', function() {
         }
     }
 </script>
-
-{{-- <script>
-    const checkboxes = document.querySelectorAll('.sub_chk');
-  
-    const editButton = document.getElementById('editButton');
-    const editModal = new bootstrap.Modal(document.getElementById('editModal'));
-  
-    function handleCheckboxChange(id) {
-      const checkedCheckboxes = document.querySelectorAll('.sub_chk:checked');
-  
-      if (checkedCheckboxes.length === 1) {
-        editButton.disabled = false;
-      } else {
-        editButton.disabled = true;
-      }
-    }
-  
-    editButton.addEventListener('click', () => {
-      const checkedCheckbox = document.querySelector('.sub_chk:checked');
-  
-      if (checkedCheckbox) {
-        const costCenterId = checkedCheckbox.getAttribute('data-id');
-          editModal.show();
-      }
-    });
-  
-    document.getElementById('saveChangesButton').addEventListener('click', () => {
-      editModal.hide();
-    });
-</script> --}}
 
 <script>
     document.getElementById('reset-umh-button').addEventListener('click', function () {

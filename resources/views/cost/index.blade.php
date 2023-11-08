@@ -246,7 +246,7 @@ document.getElementById('searchp').addEventListener('input', function() {
             if (result.isConfirmed) {
               // Lakukan penghapusan data dengan AJAX
               $.ajax({
-                url: '/delete-cost',
+                url: '{{ url('delete-cost') }}',
                 method: 'POST',
                 data: {
                   _token: '{{ csrf_token() }}',
@@ -264,7 +264,7 @@ document.getElementById('searchp').addEventListener('input', function() {
                   });
       
                   setTimeout(function () {
-                    window.location.href = '/cost';
+                    window.location.href = '{{ url('cost') }}';
                   }, 2000);
                 },
                 error: function (error) {
@@ -306,7 +306,7 @@ document.getElementById('searchp').addEventListener('input', function() {
             const selectedId = selectedCheckboxes[0].getAttribute('data-id');
     
             $.ajax({
-                url: '/update-cost/' + selectedId,
+                url: '{{ url('update-cost') }}/' + selectedId,
                 method: 'POST',
                 data: {
                     cost_center: costCenter,
@@ -324,7 +324,7 @@ document.getElementById('searchp').addEventListener('input', function() {
                     });
     
                     setTimeout(function () {
-                        window.location.href = '/cost';
+                        window.location.href = '{{ url('cost') }}';
                     }, 2000);
                 },
                 error: function (error) {
@@ -339,42 +339,6 @@ document.getElementById('searchp').addEventListener('input', function() {
         }
     }
 </script>
-
-{{--  <script>
-    // Mengambil semua checkbox dengan class "sub_chk"
-    const checkboxes = document.querySelectorAll('.sub_chk');
-  
-    // Tombol "Edit" dan modal
-    const editButton = document.getElementById('editButton');
-    const editModal = new bootstrap.Modal(document.getElementById('editModal'));
-  
-    // Fungsi untuk menangani perubahan pada checkbox
-    function handleCheckboxChange(id) {
-      const checkedCheckboxes = document.querySelectorAll('.sub_chk:checked');
-  
-      // Aktifkan atau nonaktifkan tombol "Edit" berdasarkan jumlah checkbox yang dipilih
-      if (checkedCheckboxes.length === 1) {
-        editButton.disabled = false;
-      } else {
-        editButton.disabled = true;
-      }
-    }
-  
-    // Menangani klik tombol "Edit"
-    editButton.addEventListener('click', () => {
-      const checkedCheckbox = document.querySelector('.sub_chk:checked');
-  
-      // Periksa apakah ada checkbox yang dipilih
-      if (checkedCheckbox) {
-        const costCenterId = checkedCheckbox.getAttribute('data-id');
-          editModal.show();
-      }
-    });
-  
-    document.getElementById('saveChangesButton').addEventListener('click', () => {
-      editModal.hide();
-    });
-</script>  --}}
 
 <script>
     document.getElementById('reset-cost-button').addEventListener('click', function () {

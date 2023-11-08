@@ -253,7 +253,7 @@ document.getElementById('searchp').addEventListener('input', function() {
             if (result.isConfirmed) {
               // Lakukan penghapusan data dengan AJAX
               $.ajax({
-                url: '/delete-kb',
+                url: '{{ url('delete-kb') }}',
                 method: 'POST',
                 data: {
                   _token: '{{ csrf_token() }}',
@@ -271,7 +271,7 @@ document.getElementById('searchp').addEventListener('input', function() {
                   });
       
                   setTimeout(function () {
-                    window.location.href = '/kode_budget';
+                    window.location.href = '{{ url('kode_budget') }}';
                   }, 2000);
                 },
                 error: function (error) {
@@ -311,7 +311,7 @@ document.getElementById('searchp').addEventListener('input', function() {
             const selectedId = selectedCheckboxes[0].getAttribute('data-id');
     
             $.ajax({
-                url: '/update-kb/' + selectedId,
+                url: '{{ url('update-kb') }}/' + selectedId,
                 method: 'POST',
                 data: {
                     kode_budget: kode_budget,
@@ -328,7 +328,7 @@ document.getElementById('searchp').addEventListener('input', function() {
                     });
     
                     setTimeout(function () {
-                        window.location.href = '/kode_budget';
+                        window.location.href = '{{ url('kode_budget') }}';
                     }, 2000);
                 },
                 error: function (error) {
@@ -343,36 +343,6 @@ document.getElementById('searchp').addEventListener('input', function() {
         }
     }
 </script>
-
-{{-- <script>
-    const checkboxes = document.querySelectorAll('.sub_chk');
-  
-    const editButton = document.getElementById('editButton');
-    const editModal = new bootstrap.Modal(document.getElementById('editModal'));
-  
-    function handleCheckboxChange(id) {
-      const checkedCheckboxes = document.querySelectorAll('.sub_chk:checked');
-  
-      if (checkedCheckboxes.length === 1) {
-        editButton.disabled = false;
-      } else {
-        editButton.disabled = true;
-      }
-    }
-  
-    editButton.addEventListener('click', () => {
-      const checkedCheckbox = document.querySelector('.sub_chk:checked');
-  
-      if (checkedCheckbox) {
-        const costCenterId = checkedCheckbox.getAttribute('data-id');
-          editModal.show();
-      }
-    });
-  
-    document.getElementById('saveChangesButton').addEventListener('click', () => {
-      editModal.hide();
-    });
-</script> --}}
 
 <script>
     document.getElementById('reset-kb-button').addEventListener('click', function () {

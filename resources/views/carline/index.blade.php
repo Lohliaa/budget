@@ -259,7 +259,7 @@ document.getElementById('searchp').addEventListener('input', function() {
             if (result.isConfirmed) {
               // Lakukan penghapusan data dengan AJAX
               $.ajax({
-                url: '/delete-carline',
+                url: '{{ url('delete-carline') }}',
                 method: 'POST',
                 data: {
                   _token: '{{ csrf_token() }}',
@@ -277,7 +277,7 @@ document.getElementById('searchp').addEventListener('input', function() {
                   });
       
                   setTimeout(function () {
-                    window.location.href = '/carline';
+                    window.location.href = '{{ url('carline') }}';
                   }, 2000);
                 },
                 error: function (error) {
@@ -326,7 +326,7 @@ document.getElementById('searchp').addEventListener('input', function() {
             const selectedId = selectedCheckboxes[0].getAttribute('data-id');
     
             $.ajax({
-                url: '/update-carline/' + selectedId,
+                url: '{{ url('update-carline') }}/' + selectedId,
                 method: 'POST',
                 data: {
                     destination_ppc: destination_ppc,
@@ -346,7 +346,7 @@ document.getElementById('searchp').addEventListener('input', function() {
                     });
     
                     setTimeout(function () {
-                        window.location.href = '/carline'; 
+                        window.location.href = '{{ url('carline') }}'; 
                     }, 2000); 
                 },
                 error: function (error) {
