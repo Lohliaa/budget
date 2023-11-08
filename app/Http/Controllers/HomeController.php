@@ -26,6 +26,7 @@ class HomeController extends Controller
     {
         set_time_limit(0);
         $role = Auth::id();
+        $user = User::all();
         if (Auth::user()->role === 'Admin') {
             $home = Home::orderBy('id', 'asc')->paginate(10000);
         } else {
@@ -38,7 +39,7 @@ class HomeController extends Controller
         $kode_budget = KodeBudget::all();
         $carline = Carline::all();
         $cost = Cost::all();
-        return view('home', compact('home', 'count', 'data', 'master_barang', 'kode_budget', 'carline','cost'   ));
+        return view('home', compact('home', 'count', 'data', 'master_barang', 'kode_budget', 'carline','cost','user'));
     }
 
     public function searchHome(Request $request)
@@ -255,9 +256,18 @@ class HomeController extends Controller
 
     public function reset_home()
     {
-        $role = Auth::id();
-        Home::where('role_id', $role)->delete();
-        Home::truncate();
-        return response()->json(['success' => "Deleted successfully."]);
+        $userRole = Auth::user()->role;
+    
+        if ($userRole === 'Admin') {
+            // Jika pengguna adalah Admin, gunakan truncate
+            Home::truncate();
+            return response()->json(['success' => 'Data truncated successfully.']);
+        } else {
+            // Jika pengguna bukan Admin, gunakan delete berdasarkan ID
+            $role = Auth::id();
+            Home::where('role_id', $role)->delete();
+            return response()->json(['success' => 'Data deleted successfully.']);
+        }
     }
+    
 }

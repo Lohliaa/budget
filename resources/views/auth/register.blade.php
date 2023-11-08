@@ -34,13 +34,12 @@ Form Daftar Akun
                                     </div>
                                     @enderror
                                     <div class="form-group">
-                                        <select name="role" class="form-control form-control-user" id="role">
+                                        <select name="role" class="form-control" style="width: 300px; height:50px; border-radius: 10rem; font-size:0.85rem" id="role">
                                             <option value="" disabled selected hidden>Pilih Departemen</option>
                                             @foreach($costCenters as $costCenter)
                                                 <option value="{{ $costCenter }}">{{ $costCenter }}</option>
                                             @endforeach
                                         </select>
-                                        
                                     </div>
                                     @error('role')
                                     <div class="alert alert-danger" role="alert">
@@ -83,11 +82,10 @@ Form Daftar Akun
                                     </button>
                                 </form>
                                 <hr>
-                                <hr>
                                 <div class="text-center">
                                     <a class="small" href="{{ route('password.request') }}">Lupa Password?</a>
                                 </div>
-                                <div class="text-center">
+                                <div class="text-center mb-4">
                                     <a class="small" href="{{ url('login') }}">Saya Punya Akun? Login!</a>
                                 </div>
                             </div>

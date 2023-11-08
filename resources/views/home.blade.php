@@ -298,7 +298,7 @@ Halaman Utama
                             <td><input type="checkbox" class="sub_chk" data-id="{{$h->id}}"
                                     onclick="handleCheckboxChange({{ $h->id }})"></td>
                             <td>{{$no++}}</td>
-                            {{-- <td>{{ Auth::user()->role }}</td> --}}
+                            {{--  <td>{{ Auth::user()->role }}</td>  --}}
                             <td>{{ $h->section }}</td>
                             <td>{{ $h->code }}</td>
                             <td>{{ $h->nama }}</td>

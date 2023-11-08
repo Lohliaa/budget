@@ -12,6 +12,7 @@ use DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB as FacadesDB;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
 class HomeExport implements FromCollection, WithHeadings, ShouldAutoSize, WithStyles, WithMultipleSheets
@@ -183,7 +184,7 @@ class DetailSheet implements FromCollection, WithHeadings, ShouldAutoSize, WithS
     }
 }
 
-class SummarySheet implements FromCollection, WithHeadings, ShouldAutoSize
+class SummarySheet implements FromCollection, WithHeadings, ShouldAutoSize, WithMapping
 {
     private $roleId;
 
@@ -195,7 +196,7 @@ class SummarySheet implements FromCollection, WithHeadings, ShouldAutoSize
     public function collection()
     {
         $userRole = Auth::user()->role;
-
+    
         $homeData = DB::table('home')
             ->select(
                 'section',
@@ -209,43 +210,51 @@ class SummarySheet implements FromCollection, WithHeadings, ShouldAutoSize
                 'qty', // Tambahkan kolom 'qty'
                 'price' // Tambahkan kolom 'price'
             );
-
+    
         if ($userRole !== 'Admin') {
             $role = Auth::id();
             $homeData->where('home.role_id', $role);
         }
-
+    
         $homeData = $homeData->get();
-
+    
         // Ambil data 'section' dari tabel 'home'
         $sections = $homeData->pluck('section');
-
+    
         // Ambil data 'detail_cost_center' dari tabel 'cost' sesuai dengan 'section' dari tabel 'home'
         $costData = DB::table('cost')
             ->whereIn('cost_center', $sections)
             ->select('cost_center', 'detail_cost_center as nama_section')
             ->get();
-
-        // Gabungkan data dari kedua tabel berdasarkan 'section'
+    
         $result = [];
+    
+        $monthYearValues = []; // Inisialisasi array untuk nilai 'F Y'
+    
         foreach ($homeData as $homeRow) {
-            $matchingCostRow = $costData->where('cost_center', $homeRow->section)->first();
-
+            $section = $homeRow->section;
+    
+            // Temukan data yang sesuai dengan 'section' dari tabel 'cost'
+            $matchingCostRow = $costData->where('cost_center', $section)->first();
+    
+            // Pastikan data yang cocok ditemukan sebelum melanjutkan
             if ($matchingCostRow) {
                 // Hitung nilai untuk setiap bulan antara 'order_plan' dan 'delivery_plan'
-                $orderPlan = Carbon::parse($homeRow->order_plan); // Ubah string menjadi objek Carbon
-                $deliveryPlan = Carbon::parse($homeRow->delivery_plan); // Ubah string menjadi objek Carbon
-                $original = [];
-
-                $original = [];
+                $orderPlan = Carbon::parse($homeRow->order_plan);
+                $deliveryPlan = Carbon::parse($homeRow->delivery_plan);
+    
                 while ($orderPlan <= $deliveryPlan) {
-                    $original[$orderPlan->format('F Y')] = $homeRow->qty * $homeRow->price;
+                    $monthYear = $orderPlan->format('F Y');
+                    $value = $homeRow->qty * $homeRow->price;
+    
+                    // Tambahkan data 'F Y' dan nilai ke dalam array
+                    $monthYearValues[$monthYear] = $value;
                     $orderPlan->addMonth();
                 }
-
-
+    
+                // Buat data yang akan dimasukkan ke dalam hasil akhir
                 $result[] = [
-                    'section' => $homeRow->section,
+                    'section' => $section,
                     'nama_section' => $matchingCostRow->nama_section,
                     'fixed' => $homeRow->fixed,
                     'kode_budget' => $homeRow->kode_budget,
@@ -254,30 +263,63 @@ class SummarySheet implements FromCollection, WithHeadings, ShouldAutoSize
                     'cur' => $homeRow->cur,
                     'order_plan' => $homeRow->order_plan,
                     'delivery_plan' => $homeRow->delivery_plan,
-                    'original' => $original,
                 ];
             }
         }
-
-        return collect($result)->map(function ($item) {
-            $item['original'] = collect($item['original']);
+    
+        // Menambahkan 'F Y' sebagai subkolom
+        $result = collect($result)->map(function ($item) use ($monthYearValues) {
+            $item['original'] = $monthYearValues;
             return $item;
         });
-    }
-
+    
+        return $result;
+    }  
+      
     public function headings(): array
     {
-        return [
-            'section',
-            'nama_section',
-            'fixed/variabel',
-            'kode_budget',
-            'kode_carline',
-            'prep/masspro',
-            'cur',
-            'start',
-            'finish',
-            'original',
+        $headings = [
+            'Section',
+            'Nama Section',
+            'Fixed',
+            'Kode Budget',
+            'Kode Carline',
+            'Prep',
+            'Cur',
+            'Order Plan',
+            'Delivery Plan',
         ];
+    
+        $uniqueMonthYears = [];
+        foreach ($this->collection() as $row) {
+            foreach (array_keys($row['original']) as $monthYear) {
+                $uniqueMonthYears[$monthYear] = $monthYear;
+            }
+        }
+    
+        $headings = array_merge($headings, $uniqueMonthYears);
+    
+        return $headings;
+    }
+    
+    public function map($row): array
+    {
+        $data = [
+            $row['section'],
+            $row['nama_section'],
+            $row['fixed'],
+            $row['kode_budget'],
+            $row['kode_carline'],
+            $row['prep'],
+            $row['cur'],
+            $row['order_plan'],
+            $row['delivery_plan'],
+        ];
+
+        foreach ($row['original'] as $monthYear => $value) {
+            $data[] = $value;
+        }
+
+        return $data;
     }
 }

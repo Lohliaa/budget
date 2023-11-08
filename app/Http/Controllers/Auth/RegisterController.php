@@ -40,7 +40,7 @@ class RegisterController extends Controller
     }
     public function index()
     {
-        $costCenters = Cost::distinct('cost_center')->pluck('cost_center');
+        $costCenters = Cost::distinct('detail_cost_center')->pluck('detail_cost_center');
         return view('auth.register', compact('costCenters'));
     }
 
