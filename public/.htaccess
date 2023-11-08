@@ -4,6 +4,7 @@
     </IfModule>
 
     RewriteEngine On
+    RewriteBase /sobat-gula
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
