@@ -117,24 +117,18 @@ Halaman Utama
                             <div class="modal-body">
                                 <!-- Form for editing data -->
                                 <form id="editForm">
-                                    {{-- <div class="form-group">
-                                        <label for="editSection">Section</label>
-                                        <input type="text" class="form-control" id="editSection" name="section">
-                                    </div> --}}
+
                                     <div class="form-group">
                                         <label for="editSection">Section</label>
                                         <select class="form-control" id="editSection" name="section">
                                             <option value="">Pilih Section</option>
                                             @foreach($cost as $cost_center)
-                                            <option value="{{ $cost_center->cost_center }}">{{ $cost_center->cost_center
+                                            <option value="{{ $cost_center->cost_center }}">{{
+                                                $cost_center->cost_center
                                                 }}</option>
                                             @endforeach
                                         </select>
                                     </div>
-                                    {{-- <div class="form-group">
-                                        <label for="editCode">Code</label>
-                                        <input type="text" class="form-control" id="editCode" name="code">
-                                    </div> --}}
                                     <div class="form-group">
                                         <label for="editCode">Code</label>
                                         <select class="form-control" id="editCode" name="code">
@@ -144,65 +138,27 @@ Halaman Utama
                                             @endforeach
                                         </select>
                                     </div>
-                                    {{-- <div class="form-group">
-                                        <label for="editNama">Nama</label>
-                                        <input type="text" class="form-control" id="editNama" name="nama">
-                                    </div> --}}
                                     <div class="form-group">
                                         <label for="editNama">Nama</label>
                                         <select class="form-control" id="editNama" name="nama">
-                                            <option value="">Pilih Nama</option>
-                                            @foreach($master_barang->unique('name') as $name)
-                                            <option value="{{ $name->name }}">{{ $name->name }}</option>
-                                            @endforeach
                                         </select>
                                     </div>
-                                    {{-- <div class="form-group">
-                                        <label for="editKodeBudget">Kode Budget</label>
-                                        <input type="text" class="form-control" id="editKodeBudget" name="kode_budget">
-                                    </div> --}}
                                     <div class="form-group">
                                         <label for="editKodeBudget">Kode Budget</label>
                                         <select class="form-control" id="editKodeBudget" name="kode_budget">
                                             <option value="">Pilih Kode Budget</option>
                                             @foreach($kode_budget->unique('kode_budget') as $kode_budget)
-                                            <option value="{{ $kode_budget->kode_budget }}">{{ $kode_budget->kode_budget
+                                            <option value="{{ $kode_budget->kode_budget }}">{{
+                                                $kode_budget->kode_budget
                                                 }}</option>
                                             @endforeach
                                         </select>
                                     </div>
-                                    {{-- <div class="form-group">
-                                        <label for="editCur">Cur</label>
-                                        <input type="text" class="form-control" id="editCur" name="cur">
-                                    </div> --}}
                                     <div class="form-group">
                                         <label for="editCur">CUR</label>
                                         <select class="form-control" id="editCur" name="cur">
-                                            <option value="USD">USD</option>
+                                            <option value="USD" selected>USD</option>
                                         </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editQTY">QTY</label>
-                                        <input type="text" class="form-control" id="editQTY" name="qty">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editPrice">Price</label>
-                                        <input type="text" class="form-control" id="editPrice" name="price">
-                                    </div>
-
-                                    {{-- <div class="form-group">
-                                        <label for="editOrderPlan">Order Plan</label>
-                                        <input type="text" class="form-control" id="editOrderPlan" name="order_plan">
-                                    </div> --}}
-                                    <div class="form-group">
-                                        <label for="editOrderPlan">Order Plan</label>
-                                        <input type="date" class="form-control" id="editOrderPlan" name="order_plan">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="editDeliveryPlan">Delivery Plan</label>
-                                        <input type="date" class="form-control" id="editDeliveryPlan"
-                                            name="delivery_plan">
                                     </div>
                                     <div class="form-group">
                                         <label for="editFixed">Fixed/Variable</label>
@@ -218,7 +174,6 @@ Halaman Utama
                                             <option value="Maspro">Maspro</option>
                                         </select>
                                     </div>
-
                                     <div class="form-group">
                                         <label for="editKodeCarline">Kode Carline</label>
                                         <select class="form-control" id="editKodeCarline" name="kode_carline">
@@ -230,6 +185,162 @@ Halaman Utama
                                     <div class="form-group">
                                         <label for="editRemark">Remark</label>
                                         <input type="text" class="form-control" id="editRemark" name="remark">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editQTY_jul">QTY Jul</label>
+                                        <input type="text" class="form-control" id="editQTY_jul" name="qty_jul">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editPrice_jul">Price Jul</label>
+                                        <input type="text" class="form-control" id="editPrice_jul" name="price_jul">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editAmount_jul">Amount Jul</label>
+                                        <input type="text" class="form-control" id="editAmount_jul" name="amount_jul"
+                                            disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editQTY_aug">QTY Aug</label>
+                                        <input type="text" class="form-control" id="editQTY_aug" name="qty_aug">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editPrice_aug">Price Aug</label>
+                                        <input type="text" class="form-control" id="editPrice_aug" name="price_aug">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editAmount_aug">Amount Aug</label>
+                                        <input type="text" class="form-control" id="editAmount_aug" name="amount_aug"
+                                            disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editQTY_sep">QTY Sep</label>
+                                        <input type="text" class="form-control" id="editQTY_sep" name="qty_sep">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editPrice_sep">Price Sep</label>
+                                        <input type="text" class="form-control" id="editPrice_sep" name="price_sep">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editAmount_sep">Amount Sep</label>
+                                        <input type="text" class="form-control" id="editAmount_sep" name="amount_sep"
+                                            disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editQTY_okt">QTY Okt</label>
+                                        <input type="text" class="form-control" id="editQTY_okt" name="qty_okt">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editPrice_okt">Price Okt</label>
+                                        <input type="text" class="form-control" id="editPrice_okt" name="price_okt">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editAmount_okt">Amount Okt</label>
+                                        <input type="text" class="form-control" id="editAmount_okt" name="amount_okt"
+                                            disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editQTY_nov">QTY Nov</label>
+                                        <input type="text" class="form-control" id="editQTY_nov" name="qty_nov">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editPrice_nov">Price Nov</label>
+                                        <input type="text" class="form-control" id="editPrice_nov" name="price_nov">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editAmount_nov">Amount Nov</label>
+                                        <input type="text" class="form-control" id="editAmount_nov" name="amount_nov"
+                                            disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editQTY_dec">QTY Dec</label>
+                                        <input type="text" class="form-control" id="editQTY_dec" name="qty_dec">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editPrice_dec">Price Dec</label>
+                                        <input type="text" class="form-control" id="editPrice_dec" name="price_dec">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editAmount_dec">Amount Dec</label>
+                                        <input type="text" class="form-control" id="editAmount_dec" name="amount_dec"
+                                            disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editQTY_jan">QTY Jan</label>
+                                        <input type="text" class="form-control" id="editQTY_jan" name="qty_jan">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editPrice_jan">Price Jan</label>
+                                        <input type="text" class="form-control" id="editPrice_jan" name="price_jan">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editAmount_jan">Amount Jan</label>
+                                        <input type="text" class="form-control" id="editAmount_jan" name="amount_jan"
+                                            disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editQTY_feb">QTY Feb</label>
+                                        <input type="text" class="form-control" id="editQTY_feb" name="qty_feb">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editPrice_feb">Price Feb</label>
+                                        <input type="text" class="form-control" id="editPrice_feb" name="price_feb">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editAmount_feb">Amount Feb</label>
+                                        <input type="text" class="form-control" id="editAmount_feb" name="amount_feb"
+                                            disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editQTY_mar">QTY Mar</label>
+                                        <input type="text" class="form-control" id="editQTY_mar" name="qty_mar">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editPrice_mar">Price Mar</label>
+                                        <input type="text" class="form-control" id="editPrice_mar" name="price_mar">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editAmount_mar">Amount Mar</label>
+                                        <input type="text" class="form-control" id="editAmount_mar" name="amount_mar"
+                                            disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editQTY_apr">QTY Apr</label>
+                                        <input type="text" class="form-control" id="editQTY_apr" name="qty_apr">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editPrice_apr">Price Apr</label>
+                                        <input type="text" class="form-control" id="editPrice_apr" name="price_apr">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editAmount_apr">Amount Apr</label>
+                                        <input type="text" class="form-control" id="editAmount_apr" name="amount_apr"
+                                            disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editQTY_may">QTY May</label>
+                                        <input type="text" class="form-control" id="editQTY_may" name="qty_may">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editPrice_may">Price May</label>
+                                        <input type="text" class="form-control" id="editPrice_may" name="price_may">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editAmount_may">Amount May</label>
+                                        <input type="text" class="form-control" id="editAmount_may" name="amount_may"
+                                            disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editQTY_jun">QTY Jun</label>
+                                        <input type="text" class="form-control" id="editQTY_jun" name="qty_jun">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editPrice_jun">Price Jun</label>
+                                        <input type="text" class="form-control" id="editPrice_jun" name="price_jun">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editAmount_jun">Amount Jun</label>
+                                        <input type="text" class="form-control" id="editAmount_jun" name="amount_jun"
+                                            disabled>
                                     </div>
                                 </form>
                             </div>
@@ -281,14 +392,46 @@ Halaman Utama
                             <td colspan="0" rowspan="3" style="vertical-align: middle;">Nama</td>
                             <td colspan="0" rowspan="3" style="vertical-align: middle;">Kode Budget</td>
                             <td colspan="0" rowspan="3" style="vertical-align: middle;">CUR</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Oder Plan</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Delivery Plan</td>
                             <td colspan="0" rowspan="3" style="vertical-align: middle;">Fixed/Variabel</td>
                             <td colspan="0" rowspan="3" style="vertical-align: middle;">Prep/Masspro</td>
                             <td colspan="0" rowspan="3" style="vertical-align: middle;">Kode Carline</td>
                             <td colspan="0" rowspan="3" style="vertical-align: middle;">Remark</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Jul</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Jul</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Jul</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Aug</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Aug</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Aug</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Sep</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Sep</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Sep</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Okt</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Okt</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Okt</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Nov</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Nov</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Nov</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Dec</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Dec</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Dec</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Jan</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Jan</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Jan</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Feb</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Feb</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Feb</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Mar</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Mar</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Mar</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Apr</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Apr</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Apr</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty May</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price May</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount May</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Jun</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Jun</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Jun</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -298,75 +441,66 @@ Halaman Utama
                             <td><input type="checkbox" class="sub_chk" data-id="{{$h->id}}"
                                     onclick="handleCheckboxChange({{ $h->id }})"></td>
                             <td>{{$no++}}</td>
-                            {{--  <td>{{ Auth::user()->role }}</td>  --}}
+                            {{--  <td>
+                                @if(Auth::user()->role === 'Admin')
+                                    {{ $h->role }}
+                                @else
+                                    {{ Auth::user()->role }}
+                                @endif
+                            </td>  --}}
                             <td>{{ $h->section }}</td>
                             <td>{{ $h->code }}</td>
                             <td>{{ $h->nama }}</td>
                             <td>{{ $h->kode_budget }}</td>
                             <td>{{ $h->cur }}</td>
-                            <td>{{ $h->qty }}</td>
-                            <td>{{ $h->price }}</td>
-                            @if ($h->order_plan)
-                            <td>{{ \Carbon\Carbon::parse($h->order_plan)->format('d-m-Y') }}</td>
-                            @else
-                            <td> </td>
-                            @endif
-                            @if ($h->delivery_plan)
-                            <td>{{ \Carbon\Carbon::parse($h->delivery_plan)->format('d-m-Y') }}</td>
-                            @else
-                            <td> </td>
-                            @endif
                             <td>{{ $h->fixed }}</td>
                             <td>{{ $h->prep }}</td>
                             <td>{{ $h->kode_carline }}</td>
                             <td>{{ $h->remark }}</td>
+                            <td>{{ $h->qty_jul }}</td>
+                            <td>{{ $h->price_jul }}</td>
+                            <td>{{ $h->amount_jul }}</td>
+                            <td>{{ $h->qty_aug }}</td>
+                            <td>{{ $h->price_aug }}</td>
+                            <td>{{ $h->amount_aug }}</td>
+                            <td>{{ $h->qty_sep }}</td>
+                            <td>{{ $h->price_sep }}</td>
+                            <td>{{ $h->amount_sep }}</td>
+                            <td>{{ $h->qty_okt }}</td>
+                            <td>{{ $h->price_okt }}</td>
+                            <td>{{ $h->amount_okt }}</td>
+                            <td>{{ $h->qty_nov }}</td>
+                            <td>{{ $h->price_nov }}</td>
+                            <td>{{ $h->amount_nov }}</td>
+                            <td>{{ $h->qty_dec }}</td>
+                            <td>{{ $h->price_dec }}</td>
+                            <td>{{ $h->amount_dec }}</td>
+                            <td>{{ $h->qty_jan }}</td>
+                            <td>{{ $h->price_jan }}</td>
+                            <td>{{ $h->amount_jan }}</td>
+                            <td>{{ $h->qty_feb }}</td>
+                            <td>{{ $h->price_feb }}</td>
+                            <td>{{ $h->amount_feb }}</td>
+                            <td>{{ $h->qty_mar }}</td>
+                            <td>{{ $h->price_mar }}</td>
+                            <td>{{ $h->amount_mar }}</td>
+                            <td>{{ $h->qty_apr }}</td>
+                            <td>{{ $h->price_apr }}</td>
+                            <td>{{ $h->amount_apr }}</td>
+                            <td>{{ $h->qty_may }}</td>
+                            <td>{{ $h->price_may }}</td>
+                            <td>{{ $h->amount_may }}</td>
+                            <td>{{ $h->qty_jun }}</td>
+                            <td>{{ $h->price_jun }}</td>
+                            <td>{{ $h->amount_jun }}</td>
                         </tr>
                         @endforeach
                     </tbody>
-                </table>
+                                </table>
             </div>
         </div>
     </div>
 </body>
-
-<script>
-    // Fungsi untuk mengubah format tanggal dari yyyy-mm-dd ke dd-mm-yyyy
-    function formatDate(inputDate) {
-        if (inputDate) {
-            const dateParts = inputDate.split("-");
-            if (dateParts.length === 3) {
-                return dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0];
-            }
-        }
-        return "";
-    }
-
-    // Fungsi untuk mengisi input dengan format tanggal yang benar saat data ditampilkan
-    function populateDateInput(inputId) {
-        const inputElement = document.querySelector(inputId);
-        if (inputElement) {
-            const originalValue = inputElement.value;
-            const formattedValue = formatDate(originalValue);
-            inputElement.value = formattedValue;
-        }
-    }
-
-    // Fungsi untuk mengubah format tanggal sebelum mengirimkan data ke server
-    function prepareDateInput(inputId) {
-        const inputElement = document.querySelector(inputId);
-        if (inputElement) {
-            const originalValue = inputElement.value;
-            const formattedValue = formatDate(originalValue);
-            inputElement.value = formattedValue;
-        }
-    }
-
-    // Panggil fungsi populateDateInput dan prepareDateInput sesuai dengan id input yang sesuai
-    populateDateInput('#editOrderPlan');
-    prepareDateInput('#editOrderPlan');
-    populateDateInput('#editDeliveryPlan');
-    prepareDateInput('#editDeliveryPlan');
-</script>
 
 <script>
     // Fungsi untuk mengirim permintaan pencarian ke server dan mengganti konten tabel
@@ -389,6 +523,34 @@ document.getElementById('searchp').addEventListener('input', function() {
     function handleCheckboxChange(id) {
         // Tambahkan logika yang sesuai untuk menangani perubahan checkbox di sini
         console.log('Checkbox with ID ' + id + ' changed.');
+    }
+</script>
+
+<script>
+    // Mendapatkan elemen-elemen select
+    var codeSelect = document.getElementById('editCode');
+    var namaSelect = document.getElementById('editNama');
+
+    codeSelect.addEventListener('change', function() {
+        var selectedCode = codeSelect.value;
+    
+       // Menghapus semua opsi dalam dropdown "Nama"
+        namaSelect.innerHTML = '';
+
+    
+        // Mengambil opsi nama yang cocok dengan kode yang dipilih
+        @foreach($master_barang as $code)
+            if ("{{ $code->code }}" === selectedCode) {
+                var option = document.createElement('option');
+                option.value = "{{ $code->name }}";
+                option.text = "{{ $code->name }}";
+                namaSelect.add(option);
+            }
+        @endforeach
+    });
+    // Inisialisasi dengan kode pertama (jika ada kode yang terpilih secara default)
+    if (codeSelect.value !== '') {
+        codeSelect.dispatchEvent(new Event('change'));
     }
 </script>
 
@@ -430,7 +592,7 @@ document.getElementById('searchp').addEventListener('input', function() {
             if (result.isConfirmed) {
               // Lakukan penghapusan data dengan AJAX
               $.ajax({
-                url: '/delete-home',
+                url: '{{ url('delete-home') }}',
                 method: 'POST',
                 data: {
                   _token: '{{ csrf_token() }}',
@@ -448,7 +610,7 @@ document.getElementById('searchp').addEventListener('input', function() {
                   });
       
                   setTimeout(function () {
-                    window.location.href = '/home';
+                    window.location.href = '{{ url('home') }}';
                   }, 2000);
                 },
                 error: function (error) {
@@ -465,6 +627,23 @@ document.getElementById('searchp').addEventListener('input', function() {
         }
       }
 
+function calculateAmount(bulan) {
+    const editQtyInput = document.querySelector(`#editQTY_${bulan}`);
+    const editPriceInput = document.querySelector(`#editPrice_${bulan}`);
+    const editAmountInput = document.querySelector(`#editAmount_${bulan}`);
+    
+    function updateAmount() {
+      const qty = parseFloat(editQtyInput.value) || 0;
+      const price = parseFloat(editPriceInput.value) || 0;
+      const amount = qty * price;
+      editAmountInput.value = amount;
+    }
+    
+    editQtyInput.addEventListener('input', updateAmount);
+    editPriceInput.addEventListener('input', updateAmount);
+}
+  
+  
     // JavaScript to open the modal and populate data for editing
     function handleEditClick() {
       const selectedCheckboxes = document.querySelectorAll('.sub_chk:checked');
@@ -478,28 +657,98 @@ document.getElementById('searchp').addEventListener('input', function() {
         const nama = document.querySelector(`#tr_${selectedId} td:nth-child(5)`).textContent;
         const kode_budget = document.querySelector(`#tr_${selectedId} td:nth-child(6)`).textContent;
         const cur = document.querySelector(`#tr_${selectedId} td:nth-child(7)`).textContent;
-        const qty = document.querySelector(`#tr_${selectedId} td:nth-child(8)`).textContent;
-        const price = document.querySelector(`#tr_${selectedId} td:nth-child(9)`).textContent;
-        const order_plan = document.querySelector(`#tr_${selectedId} td:nth-child(10)`).textContent;
-        const delivery_plan = document.querySelector(`#tr_${selectedId} td:nth-child(11)`).textContent;
-        const fixed = document.querySelector(`#tr_${selectedId} td:nth-child(12)`).textContent;
-        const prep = document.querySelector(`#tr_${selectedId} td:nth-child(13)`).textContent;
-        const kode_carline = document.querySelector(`#tr_${selectedId} td:nth-child(14)`).textContent;
-        const remark = document.querySelector(`#tr_${selectedId} td:nth-child(15)`).textContent;
+        const fixed = document.querySelector(`#tr_${selectedId} td:nth-child(8)`).textContent;
+        const prep = document.querySelector(`#tr_${selectedId} td:nth-child(9)`).textContent;
+        const kode_carline = document.querySelector(`#tr_${selectedId} td:nth-child(10)`).textContent;
+        const remark = document.querySelector(`#tr_${selectedId} td:nth-child(11)`).textContent;
+        const qty_jul = document.querySelector(`#tr_${selectedId} td:nth-child(12)`).textContent;
+        const price_jul = document.querySelector(`#tr_${selectedId} td:nth-child(13)`).textContent;
+        const amount_jul = document.querySelector(`#tr_${selectedId} td:nth-child(14)`).textContent;
+        const qty_aug = document.querySelector(`#tr_${selectedId} td:nth-child(15)`).textContent;
+        const price_aug = document.querySelector(`#tr_${selectedId} td:nth-child(16)`).textContent;
+        const amount_aug = document.querySelector(`#tr_${selectedId} td:nth-child(17)`).textContent;
+        const qty_sep = document.querySelector(`#tr_${selectedId} td:nth-child(18)`).textContent;
+        const price_sep = document.querySelector(`#tr_${selectedId} td:nth-child(19)`).textContent;
+        const amount_sep = document.querySelector(`#tr_${selectedId} td:nth-child(20)`).textContent;
+        const qty_okt = document.querySelector(`#tr_${selectedId} td:nth-child(21)`).textContent;
+        const price_okt = document.querySelector(`#tr_${selectedId} td:nth-child(22)`).textContent;
+        const amount_okt = document.querySelector(`#tr_${selectedId} td:nth-child(23)`).textContent;
+        const qty_nov = document.querySelector(`#tr_${selectedId} td:nth-child(24)`).textContent;
+        const price_nov = document.querySelector(`#tr_${selectedId} td:nth-child(25)`).textContent;
+        const amount_nov = document.querySelector(`#tr_${selectedId} td:nth-child(26)`).textContent;
+        const qty_dec = document.querySelector(`#tr_${selectedId} td:nth-child(27)`).textContent;
+        const price_dec = document.querySelector(`#tr_${selectedId} td:nth-child(28)`).textContent;
+        const amount_dec = document.querySelector(`#tr_${selectedId} td:nth-child(29)`).textContent;
+        const qty_jan = document.querySelector(`#tr_${selectedId} td:nth-child(30)`).textContent;
+        const price_jan = document.querySelector(`#tr_${selectedId} td:nth-child(31)`).textContent;
+        const amount_jan = document.querySelector(`#tr_${selectedId} td:nth-child(32)`).textContent;
+        const qty_feb = document.querySelector(`#tr_${selectedId} td:nth-child(33)`).textContent;
+        const price_feb = document.querySelector(`#tr_${selectedId} td:nth-child(34)`).textContent;
+        const amount_feb = document.querySelector(`#tr_${selectedId} td:nth-child(35)`).textContent;
+        const qty_mar = document.querySelector(`#tr_${selectedId} td:nth-child(36)`).textContent;
+        const price_mar = document.querySelector(`#tr_${selectedId} td:nth-child(37)`).textContent;
+        const amount_mar = document.querySelector(`#tr_${selectedId} td:nth-child(38)`).textContent;
+        const qty_apr = document.querySelector(`#tr_${selectedId} td:nth-child(39)`).textContent;
+        const price_apr = document.querySelector(`#tr_${selectedId} td:nth-child(40)`).textContent;
+        const amount_apr = document.querySelector(`#tr_${selectedId} td:nth-child(41)`).textContent;
+        const qty_may = document.querySelector(`#tr_${selectedId} td:nth-child(42)`).textContent;
+        const price_may = document.querySelector(`#tr_${selectedId} td:nth-child(43)`).textContent;
+        const amount_may = document.querySelector(`#tr_${selectedId} td:nth-child(44)`).textContent;
+        const qty_jun = document.querySelector(`#tr_${selectedId} td:nth-child(45)`).textContent;
+        const price_jun = document.querySelector(`#tr_${selectedId} td:nth-child(46)`).textContent;
+        const amount_jun = document.querySelector(`#tr_${selectedId} td:nth-child(47)`).textContent;
 
         document.querySelector('#editSection').value = section;
         document.querySelector('#editCode').value = code;
         document.querySelector('#editNama').value = nama;
         document.querySelector('#editKodeBudget').value = kode_budget;
         document.querySelector('#editCur').value = cur;
-        document.querySelector('#editQTY').value = qty;
-        document.querySelector('#editPrice').value = price;
-        document.querySelector('#editOrderPlan').value = order_plan;
-        document.querySelector('#editDeliveryPlan').value = delivery_plan;
         document.querySelector('#editFixed').value = fixed;
         document.querySelector('#editPrep').value = prep;
         document.querySelector('#editKodeCarline').value = kode_carline;
         document.querySelector('#editRemark').value = remark;
+        document.querySelector('#editQTY_jul').value = qty_jul;
+        document.querySelector('#editPrice_jul').value = price_jul;
+        document.querySelector('#editAmount_jul').value = amount_jul;
+        document.querySelector('#editQTY_aug').value = qty_aug;
+        document.querySelector('#editPrice_aug').value = price_aug;
+        document.querySelector('#editAmount_aug').value = amount_aug;
+        document.querySelector('#editQTY_sep').value = qty_sep;
+        document.querySelector('#editPrice_sep').value = price_sep;
+        document.querySelector('#editAmount_sep').value = amount_sep;
+        document.querySelector('#editQTY_okt').value = qty_okt;
+        document.querySelector('#editPrice_okt').value = price_okt;
+        document.querySelector('#editAmount_okt').value = amount_okt;
+        document.querySelector('#editQTY_nov').value = qty_nov;
+        document.querySelector('#editPrice_nov').value = price_nov;
+        document.querySelector('#editAmount_nov').value = amount_nov;
+        document.querySelector('#editQTY_dec').value = qty_dec;
+        document.querySelector('#editPrice_dec').value = price_dec;
+        document.querySelector('#editAmount_dec').value = amount_dec;
+        document.querySelector('#editQTY_jan').value = qty_jan;
+        document.querySelector('#editPrice_jan').value = price_jan;
+        document.querySelector('#editAmount_jan').value = amount_jan;
+        document.querySelector('#editQTY_feb').value = qty_feb;
+        document.querySelector('#editPrice_feb').value = price_feb;
+        document.querySelector('#editAmount_feb').value = amount_feb;
+        document.querySelector('#editQTY_mar').value = qty_mar;
+        document.querySelector('#editPrice_mar').value = price_mar;
+        document.querySelector('#editAmount_mar').value = amount_mar;
+        document.querySelector('#editQTY_apr').value = qty_apr;
+        document.querySelector('#editPrice_apr').value = price_apr;
+        document.querySelector('#editAmount_apr').value = amount_apr;
+        document.querySelector('#editQTY_may').value = qty_may;
+        document.querySelector('#editPrice_may').value = price_may;
+        document.querySelector('#editAmount_may').value = amount_may;
+        document.querySelector('#editQTY_jun').value = qty_jun;
+        document.querySelector('#editPrice_jun').value = price_jun;
+        document.querySelector('#editAmount_jun').value = amount_jun;
+
+        const bulanList = ['jul', 'aug', 'sep', 'okt', 'nov', 'dec', 'jan', 'feb', 'mar', 'apr', 'may', 'jun'];
+
+        for (const bulan of bulanList) {
+          calculateAmount(bulan);
+        }
 
         $(editModal).modal('show');
       }
@@ -510,14 +759,46 @@ document.getElementById('searchp').addEventListener('input', function() {
         const nama = document.querySelector('#editNama').value;
         const kode_budget = document.querySelector('#editKodeBudget').value;
         const cur = document.querySelector('#editCur').value;
-        const qty = document.querySelector('#editQTY').value;
-        const price = document.querySelector('#editPrice').value;
-        const order_plan = document.querySelector('#editOrderPlan').value;
-        const delivery_plan = document.querySelector('#editDeliveryPlan').value;
         const fixed = document.querySelector('#editFixed').value;
         const prep = document.querySelector('#editPrep').value;
         const kode_carline = document.querySelector('#editKodeCarline').value;
         const remark = document.querySelector('#editRemark').value;
+        const qty_jul = document.querySelector('#editQTY_jul').value;
+        const price_jul = document.querySelector('#editPrice_jul').value;
+        const amount_jul = document.querySelector('#editAmount_jul').value;
+        const qty_aug = document.querySelector('#editQTY_aug').value;
+        const price_aug = document.querySelector('#editPrice_aug').value;
+        const amount_aug = document.querySelector('#editAmount_aug').value;
+        const qty_sep = document.querySelector('#editQTY_sep').value;
+        const price_sep = document.querySelector('#editPrice_sep').value;
+        const amount_sep = document.querySelector('#editAmount_sep').value;
+        const qty_okt = document.querySelector('#editQTY_okt').value;
+        const price_okt = document.querySelector('#editPrice_okt').value;
+        const amount_okt = document.querySelector('#editAmount_okt').value;
+        const qty_nov = document.querySelector('#editQTY_nov').value;
+        const price_nov = document.querySelector('#editPrice_nov').value;
+        const amount_nov = document.querySelector('#editAmount_nov').value;
+        const qty_dec = document.querySelector('#editQTY_dec').value;
+        const price_dec = document.querySelector('#editPrice_dec').value;
+        const amount_dec = document.querySelector('#editAmount_dec').value;
+        const qty_jan = document.querySelector('#editQTY_jan').value;
+        const price_jan = document.querySelector('#editPrice_jan').value;
+        const amount_jan = document.querySelector('#editAmount_jan').value;
+        const qty_feb = document.querySelector('#editQTY_feb').value;
+        const price_feb = document.querySelector('#editPrice_feb').value;
+        const amount_feb = document.querySelector('#editAmount_feb').value;
+        const qty_mar = document.querySelector('#editQTY_mar').value;
+        const price_mar = document.querySelector('#editPrice_mar').value;
+        const amount_mar = document.querySelector('#editAmount_mar').value;
+        const qty_apr = document.querySelector('#editQTY_apr').value;
+        const price_apr = document.querySelector('#editPrice_apr').value;
+        const amount_apr = document.querySelector('#editAmount_apr').value;
+        const qty_may = document.querySelector('#editQTY_may').value;
+        const price_may = document.querySelector('#editPrice_may').value;
+        const amount_may = document.querySelector('#editAmount_may').value;
+        const qty_jun = document.querySelector('#editQTY_jun').value;
+        const price_jun = document.querySelector('#editPrice_jun').value;
+        const amount_jun = document.querySelector('#editAmount_jun').value;
 
         const selectedCheckboxes = document.querySelectorAll('.sub_chk:checked');
     
@@ -525,7 +806,7 @@ document.getElementById('searchp').addEventListener('input', function() {
             const selectedId = selectedCheckboxes[0].getAttribute('data-id');
     
             $.ajax({
-                url: '/update-home/' + selectedId,
+                url: '{{ url('update-home') }}/' + selectedId,
                 method: 'POST',
                 data: {
                     section: section,
@@ -533,14 +814,46 @@ document.getElementById('searchp').addEventListener('input', function() {
                     nama: nama,
                     kode_budget: kode_budget,
                     cur: cur,
-                    qty: qty,
-                    price: price,
-                    order_plan: order_plan,
-                    delivery_plan: delivery_plan,
                     fixed: fixed,
                     prep: prep,
                     kode_carline: kode_carline,
                     remark: remark,
+                    qty_jul: qty_jul,
+                    price_jul:price_jul,
+                    amount_jul:amount_jul,
+                    qty_aug: qty_aug,
+                    price_aug:price_aug,
+                    amount_aug:amount_aug,
+                    qty_sep: qty_sep,
+                    price_sep:price_sep,
+                    amount_sep:amount_sep,
+                    qty_okt: qty_okt,
+                    price_okt:price_okt,
+                    amount_okt:amount_okt,
+                    qty_nov: qty_nov,
+                    price_nov:price_nov,
+                    amount_nov:amount_nov,
+                    qty_dec: qty_dec,
+                    price_dec:price_dec,
+                    amount_dec:amount_dec,
+                    qty_jan: qty_jan,
+                    price_jan:price_jan,
+                    amount_jan:amount_jan,
+                    qty_feb: qty_feb,
+                    price_feb:price_feb,
+                    amount_feb:amount_feb,
+                    qty_mar: qty_mar,
+                    price_mar:price_mar,
+                    amount_mar:amount_mar,
+                    qty_apr: qty_apr,
+                    price_apr:price_apr,
+                    amount_apr:amount_apr,
+                    qty_may: qty_may,
+                    price_may:price_may,
+                    amount_may:amount_may,
+                    qty_jun: qty_jun,
+                    price_jun:price_jun,
+                    amount_jun:amount_jun,
                     _token: '{{ csrf_token() }}',
                 },
                 success: function (response) {
@@ -554,7 +867,7 @@ document.getElementById('searchp').addEventListener('input', function() {
                     });
     
                     setTimeout(function () {
-                        window.location.href = '/home';
+                        window.location.href = '{{ url('home') }}';
                     }, 2000);
                 },
                 error: function (error) {
