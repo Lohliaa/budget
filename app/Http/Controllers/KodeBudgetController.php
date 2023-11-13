@@ -106,6 +106,24 @@ class KodeBudgetController extends Controller
         }
     }
 
+    public function addKb(Request $request)
+    {
+        // Validate the form data
+        $request->validate([
+            'kode_budget' => 'required',
+        ]);
+
+        // Create a new UMH instance
+        $kode_budget = new KodeBudget();
+        $kode_budget->kode_budget = $request->input('kode_budget');
+
+        // Save the data to the database
+        $kode_budget->save();
+
+        // You can add a success message or redirect to another page if needed
+        return redirect('/kode_budget')->with('success', 'kode Budget data added successfully.');
+    }
+
     /**
      * Display the specified resource.
      *

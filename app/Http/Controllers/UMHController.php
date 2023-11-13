@@ -114,7 +114,32 @@ class UMHController extends Controller
         }
     }
 
+    public function addUMH(Request $request)
+    {
+        // Validate the form data
+        $request->validate([
+            'month' => 'required',
+            'umh' => 'required',
+            'amount' => 'required',
+            'new_umh' => 'required',
+            'new_amount' => 'required',
+        ]);
 
+        // Create a new UMH instance
+        $umh = new UMH;
+        $umh->month = $request->input('month');
+        $umh->umh = $request->input('umh');
+        $umh->amount = $request->input('amount');
+        $umh->new_umh = $request->input('new_umh');
+        $umh->new_amount = $request->input('new_amount');
+
+        // Save the data to the database
+        $umh->save();
+
+        // You can add a success message or redirect to another page if needed
+        return redirect('/umh')->with('success', 'UMH data added successfully.');
+    }
+    
     /**
      * Display the specified resource.
      *

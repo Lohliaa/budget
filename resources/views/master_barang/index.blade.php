@@ -14,6 +14,91 @@ Master Barang
         <div class="row justify-content-between" style="align-items: center;">
             <div class="form-group col-md-6" style="margin-left: 12px">
                 <a href="{{ url('master_barang') }}" class="btn btn-success mt-3 ml-2" style="height: 40px;"><i class="bi bi-arrow-clockwise" style="font-size: 20px;"></i></a>
+               
+                <!-- Button modal -->
+                <button style="height: 38px; width: 45px; position: relative;" type="button"
+                    class="btn btn-secondary p-0 mt-3" data-toggle="modal" data-target="#addModal">
+                    <i class="bi bi-plus"
+                        style="margin-top:3px; font-size: 2rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></i>
+                </button>
+
+                <!-- Modal adding data -->
+                <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addModalLabel">Tambah Master Barang</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Form for adding data -->
+                                <form id="addForm">
+                                    @csrf
+                                    <div class="form-group">
+                                        <label for="addCode">Code</label>
+                                        <input type="text" class="form-control" id="addCode" name="code">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addName">Name</label>
+                                        <input type="text" class="form-control" id="addName" name="name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addSatuan">Satuan</label>
+                                        <input type="text" class="form-control" id="addSatuan" name="satuan">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addAccount_1">Account_1</label>
+                                        <input type="text" class="form-control" id="addAccount_1" name="account_1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addAccount_2">Account_2</label>
+                                        <input type="text" class="form-control" id="addAccount_2" name="account_2">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addAccount_3">Account_3</label>
+                                        <input type="text" class="form-control" id="addAccount_3" name="account_3">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addAccount_4">Account_4</label>
+                                        <input type="text" class="form-control" id="addAccount_4" name="account_4">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addAccount_5">Account_5</label>
+                                        <input type="text" class="form-control" id="addAccount_5" name="account_5">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addAccount_6">Account_6</label>
+                                        <input type="text" class="form-control" id="addAccount_6" name="account_6">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addAccount_7">Account_7</label>
+                                        <input type="text" class="form-control" id="addAccount_7" name="account_7">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addAccount_8">Account_8</label>
+                                        <input type="text" class="form-control" id="addAccount_8" name="account_8">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addAccount_9">Account_9</label>
+                                        <input type="text" class="form-control" id="addAccount_9" name="account_9">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addAccount_10">Account_10</label>
+                                        <input type="text" class="form-control" id="addAccount_10" name="account_10">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="addSaveButton">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <button type="button" class="btn btn-primary mb-0 mt-3" data-toggle="modal"
                     data-target="#uploadModal">Unggah Data</button>
 
@@ -44,8 +129,6 @@ Master Barang
                         </div>
                     </div>
                 </div>
-
-                {{--  <a href="{{ url('master_barang') }}" class="btn btn-success mt-3">Refresh</a>  --}}
 
                 <button id="reset-mb-button" class="btn btn-danger mt-3">Reset</button>
 
@@ -250,6 +333,43 @@ Master Barang
         </div>
     </div>
 </body>
+
+<script>
+    $(document).ready(function () {
+        // Click event for the Save button
+        $('#addSaveButton').click(function () {
+            // Assuming you are using jQuery
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('add-mb') }}', // Replace with your actual route
+                data: $('#addForm').serialize(),
+                success: function (response) {
+                    console.log(response);
+
+                    // Display a SweetAlert after successful submission
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Berhasil Menambahkan Data',
+                    }).then(function () {
+                        location.reload();
+                    });
+                },
+                error: function (error) {
+                    console.log(error);
+
+                    // Display a SweetAlert after successful submission
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Tidak Berhasil Menambahkan Data',
+                    });
+                }
+            });
+        });
+    });
+</script>
+
 <script>
     // Fungsi untuk mengirim permintaan pencarian ke server dan mengganti konten tabel
     function searchMB() {
@@ -452,7 +572,6 @@ document.getElementById('searchp').addEventListener('input', function() {
     }
     
 </script>
-
 
 <script>
     document.getElementById('reset-mb-button').addEventListener('click', function () {

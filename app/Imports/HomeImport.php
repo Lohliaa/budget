@@ -16,8 +16,10 @@ class HomeImport implements ToModel, WithHeadingRow, WithBatchInserts
     {
         $role = Auth::id();
 
+        $section = auth()->user()->role;
+
         return new Home([
-            "section" => $row['section'],
+            "section" => $section,
             "code" => $row['code'],
             "nama" => $row['nama'],
             "kode_budget" => $row['kode_budget'],

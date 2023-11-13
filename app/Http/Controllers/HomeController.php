@@ -25,17 +25,14 @@ class HomeController extends Controller
     public function index()
     {
         set_time_limit(0);
-        $role = Auth::id();
+        $role = Auth::user()->role;
         $user = User::all();
         $home = null;
     
-        if (Auth::user()->role === 'Admin') {
-            $home = Home::orderBy('id', 'asc')
-                ->join('cost', 'home.section', '=', 'cost.cost_center')
-                ->select('home.*', 'cost.detail_cost_center as role')
-                ->paginate(10000);
+        if ($role === 'Admin') {
+            $home = Home::orderBy('id', 'asc')->get(); // Mengambil semua data 'home' jika peran adalah 'Admin'
         } else {
-            $home = Home::where('role_id', $role)->orderBy('id', 'asc')->paginate(10000);
+            $home = Home::where('section', $role)->orderBy('id', 'asc')->paginate(10000);
         }
     
         $count = $home->count();
@@ -44,7 +41,7 @@ class HomeController extends Controller
         $kode_budget = KodeBudget::all();
         $carline = Carline::all();
         $cost = Cost::all();
-    
+    // dd($home);
         return view('home', compact('home', 'count', 'data', 'master_barang', 'kode_budget', 'carline', 'cost', 'user'));
     }
     
@@ -52,7 +49,6 @@ class HomeController extends Controller
     public function searchHome(Request $request)
     {
         $searchTerm = $request->input('home');
-        $role = Auth::id();
 
         $query = Home::query();
 
@@ -104,9 +100,6 @@ class HomeController extends Controller
                     ->orWhere('price_jun', 'LIKE', '%' . $searchTerm . '%')
                     ->orWhere('amount_jun', 'LIKE', '%' . $searchTerm . '%');
             });
-
-            // Tambahkan kondisi untuk mencocokkan role_id
-            $query->where('role_id', $role);
         }
 
         $home = $query->paginate(100);
@@ -263,37 +256,9 @@ class HomeController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function addHome(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
+        // Validate the form data
         $request->validate([
             'section' => 'required',
             'code' => 'required',
@@ -340,6 +305,145 @@ class HomeController extends Controller
             'qty_jun' => 'required',
             'price_jun' => 'required',
             'amount_jun' => 'required',
+        ]);
+      
+        $role = Auth::id();
+
+        // Create a new UMH instance
+        $home = new Home();
+        $home->section = $request->input('section');
+        $home->code = $request->input('code');
+        $home->nama = $request->input('nama');
+        $home->kode_budget = $request->input('kode_budget');
+        $home->cur = $request->input('cur');
+        $home->fixed = $request->input('fixed');
+        $home->prep = $request->input('prep');
+        $home->kode_carline = $request->input('kode_carline');
+        $home->remark = $request->input('remark');
+        $home->qty_jul = $request->input('qty_jul');
+        $home->price_jul = $request->input('price_jul');
+        $home->amount_jul = $request->input('amount_jul');
+        $home->qty_aug = $request->input('qty_aug');
+        $home->price_aug = $request->input('price_aug');
+        $home->amount_aug = $request->input('amount_aug');
+        $home->qty_sep = $request->input('qty_sep');
+        $home->price_sep = $request->input('price_sep');
+        $home->amount_sep = $request->input('amount_sep');
+        $home->qty_okt = $request->input('qty_okt');
+        $home->price_okt = $request->input('price_okt');
+        $home->amount_okt = $request->input('amount_okt');
+        $home->qty_nov = $request->input('qty_nov');
+        $home->price_nov = $request->input('price_nov');
+        $home->amount_nov = $request->input('amount_nov');
+        $home->qty_dec = $request->input('qty_dec');
+        $home->price_dec = $request->input('price_dec');
+        $home->amount_dec = $request->input('amount_dec');
+        $home->qty_jan = $request->input('qty_jan');
+        $home->price_jan = $request->input('price_jan');
+        $home->amount_jan = $request->input('amount_jan');
+        $home->qty_feb = $request->input('qty_feb');
+        $home->price_feb = $request->input('price_feb');
+        $home->amount_feb = $request->input('amount_feb');
+        $home->qty_mar = $request->input('qty_mar');
+        $home->price_mar = $request->input('price_mar');
+        $home->amount_mar = $request->input('amount_mar');
+        $home->qty_apr = $request->input('qty_apr');
+        $home->price_apr = $request->input('price_apr');
+        $home->amount_apr = $request->input('amount_apr');
+        $home->qty_may = $request->input('qty_may');
+        $home->price_may = $request->input('price_may');
+        $home->amount_may = $request->input('amount_may');
+        $home->qty_jun = $request->input('qty_jun');
+        $home->price_jun = $request->input('price_jun');
+        $home->amount_jun = $request->input('amount_jun');
+        
+        $home->role_id = $role;
+
+        if ($home->save()) {
+            return redirect()->route('home')->with(['success' => 'Data Berhasil Diperbarui!']);
+        } else {
+            return redirect()->route('home')->with(['error' => 'Data Gagal Diperbarui!']);
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'section' => '',
+            'code' => '',
+            'nama' => '',
+            'kode_budget' => '',
+            'cur' => '',
+            'fixed' => '',
+            'prep' => '',
+            'kode_carline' => '',
+            'remark' => '',
+            'qty_jul' => '',
+            'price_jul' => '',
+            'amount_jul' => '',
+            'qty_aug' => '',
+            'price_aug' => '',
+            'amount_aug' => '',
+            'qty_sep' => '',
+            'price_sep' => '',
+            'amount_sep' => '',
+            'qty_okt' => '',
+            'price_okt' => '',
+            'amount_okt' => '',
+            'qty_nov' => '',
+            'price_nov' => '',
+            'amount_nov' => '',
+            'qty_dec' => '',
+            'price_dec' => '',
+            'amount_dec' => '',
+            'qty_jan' => '',
+            'price_jan' => '',
+            'amount_jan' => '',
+            'qty_feb' => '',
+            'price_feb' => '',
+            'amount_feb' => '',
+            'qty_mar' => '',
+            'price_mar' => '',
+            'amount_mar' => '',
+            'qty_apr' => '',
+            'price_apr' => '',
+            'amount_apr' => '',
+            'qty_may' => '',
+            'price_may' => '',
+            'amount_may' => '',
+            'qty_jun' => '',
+            'price_jun' => '',
+            'amount_jun' => '',
 
         ]);
 

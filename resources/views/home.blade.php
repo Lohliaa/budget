@@ -13,9 +13,220 @@ Halaman Utama
             <h6 class="m-0 font-weight-bold text-primary">Note</h6>
         </div>
         <div class="row justify-content-between" style="align-items: center;">
-            <div class="form-group col-md-6" style="margin-left: 12px">
+            <div class="form-group col-md-8" style="margin-left: 12px">
                 <a href="{{ url('home') }}" class="btn btn-success ml-2 mt-3" style="height: 40px;"><i
                         class="bi bi-arrow-clockwise" style="font-size: 20px;"></i></a>
+
+                <!-- Button modal -->
+                <button style="height: 38px; width: 45px; position: relative;" type="button"
+                    class="btn btn-secondary p-0 mt-3" data-toggle="modal" data-target="#addModal">
+                    <i class="bi bi-plus" style="margin-top:3px; font-size: 2rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></i>
+                </button>
+
+                <!-- Modal adding data -->
+                <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addModalLabel">Tambah Data</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Form for adding data -->
+                                <form id="addForm">
+                                    @csrf
+                                    <div class="form-group">
+                                        <label for="addSection">Section</label>
+                                        <input type="text" class="form-control" id="addSection" name="section">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addCode">Code</label>
+                                        <input type="text" class="form-control" id="addCode" name="code">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addName">Name</label>
+                                        <input type="text" class="form-control" id="addName" name="nama">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addKodeBudget">Kode Budget</label>
+                                        <input type="text" class="form-control" id="addKodeBudget" name="kode_budget">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addCur">CUR</label>
+                                        <input type="text" class="form-control" id="addCur" name="cur">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addFixed">Fixed/Variabel</label>
+                                        <input type="text" class="form-control" id="addFixed" name="fixed">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addPrep">Prep/Masspro</label>
+                                        <input type="text" class="form-control" id="addPrep" name="prep">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addCodeCarline">Kode Carline</label>
+                                        <input type="text" class="form-control" id="addCodeCarline" name="kode_carline">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addRemark">Remark</label>
+                                        <input type="text" class="form-control" id="addRemark" name="remark">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addQTY_jul">QTY Jul</label>
+                                        <input type="text" class="form-control" id="addQTY_jul" name="qty_jul">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addPrice_jul">Price Jul</label>
+                                        <input type="text" class="form-control" id="addPrice_jul" name="price_jul">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addAmount_jul">Amount Jul</label>
+                                        <input type="text" class="form-control" id="addAmount_jul" name="amount_jul">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addQTY_aug">QTY Aug</label>
+                                        <input type="text" class="form-control" id="addQTY_aug" name="qty_aug">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addPrice_aug">Price Aug</label>
+                                        <input type="text" class="form-control" id="addPrice_aug" name="price_aug">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addAmount_aug">Amount Aug</label>
+                                        <input type="text" class="form-control" id="addAmount_aug" name="amount_aug">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addQTY_sep">QTY sep</label>
+                                        <input type="text" class="form-control" id="addQTY_sep" name="qty_sep">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addPrice_sep">Price sep</label>
+                                        <input type="text" class="form-control" id="addPrice_sep" name="price_sep">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addAmount_sep">Amount sep</label>
+                                        <input type="text" class="form-control" id="addAmount_sep" name="amount_sep">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addQTY_okt">QTY okt</label>
+                                        <input type="text" class="form-control" id="addQTY_okt" name="qty_okt">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addPrice_okt">Price okt</label>
+                                        <input type="text" class="form-control" id="addPrice_okt" name="price_okt">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addAmount_okt">Amount okt</label>
+                                        <input type="text" class="form-control" id="addAmount_okt" name="amount_okt">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addQTY_nov">QTY nov</label>
+                                        <input type="text" class="form-control" id="addQTY_nov" name="qty_nov">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addPrice_nov">Price nov</label>
+                                        <input type="text" class="form-control" id="addPrice_nov" name="price_nov">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addAmount_nov">Amount nov</label>
+                                        <input type="text" class="form-control" id="addAmount_nov" name="amount_nov">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addQTY_dec">QTY dec</label>
+                                        <input type="text" class="form-control" id="addQTY_dec" name="qty_dec">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addPrice_dec">Price dec</label>
+                                        <input type="text" class="form-control" id="addPrice_dec" name="price_dec">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addAmount_dec">Amount dec</label>
+                                        <input type="text" class="form-control" id="addAmount_dec" name="amount_dec">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addQTY_jan">QTY jan</label>
+                                        <input type="text" class="form-control" id="addQTY_jan" name="qty_jan">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addPrice_jan">Price jan</label>
+                                        <input type="text" class="form-control" id="addPrice_jan" name="price_jan">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addAmount_jan">Amount jan</label>
+                                        <input type="text" class="form-control" id="addAmount_jan" name="amount_jan">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addQTY_feb">QTY feb</label>
+                                        <input type="text" class="form-control" id="addQTY_feb" name="qty_feb">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addPrice_feb">Price feb</label>
+                                        <input type="text" class="form-control" id="addPrice_feb" name="price_feb">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addAmount_feb">Amount feb</label>
+                                        <input type="text" class="form-control" id="addAmount_feb" name="amount_feb">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addQTY_mar">QTY mar</label>
+                                        <input type="text" class="form-control" id="addQTY_mar" name="qty_mar">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addPrice_mar">Price mar</label>
+                                        <input type="text" class="form-control" id="addPrice_mar" name="price_mar">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addAmount_mar">Amount mar</label>
+                                        <input type="text" class="form-control" id="addAmount_mar" name="amount_mar">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addQTY_apr">QTY apr</label>
+                                        <input type="text" class="form-control" id="addQTY_apr" name="qty_apr">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addPrice_apr">Price apr</label>
+                                        <input type="text" class="form-control" id="addPrice_apr" name="price_apr">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addAmount_apr">Amount apr</label>
+                                        <input type="text" class="form-control" id="addAmount_apr" name="amount_apr">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addQTY_may">QTY may</label>
+                                        <input type="text" class="form-control" id="addQTY_may" name="qty_may">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addPrice_may">Price may</label>
+                                        <input type="text" class="form-control" id="addPrice_may" name="price_may">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addAmount_may">Amount may</label>
+                                        <input type="text" class="form-control" id="addAmount_may" name="amount_may">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addQTY_jun">QTY jun</label>
+                                        <input type="text" class="form-control" id="addQTY_jun" name="qty_jun">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addPrice_jun">Price jun</label>
+                                        <input type="text" class="form-control" id="addPrice_jun" name="price_jun">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addAmount_jun">Amount jun</label>
+                                        <input type="text" class="form-control" id="addAmount_jun" name="amount_jun">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="addSaveButton">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <button type="button" class="btn btn-primary mb-0 mt-3" data-toggle="modal"
                     data-target="#uploadModal">Upload File</button>
@@ -49,7 +260,7 @@ Halaman Utama
                 </div>
 
                 <!-- Export Excel -->
-                <a href="{{ url('export_excel') }}" class="btn btn-secondary mt-3" style="height: 40px;">Download</a>
+                <a href="{{ url('export_excel') }}" class="btn btn-info mt-3" style="height: 40px;">Download</a>
 
 
                 {{-- <a href="{{ url('home') }}" class="btn btn-success mt-3">Refresh</a> --}}
@@ -359,7 +570,7 @@ Halaman Utama
 
             </div>
 
-            <div class="input-group col-md-4 mr-4">
+            <div class="input-group col-md-3 mr-4">
                 <input type="text" name="search" style="height: 2.4rem; font-size: 12pt; margin-top: 0.10rem;"
                     id="searchp" class="form-control input-text" placeholder="Cari disini ..."
                     aria-label="Recipient's username" aria-describedby="basic-addon2">
@@ -389,7 +600,7 @@ Halaman Utama
                             <td colspan="0" rowspan="3" style="vertical-align: middle;">No</td>
                             <td colspan="0" rowspan="3" style="vertical-align: middle;">Section</td>
                             <td colspan="0" rowspan="3" style="vertical-align: middle;">Code</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Nama</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Name</td>
                             <td colspan="0" rowspan="3" style="vertical-align: middle;">Kode Budget</td>
                             <td colspan="0" rowspan="3" style="vertical-align: middle;">CUR</td>
                             <td colspan="0" rowspan="3" style="vertical-align: middle;">Fixed/Variabel</td>
@@ -443,9 +654,9 @@ Halaman Utama
                             <td>{{$no++}}</td>
                             {{--  <td>
                                 @if(Auth::user()->role === 'Admin')
-                                    {{ $h->role }}
+                                {{ $h->section }}
                                 @else
-                                    {{ Auth::user()->role }}
+                                {{ Auth::user()->role }}
                                 @endif
                             </td>  --}}
                             <td>{{ $h->section }}</td>
@@ -496,11 +707,47 @@ Halaman Utama
                         </tr>
                         @endforeach
                     </tbody>
-                                </table>
+                </table>
             </div>
         </div>
     </div>
 </body>
+
+<script>
+    $(document).ready(function () {
+        // Click event for the Save button
+        $('#addSaveButton').click(function () {
+            // Assuming you are using jQuery
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('add-home') }}', // Replace with your actual route
+                data: $('#addForm').serialize(),
+                success: function (response) {
+                    console.log(response);
+
+                    // Display a SweetAlert after successful submission
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Berhasil Menambahkan Data',
+                    }).then(function () {
+                        location.reload();
+                    });
+                },
+                error: function (error) {
+                    console.log(error);
+
+                    // Display a SweetAlert after successful submission
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Tidak Berhasil Menambahkan Data',
+                    });
+                }
+            });
+        });
+    });
+</script>
 
 <script>
     // Fungsi untuk mengirim permintaan pencarian ke server dan mengganti konten tabel
@@ -536,8 +783,7 @@ document.getElementById('searchp').addEventListener('input', function() {
     
        // Menghapus semua opsi dalam dropdown "Nama"
         namaSelect.innerHTML = '';
-
-    
+  
         // Mengambil opsi nama yang cocok dengan kode yang dipilih
         @foreach($master_barang as $code)
             if ("{{ $code->code }}" === selectedCode) {

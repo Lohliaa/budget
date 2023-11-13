@@ -102,8 +102,16 @@
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 @auth
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><b>{{ Auth::user()->role }}</b></span>
-                @endauth
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                    <b>{{ Auth::user()->name }}</b>
+                </span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                    <b>&vert;</b>
+                </span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                    <b>{{ Auth::user()->role }}</b>
+                </span>
+                                @endauth
                 @guest
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
                 @endguest

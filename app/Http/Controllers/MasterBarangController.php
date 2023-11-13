@@ -140,6 +140,47 @@ class MasterBarangController extends Controller
         }
     }
 
+    public function addMB(Request $request)
+    {
+        // Validate the form data
+        $request->validate([
+            'code' => 'required',
+            'name' => 'required',
+            'satuan' => 'required',
+            'account_1' => 'required',
+            'account_2' => 'required',
+            'account_3' => 'required',
+            'account_4' => 'required',
+            'account_5' => 'required',
+            'account_6' => 'required',
+            'account_7' => 'required',
+            'account_8' => 'required',
+            'account_9' => 'required',
+            'account_10' => 'required',
+        ]);
+
+        // Create a new UMH instance
+        $master_barang = new MasterBarang();
+        $master_barang->code = $request->input('code');
+        $master_barang->name = $request->input('name');
+        $master_barang->satuan = $request->input('satuan');
+        $master_barang->account_1 = $request->input('account_1');
+        $master_barang->account_2 = $request->input('account_2');
+        $master_barang->account_3 = $request->input('account_3');
+        $master_barang->account_4 = $request->input('account_4');
+        $master_barang->account_5 = $request->input('account_5');
+        $master_barang->account_6 = $request->input('account_6');
+        $master_barang->account_7 = $request->input('account_7');
+        $master_barang->account_8 = $request->input('account_8');
+        $master_barang->account_9 = $request->input('account_9');
+        $master_barang->account_10 = $request->input('account_10');
+
+        // Save the data to the database
+        $master_barang->save();
+
+        // You can add a success message or redirect to another page if needed
+        return redirect('/master_barang')->with('success', 'Master Barang data added successfully.');
+    }
 
     /**
      * Display the specified resource.

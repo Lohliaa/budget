@@ -15,6 +15,54 @@ Carline
             <div class="form-group col-md-6" style="margin-left: 12px">
                 <a href="{{ url('carline') }}" class="btn btn-success mt-3 ml-2" style="height: 40px;"><i class="bi bi-arrow-clockwise" style="font-size: 20px;"></i></a>
 
+                <!-- Button modal -->
+                <button style="height: 38px; width: 45px; position: relative;" type="button"
+                    class="btn btn-secondary p-0 mt-3" data-toggle="modal" data-target="#addModal">
+                    <i class="bi bi-plus"
+                        style="margin-top:3px; font-size: 2rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></i>
+                </button>
+
+                <!-- Modal adding data -->
+                <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addModalLabel">Tambah UMH</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Form for adding data -->
+                                <form id="addForm">
+                                    @csrf
+                                    <div class="form-group">
+                                        <label for="addPPC">Destination PPC</label>
+                                        <input type="text" class="form-control" id="addPPC" name="destination_ppc">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addHFM">HFM Carline</label>
+                                        <input type="text" class="form-control" id="addHFM" name="hfm_carline">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addModel">Model Year</label>
+                                        <input type="text" class="form-control" id="addModel" name="model_year">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addKode">Kode</label>
+                                        <input type="text" class="form-control" id="addKode" name="kode">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="addSaveButton">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <button type="button" class="btn btn-primary mb-0 mt-3" data-toggle="modal"
                     data-target="#uploadModal">Unggah Data</button>
 
@@ -45,8 +93,6 @@ Carline
                         </div>
                     </div>
                 </div>
-
-                {{--  <a href="{{ url('carline') }}" class="btn btn-success mt-3">Refresh</a>  --}}
 
                 <button id="reset-c-button" class="btn btn-danger mt-3">Reset</button>
 
@@ -196,6 +242,42 @@ Carline
         </div>
     </div>
 </body>
+
+<script>
+    $(document).ready(function () {
+        // Click event for the Save button
+        $('#addSaveButton').click(function () {
+            // Assuming you are using jQuery
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('add-carline') }}', // Replace with your actual route
+                data: $('#addForm').serialize(),
+                success: function (response) {
+                    console.log(response);
+
+                    // Display a SweetAlert after successful submission
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Berhasil Menambahkan Data',
+                    }).then(function () {
+                        location.reload();
+                    });
+                },
+                error: function (error) {
+                    console.log(error);
+
+                    // Display a SweetAlert after successful submission
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Tidak Berhasil Menambahkan Data',
+                    });
+                }
+            });
+        });
+    });
+</script>
 
 <script>
     // Fungsi untuk mengirim permintaan pencarian ke server dan mengganti konten tabel

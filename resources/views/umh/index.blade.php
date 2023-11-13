@@ -16,6 +16,58 @@ UMH
                 <a href="{{ url('umh') }}" class="btn btn-success mt-3 ml-2" style="height: 40px;"><i
                         class="bi bi-arrow-clockwise" style="font-size: 20px;"></i></a>
 
+                <!-- Button modal -->
+                <button style="height: 38px; width: 45px; position: relative;" type="button"
+                    class="btn btn-secondary p-0 mt-3" data-toggle="modal" data-target="#addModal">
+                    <i class="bi bi-plus"
+                        style="margin-top:3px; font-size: 2rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></i>
+                </button>
+
+                <!-- Modal adding data -->
+                <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addModalLabel">Tambah UMH</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Form for adding data -->
+                                <form id="addForm">
+                                    @csrf
+                                    <div class="form-group">
+                                        <label for="addMonth">Month</label>
+                                        <input type="text" class="form-control" id="addMonth" name="month">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addUMH">UMH</label>
+                                        <input type="text" class="form-control" id="addUMH" name="umh">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addAmount">Amount</label>
+                                        <input type="text" class="form-control" id="addAmount" name="amount">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addNewUMH">New UMH</label>
+                                        <input type="text" class="form-control" id="addNewUMH" name="new_umh">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addNewAmount">New Amount</label>
+                                        <input type="text" class="form-control" id="addNewAmount" name="new_amount">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="addSaveButton">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <button type="button" class="btn btn-primary mb-0 mt-3" data-toggle="modal"
                     data-target="#uploadModal">Unggah Data</button>
 
@@ -145,53 +197,6 @@ UMH
                 <button type="button" class="btn btn-danger mt-3" id="deleteButton" onclick="handleDeleteClick()"
                     disabled>Hapus</button>
 
-                <!-- Tombol Tambah-->
-                <button type="button" class="btn btn-success mb-0 mt-3" data-toggle="modal" data-target="#addModal">Tambah Data</button>
-
-                <!-- Modal Tambah-->
-                <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="addModalLabel">Tambah UMH</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <!-- Form for adding data -->
-                                <form id="addForm">
-                                    <div class="form-group">
-                                        <label for="addMonth">Month</label>
-                                        <input type="text" class="form-control" id="addMonth" name="month">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addUMH">UMH</label>
-                                        <input type="text" class="form-control" id="addUMH" name="umh">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addAmount">Amount</label>
-                                        <input type="text" class="form-control" id="addAmount" name="amount">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addNewUMH">New UMH</label>
-                                        <input type="text" class="form-control" id="addNewUMH" name="new_umh">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addNewAmount">New Amount</label>
-                                        <input type="text" class="form-control" id="addNewAmount" name="new_amount">
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" id="addSaveButton" onclick="saveChanges()">Save</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
             <div class="input-group col-md-4 mr-4">
                 {{-- <input type="text" class="form-control" aria-label="Text input with dropdown button">
@@ -251,50 +256,49 @@ UMH
     </div>
 </body>
 
-<!-- Tambahkan script berikut di bawah elemen HTML Anda -->
-
 <script>
-    function handleAddClick() {
-        // Bersihkan formulir jika ada data sebelumnya
-        document.querySelector('#addForm').reset();
+    $(document).ready(function () {
+        function calculateNewAmount() {
+            var newUMH = parseFloat($('#addNewUMH').val());
+            var amount = parseFloat($('#addAmount').val());
+            var UMH = parseFloat($('#addUMH').val());
     
-        // Tampilkan modal tambah data
-        $('#addModal').modal('show');
-    }
-    
-    function saveChanges() {
-        // Ambil nilai dari formulir
-        const month = document.querySelector('#addMonth').value;
-        const umh = document.querySelector('#addUMH').value;
-        const amount = document.querySelector('#addAmount').value;
-        const newUMH = document.querySelector('#addNewUMH').value;
-        const newAmount = document.querySelector('#addNewAmount').value;
-    
-        // Kirim data ke server melalui AJAX
-        $.ajax({
-            url: '/store',  // Gantilah dengan URL yang sesuai
-            method: 'POST',
-            data: {
-                month: month,
-                umh: umh,
-                amount: amount,
-                new_umh: newUMH,
-                new_amount: newAmount,
-                _token: '{{ csrf_token() }}', // Ini digunakan untuk melindungi dari serangan CSRF
-            },
-            success: function (response) {
-                // Data berhasil disimpan, tutup modal
-                $('#addModal').modal('hide');
-    
-                // Lakukan tindakan lain jika diperlukan, seperti memuat ulang halaman
-                location.reload();
-            },
-            error: function (error) {
-                // Terjadi kesalahan, tampilkan pesan kesalahan jika diperlukan
-                console.log(error);
+            if (!isNaN(newUMH) && !isNaN(amount) && !isNaN(UMH)) {
+                var newAmount = (newUMH * amount) / UMH;
+                $('#addNewAmount').val(newAmount);
             }
+        }
+    
+        // Recalculate new_amount on change in any relevant field
+        $('#addNewUMH, #addAmount, #addUMH').on('input', calculateNewAmount);
+    
+        $('#addSaveButton').click(function () {
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('add-umh') }}',
+                data: $('#addForm').serialize(),
+                success: function (response) {
+                    console.log(response);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Berhasil Menambahkan Data',
+                    }).then(function () {
+                        location.reload();
+                    });
+                },
+                error: function (error) {
+                    console.log(error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Tidak Berhasil Menambahkan Data',
+                    });
+                }
+            });
         });
-    }
+    });
+    
 </script>
 
 <script>

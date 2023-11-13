@@ -6,183 +6,261 @@ Cost
 @endsection
 @section('content')
 
-<div class="card shadow mb-4">
-    <div class="card-header py-3" style="display: flex; justify-content: space-between; align-items: center;">
-        <h6 class="m-0 font-weight-bold text-primary">Cost</h6>
-    </div>
-    <div class="row justify-content-between" style="align-items: center;">
-        <div class="form-group col-md-6" style="margin-left: 12px">
-
-            <a href="{{ url('cost') }}" class="btn btn-success mt-3 ml-2" style="height: 40px;"><i class="bi bi-arrow-clockwise" style="font-size: 20px;"></i></a>
-
-            <button type="button" class="btn btn-primary mb-0 mt-3" data-toggle="modal"
-                data-target="#uploadModal">Unggah Data</button>
-
-            <!-- Modal untuk mengunggah data -->
-            <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="uploadModalLabel">Unggah Data</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="fileUploadForm" enctype="multipart/form-data"
-                                action="{{ route('import-excel-cost') }}" method="POST">
-                                @csrf
-                                <input type="file" id="fileInput" name="file"
-                                    accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                            <button type="button" class="btn btn-primary"
-                                onclick="document.getElementById('fileUploadForm').submit()">Unggah</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {{--  <a href="{{ url('cost') }}" class="btn btn-success mt-3">Refresh</a>  --}}
-
-            <button id="reset-cost-button" class="btn btn-danger mt-3">Reset</button>
-
-            <!-- Tombol Edit -->
-            <button type="button" class="btn btn-warning mt-3" id="editButton" onclick="handleEditClick()" disabled>Edit</button>
-
-            
-            <!-- Tombol Hapus -->
-            <button type="button" class="btn btn-danger mt-3" id="deleteButton" onclick="handleDeleteClick()"
-                disabled>Hapus</button>
-
-            <!-- Modal Edit-->
-            <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editModalLabel">Edit Cost Center</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <!-- Form for editing data -->
-                            <form id="editForm">
-                                <div class="form-group">
-                                    <label for="editCostCenter">Cost Center</label>
-                                    <input type="text" class="form-control" id="editCostCenter" name="cost_center">
-                                </div>
-                                <div class="form-group">
-                                    <label for="editDetailCostCenter">Detail Cost Center</label>
-                                    <input type="text" class="form-control" id="editDetailCostCenter"
-                                        name="detail_cost_center">
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" onclick="saveChanges()">Save Changes</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal konfirmasi reset -->
-            <div class="modal fade" id="confirmResetModal" tabindex="-1" role="dialog"
-                aria-labelledby="confirmResetModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="confirmResetModalLabel">Reset Data</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Apakah Anda yakin ingin reset seluruh data?</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                            <button id="confirmResetButton" type="button" class="btn btn-danger">Reset</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal pesan sukses -->
-            <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="successModalLabel">Pesan Sukses</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Data berhasil direset.</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+<body>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3" style="display: flex; justify-content: space-between; align-items: center;">
+            <h6 class="m-0 font-weight-bold text-primary">Cost</h6>
         </div>
-        <div class="input-group col-md-4 mr-4">
-            {{--  <input type="text" class="form-control" aria-label="Text input with dropdown button">
-            <div class="dropdown">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
+        <div class="row justify-content-between" style="align-items: center;">
+            <div class="form-group col-md-6" style="margin-left: 12px">
+
+                <a href="{{ url('cost') }}" class="btn btn-success mt-3 ml-2" style="height: 40px;"><i
+                        class="bi bi-arrow-clockwise" style="font-size: 20px;"></i></a>
+
+                <!-- Button modal -->
+                <button style="height: 38px; width: 45px; position: relative;" type="button"
+                    class="btn btn-secondary p-0 mt-3" data-toggle="modal" data-target="#addModal">
+                    <i class="bi bi-plus"
+                        style="margin-top:3px; font-size: 2rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></i>
                 </button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <select class="form-select" id="dropdown-select">
-                        @foreach($cost->unique('name') as $item)
-                        <option value="{{ $item->name }}">{{ $item->name }}</option>
-                        @endforeach
-                    </select>
-                </ul>
-            </div>  --}}
-            <input type="text" name="search" style="height: 2.4rem; font-size: 12pt; margin-top: 0.10rem;"
+
+                <!-- Modal adding data -->
+                <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addModalLabel">Tambah UMH</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Form for adding data -->
+                                <form id="addForm">
+                                    @csrf
+                                    <div class="form-group">
+                                        <label for="addCost">Cost Center</label>
+                                        <input type="text" class="form-control" id="addCost" name="cost_center">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addDetail">Detail Cost Center</label>
+                                        <input type="text" class="form-control" id="addDetail" name="detail_cost_center">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="addSaveButton">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-primary mb-0 mt-3" data-toggle="modal"
+                    data-target="#uploadModal">Unggah Data</button>
+
+                <!-- Modal untuk mengunggah data -->
+                <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="uploadModalLabel">Unggah Data</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="fileUploadForm" enctype="multipart/form-data"
+                                    action="{{ route('import-excel-cost') }}" method="POST">
+                                    @csrf
+                                    <input type="file" id="fileInput" name="file"
+                                        accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                <button type="button" class="btn btn-primary"
+                                    onclick="document.getElementById('fileUploadForm').submit()">Unggah</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="reset-cost-button" class="btn btn-danger mt-3">Reset</button>
+
+                <!-- Tombol Edit -->
+                <button type="button" class="btn btn-warning mt-3" id="editButton" onclick="handleEditClick()"
+                    disabled>Edit</button>
+
+                <!-- Tombol Hapus -->
+                <button type="button" class="btn btn-danger mt-3" id="deleteButton" onclick="handleDeleteClick()"
+                    disabled>Hapus</button>
+
+                <!-- Modal Edit-->
+                <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editModalLabel">Edit Cost Center</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Form for editing data -->
+                                <form id="editForm">
+                                    <div class="form-group">
+                                        <label for="editCostCenter">Cost Center</label>
+                                        <input type="text" class="form-control" id="editCostCenter" name="cost_center">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editDetailCostCenter">Detail Cost Center</label>
+                                        <input type="text" class="form-control" id="editDetailCostCenter"
+                                            name="detail_cost_center">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" onclick="saveChanges()">Save
+                                    Changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal konfirmasi reset -->
+                <div class="modal fade" id="confirmResetModal" tabindex="-1" role="dialog"
+                    aria-labelledby="confirmResetModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmResetModalLabel">Reset Data</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Apakah Anda yakin ingin reset seluruh data?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                <button id="confirmResetButton" type="button" class="btn btn-danger">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal pesan sukses -->
+                <div class="modal fade" id="successModal" tabindex="-1" role="dialog"
+                    aria-labelledby="successModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="successModalLabel">Pesan Sukses</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Data berhasil direset.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="input-group col-md-4 mr-4">
+                {{-- <input type="text" class="form-control" aria-label="Text input with dropdown button">
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <select class="form-select" id="dropdown-select">
+                            @foreach($cost->unique('name') as $item)
+                            <option value="{{ $item->name }}">{{ $item->name }}</option>
+                            @endforeach
+                        </select>
+                    </ul>
+                </div> --}}
+                <input type="text" name="search" style="height: 2.4rem; font-size: 12pt; margin-top: 0.10rem;"
                     id="searchp" class="form-control input-text" placeholder="Cari disini ..."
                     aria-label="Recipient's username" aria-describedby="basic-addon2">
 
+            </div>
         </div>
-    </div>
 
-    <div class="card-body pt-0">
-        <div class="table-responsive">
-            <table class="table table-striped" id="costTableBody">
-                <thead style="background-color: #263a74; color:white; position: sticky; top: 0;">
-                    <tr>
-                        <th style="width: 50px; text-align:center" scope="col"></th>
-                        <th scope="col">No</th>
-                        <th scope="col">Cost Center</th>
-                        <th scope="col">Detaill Cost Center</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php $no=1 ?>
-                    @foreach ($cost as $c)
-                    <tr id="tr_{{ $c->id }}">
-                        <td><input type="checkbox" class="sub_chk" data-id="{{$c->id}}"
-                                onclick="handleCheckboxChange({{ $c->id }})"></td>
-                        <td>{{$no++}}</td>
-                        <td>{{ $c->cost_center }}</td>
-                        <td>{{ $c->detail_cost_center }}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+        <div class="card-body pt-0">
+            <div class="table-responsive">
+                <table class="table table-striped" id="costTableBody">
+                    <thead style="background-color: #263a74; color:white; position: sticky; top: 0;">
+                        <tr>
+                            <th style="width: 50px; text-align:center" scope="col"></th>
+                            <th scope="col">No</th>
+                            <th scope="col">Cost Center</th>
+                            <th scope="col">Detaill Cost Center</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $no=1 ?>
+                        @foreach ($cost as $c)
+                        <tr id="tr_{{ $c->id }}">
+                            <td><input type="checkbox" class="sub_chk" data-id="{{$c->id}}"
+                                    onclick="handleCheckboxChange({{ $c->id }})"></td>
+                            <td>{{$no++}}</td>
+                            <td>{{ $c->cost_center }}</td>
+                            <td>{{ $c->detail_cost_center }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
+</body>
+
+<script>
+    $(document).ready(function () {
+        // Click event for the Save button
+        $('#addSaveButton').click(function () {
+            // Assuming you are using jQuery
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('add-cost') }}', // Replace with your actual route
+                data: $('#addForm').serialize(),
+                success: function (response) {
+                    console.log(response);
+
+                    // Display a SweetAlert after successful submission
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Berhasil Menambahkan Data',
+                    }).then(function () {
+                        location.reload();
+                    });
+                },
+                error: function (error) {
+                    console.log(error);
+
+                    // Display a SweetAlert after successful submission
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Tidak Berhasil Menambahkan Data',
+                    });
+                }
+            });
+        });
+    });
+</script>
 
 <script>
     // Fungsi untuk mengirim permintaan pencarian ke server dan mengganti konten tabel

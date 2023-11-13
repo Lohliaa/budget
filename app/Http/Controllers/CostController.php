@@ -102,6 +102,26 @@ class CostController extends Controller
         }
     }
 
+    public function addCost(Request $request)
+    {
+        // Validate the form data
+        $request->validate([
+            'cost_center' => 'required',
+            'detail_cost_center' => 'required',
+        ]);
+
+        // Create a new UMH instance
+        $cost = new Cost;
+        $cost->cost_center = $request->input('cost_center');
+        $cost->detail_cost_center = $request->input('detail_cost_center');
+
+        // Save the data to the database
+        $cost->save();
+
+        // You can add a success message or redirect to another page if needed
+        return redirect('/cost')->with('success', 'UMH data added successfully.');
+    }
+
     /**
      * Display the specified resource.
      *

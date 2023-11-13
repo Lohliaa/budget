@@ -111,6 +111,30 @@ class CarlineController extends Controller
         }
     }
 
+    public function addCarline(Request $request)
+    {
+        // Validate the form data
+        $request->validate([
+            'destination_ppc' => 'required',
+            'hfm_carline' => 'required',
+            'model_year' => 'required',
+            'kode' => 'required',
+        ]);
+
+        // Create a new UMH instance
+        $carline = new Carline();
+        $carline->destination_ppc = $request->input('destination_ppc');
+        $carline->hfm_carline = $request->input('hfm_carline');
+        $carline->model_year = $request->input('model_year');
+        $carline->kode = $request->input('kode');
+
+        // Save the data to the database
+        $carline->save();
+
+        // You can add a success message or redirect to another page if needed
+        return redirect('/carline')->with('success', 'Carline data added successfully.');
+    }
+
     /**
      * Display the specified resource.
      *

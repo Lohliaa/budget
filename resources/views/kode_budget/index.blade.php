@@ -16,6 +16,42 @@ Kode Budget
 
                 <a href="{{ url('kode_budget') }}" class="btn btn-success mt-3" style="height: 40px;"><i class="bi bi-arrow-clockwise" style="font-size: 20px;"></i></a>
 
+                <!-- Button modal -->
+                <button style="height: 38px; width: 45px; position: relative;" type="button"
+                    class="btn btn-secondary p-0 mt-3" data-toggle="modal" data-target="#addModal">
+                    <i class="bi bi-plus"
+                        style="margin-top:3px; font-size: 2rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></i>
+                </button>
+
+                <!-- Modal adding data -->
+                <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addModalLabel">Tambah Kode Budget</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Form for adding data -->
+                                <form id="addForm">
+                                    @csrf
+                                    <div class="form-group">
+                                        <label for="addKodeBudget">Kode Budget</label>
+                                        <input type="text" class="form-control" id="addKodeBudget" name="kode_budget">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="addSaveButton">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <button type="button" class="btn btn-primary mb-0 mt-3" data-toggle="modal"
                     data-target="#uploadModal">Unggah Data</button>
 
@@ -190,6 +226,43 @@ Kode Budget
             </div>
         </div>
 </body>
+
+<script>
+    $(document).ready(function () {
+        // Click event for the Save button
+        $('#addSaveButton').click(function () {
+            // Assuming you are using jQuery
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('add-kb') }}', // Replace with your actual route
+                data: $('#addForm').serialize(),
+                success: function (response) {
+                    console.log(response);
+
+                    // Display a SweetAlert after successful submission
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Berhasil Menambahkan Data',
+                    }).then(function () {
+                        location.reload();
+                    });
+                },
+                error: function (error) {
+                    console.log(error);
+
+                    // Display a SweetAlert after successful submission
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Tidak Berhasil Menambahkan Data',
+                    });
+                }
+            });
+        });
+    });
+</script>
+
 <script>
     // Fungsi untuk mengirim permintaan pencarian ke server dan mengganti konten tabel
     function searchKb() {
@@ -213,7 +286,6 @@ document.getElementById('searchp').addEventListener('input', function() {
         console.log('Checkbox with ID ' + id + ' changed.');
     }
 </script>
-
 
 <script>
     // JavaScript to handle checkbox change

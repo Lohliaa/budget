@@ -58,6 +58,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::delete('/delete-home',  [HomeController::class, 'deleteItems'])->name('home.delete');
     Route::get('/search-home', [HomeController::class, 'searchHome'])->name('search.home');
     Route::get('/export_excel', [HomeController::class, 'export_excel']);
+    Route::post('/add-home', [HomeController::class, 'addHome']);
 
     // MASTER BARANG
     Route::resource('/master_barang', MasterBarangController::class)->middleware('auth');
@@ -66,6 +67,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/update-mb/{id}', [MasterBarangController::class, 'update'])->name('update.master_barang');
     Route::delete('/delete-mb',  [MasterBarangController::class, 'deleteItems'])->name('master_barang.delete');
     Route::get('/search-mb', [MasterBarangController::class, 'searchMB'])->name('search.master_barang');
+    Route::post('/add-mb', [MasterBarangController::class, 'addMB']);
 
     // CARLINE
     Route::resource('/carline', CarlineController::class)->middleware('auth');
@@ -75,6 +77,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/update-carline/{id}', [CarlineController::class, 'update'])->name('update.carline');
     Route::delete('/delete-carline',  [CarlineController::class, 'deleteItems'])->name('carline.delete');
     Route::get('/search-carline', [CarlineController::class, 'searchCarline'])->name('search.carline');
+    Route::post('/add-carline', [CarlineController::class, 'addCarline']);
 
     // COST
     Route::resource('/cost', CostController::class)->middleware('auth');
@@ -84,6 +87,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/update-cost/{id}', [CostController::class, 'update'])->name('update.cost');
     Route::delete('/delete-cost',  [CostController::class, 'deleteItems'])->name('cost.delete');
     Route::get('/search-cost', [CostController::class, 'searchCost'])->name('search.cost');
+    Route::post('/add-cost', [CostController::class, 'addCost']);
 
     // KODE BUDGET
     Route::resource('/kode_budget', KodeBudgetController::class)->middleware('auth');
@@ -94,6 +98,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::delete('/delete-kb',  [KodeBudgetController::class, 'deleteItems'])->name('kode_budget.delete');
     Route::get('/search-kb', [KodeBudgetController::class, 'searchKb'])->name('search.kode_budget');
     Route::get('/cari', [KodeBudgetController::class, 'cari'])->name('kode_budget.cari');
+    Route::post('/add-kb', [KodeBudgetController::class, 'addKb']);
 
     // UMH
     Route::resource('/umh', UMHController::class)->middleware('auth');
@@ -104,7 +109,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::delete('/delete-umh',  [UMHController::class, 'deleteItems'])->name('umh.delete');
     Route::get('/search-umh', [UMHController::class, 'searchUMH'])->name('search.umh');
     Route::get('/create', [UMHController::class, 'create'])->name('umh.create');
-    Route::post('store', [UMHController::class, 'store'])->name('umh.store');
+    // Route::post('store', [UMHController::class, 'store'])->name('umh.store');
+    Route::post('/add-umh', [UMHController::class, 'addUMH']);
 
     // DATA PDF
     Route::get('/pdf-transaksi-pembelian', [TpembelianController::class, 'pdf'])->name('pdf-transaksi-pembelian')->middleware('auth');
