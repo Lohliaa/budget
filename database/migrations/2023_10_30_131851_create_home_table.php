@@ -61,6 +61,7 @@ class CreateHomeTable extends Migration
             $table->Integer('qty_jun')->nullable();
             $table->double('price_jun')->nullable();
             $table->double('amount_jun')->nullable();
+            $table->string('tahun');
             $table->string('role_id');
             $table->timestamps();
         });

@@ -57,6 +57,7 @@ class Home extends Model
     'qty_jun',
     'price_jun',
     'amount_jun',
+    'tahun',
     'role_id'
   ];
   public function user()

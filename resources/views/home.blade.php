@@ -20,7 +20,8 @@ Halaman Utama
                 <!-- Button modal -->
                 <button style="height: 38px; width: 45px; position: relative;" type="button"
                     class="btn btn-secondary p-0 mt-3" data-toggle="modal" data-target="#addModal">
-                    <i class="bi bi-plus" style="margin-top:3px; font-size: 2rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></i>
+                    <i class="bi bi-plus"
+                        style="margin-top:3px; font-size: 2rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></i>
                 </button>
 
                 <!-- Modal adding data -->
@@ -38,37 +39,78 @@ Halaman Utama
                                 <!-- Form for adding data -->
                                 <form id="addForm">
                                     @csrf
+                                    {{-- <div class="form-group">
+                                        <label for="addSection">Section</label>
+                                        <input type="text" class="form-control" id="addSection" name="section" disabled>
+                                    </div> --}}
                                     <div class="form-group">
                                         <label for="addSection">Section</label>
-                                        <input type="text" class="form-control" id="addSection" name="section">
+                                        <select class="form-control" id="addSection" name="section">
+                                            <option value=""></option>
+                                            @foreach($cost as $cost_center)
+                                            <option value="{{ $cost_center->detail_cost_center }}">{{
+                                                $cost_center->detail_cost_center
+                                                }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
-                                    <div class="form-group">
+
+                                    {{-- <div class="form-group">
                                         <label for="addCode">Code</label>
                                         <input type="text" class="form-control" id="addCode" name="code">
+                                    </div> --}}
+                                    <div class="form-group">
+                                        <label for="addCode">Code</label>
+                                        <select class="form-control" id="addCode" name="code">
+                                            <option value=""></option>
+                                            @foreach($master_barang as $code)
+                                            <option value="{{ $code->code }}">{{ $code->code }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
+
                                     <div class="form-group">
                                         <label for="addName">Name</label>
-                                        <input type="text" class="form-control" id="addName" name="nama">
+                                        <input type="text" class="form-control" id="addName" name="name" disabled>
                                     </div>
+
                                     <div class="form-group">
                                         <label for="addKodeBudget">Kode Budget</label>
-                                        <input type="text" class="form-control" id="addKodeBudget" name="kode_budget">
+                                        <select class="form-control" id="addKodeBudget" name="kode_budget">
+                                            <option value=""></option>
+                                            @foreach($kode_budget as $kb)
+                                            <option value="{{ $kb->kode_budget }}">{{ $kb->kode_budget }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
+
                                     <div class="form-group">
                                         <label for="addCur">CUR</label>
-                                        <input type="text" class="form-control" id="addCur" name="cur">
+                                        <select class="form-control" id="addCur" name="cur">
+                                            <option value="USD" selected>USD</option>
+                                        </select>
                                     </div>
                                     <div class="form-group">
-                                        <label for="addFixed">Fixed/Variabel</label>
-                                        <input type="text" class="form-control" id="addFixed" name="fixed">
+                                        <label for="addFixed">Fixed/Variable</label>
+                                        <select class="form-control" id="addFixed" name="fixed">
+                                            <option value="Fixed">Fixed</option>
+                                            <option value="Variabel">Variabel</option>
+                                        </select>
                                     </div>
                                     <div class="form-group">
-                                        <label for="addPrep">Prep/Masspro</label>
-                                        <input type="text" class="form-control" id="addPrep" name="prep">
+                                        <label for="addPrep">Prep/Maspro</label>
+                                        <select class="form-control" id="addPrep" name="prep">
+                                            <option value="Prep">Prep</option>
+                                            <option value="Maspro">Maspro</option>
+                                        </select>
                                     </div>
                                     <div class="form-group">
-                                        <label for="addCodeCarline">Kode Carline</label>
-                                        <input type="text" class="form-control" id="addCodeCarline" name="kode_carline">
+                                        <label for="addKodeCarline">Kode Carline</label>
+                                        <select class="form-control" id="addKodeCarline" name="kode_carline">
+                                            @foreach($carline->unique('kode') as $kode)
+                                            <option value="{{ $kode->kode }}">{{ $kode->kode}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="addRemark">Remark</label>
@@ -84,7 +126,8 @@ Halaman Utama
                                     </div>
                                     <div class="form-group">
                                         <label for="addAmount_jul">Amount Jul</label>
-                                        <input type="text" class="form-control" id="addAmount_jul" name="amount_jul">
+                                        <input type="text" class="form-control" id="addAmount_jul" name="amount_jul"
+                                            disabled>
                                     </div>
                                     <div class="form-group">
                                         <label for="addQTY_aug">QTY Aug</label>
@@ -96,7 +139,8 @@ Halaman Utama
                                     </div>
                                     <div class="form-group">
                                         <label for="addAmount_aug">Amount Aug</label>
-                                        <input type="text" class="form-control" id="addAmount_aug" name="amount_aug">
+                                        <input type="text" class="form-control" id="addAmount_aug" name="amount_aug"
+                                            disabled>
                                     </div>
                                     <div class="form-group">
                                         <label for="addQTY_sep">QTY sep</label>
@@ -108,7 +152,8 @@ Halaman Utama
                                     </div>
                                     <div class="form-group">
                                         <label for="addAmount_sep">Amount sep</label>
-                                        <input type="text" class="form-control" id="addAmount_sep" name="amount_sep">
+                                        <input type="text" class="form-control" id="addAmount_sep" name="amount_sep"
+                                            disabled>
                                     </div>
                                     <div class="form-group">
                                         <label for="addQTY_okt">QTY okt</label>
@@ -120,7 +165,8 @@ Halaman Utama
                                     </div>
                                     <div class="form-group">
                                         <label for="addAmount_okt">Amount okt</label>
-                                        <input type="text" class="form-control" id="addAmount_okt" name="amount_okt">
+                                        <input type="text" class="form-control" id="addAmount_okt" name="amount_okt"
+                                            disabled>
                                     </div>
                                     <div class="form-group">
                                         <label for="addQTY_nov">QTY nov</label>
@@ -132,7 +178,8 @@ Halaman Utama
                                     </div>
                                     <div class="form-group">
                                         <label for="addAmount_nov">Amount nov</label>
-                                        <input type="text" class="form-control" id="addAmount_nov" name="amount_nov">
+                                        <input type="text" class="form-control" id="addAmount_nov" name="amount_nov"
+                                            disabled>
                                     </div>
                                     <div class="form-group">
                                         <label for="addQTY_dec">QTY dec</label>
@@ -144,7 +191,8 @@ Halaman Utama
                                     </div>
                                     <div class="form-group">
                                         <label for="addAmount_dec">Amount dec</label>
-                                        <input type="text" class="form-control" id="addAmount_dec" name="amount_dec">
+                                        <input type="text" class="form-control" id="addAmount_dec" name="amount_dec"
+                                            disabled>
                                     </div>
                                     <div class="form-group">
                                         <label for="addQTY_jan">QTY jan</label>
@@ -156,7 +204,8 @@ Halaman Utama
                                     </div>
                                     <div class="form-group">
                                         <label for="addAmount_jan">Amount jan</label>
-                                        <input type="text" class="form-control" id="addAmount_jan" name="amount_jan">
+                                        <input type="text" class="form-control" id="addAmount_jan" name="amount_jan"
+                                            disabled>
                                     </div>
                                     <div class="form-group">
                                         <label for="addQTY_feb">QTY feb</label>
@@ -168,7 +217,8 @@ Halaman Utama
                                     </div>
                                     <div class="form-group">
                                         <label for="addAmount_feb">Amount feb</label>
-                                        <input type="text" class="form-control" id="addAmount_feb" name="amount_feb">
+                                        <input type="text" class="form-control" id="addAmount_feb" name="amount_feb"
+                                            disabled>
                                     </div>
                                     <div class="form-group">
                                         <label for="addQTY_mar">QTY mar</label>
@@ -180,7 +230,8 @@ Halaman Utama
                                     </div>
                                     <div class="form-group">
                                         <label for="addAmount_mar">Amount mar</label>
-                                        <input type="text" class="form-control" id="addAmount_mar" name="amount_mar">
+                                        <input type="text" class="form-control" id="addAmount_mar" name="amount_mar"
+                                            disabled>
                                     </div>
                                     <div class="form-group">
                                         <label for="addQTY_apr">QTY apr</label>
@@ -192,7 +243,8 @@ Halaman Utama
                                     </div>
                                     <div class="form-group">
                                         <label for="addAmount_apr">Amount apr</label>
-                                        <input type="text" class="form-control" id="addAmount_apr" name="amount_apr">
+                                        <input type="text" class="form-control" id="addAmount_apr" name="amount_apr"
+                                            disabled>
                                     </div>
                                     <div class="form-group">
                                         <label for="addQTY_may">QTY may</label>
@@ -204,7 +256,8 @@ Halaman Utama
                                     </div>
                                     <div class="form-group">
                                         <label for="addAmount_may">Amount may</label>
-                                        <input type="text" class="form-control" id="addAmount_may" name="amount_may">
+                                        <input type="text" class="form-control" id="addAmount_may" name="amount_may"
+                                            disabled>
                                     </div>
                                     <div class="form-group">
                                         <label for="addQTY_jun">QTY jun</label>
@@ -216,7 +269,12 @@ Halaman Utama
                                     </div>
                                     <div class="form-group">
                                         <label for="addAmount_jun">Amount jun</label>
-                                        <input type="text" class="form-control" id="addAmount_jun" name="amount_jun">
+                                        <input type="text" class="form-control" id="addAmount_jun" name="amount_jun"
+                                            disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addTahun">Tahun</label>
+                                        <input type="text" class="form-control" id="addTahun" name="tahun">
                                     </div>
                                 </form>
                             </div>
@@ -246,6 +304,11 @@ Halaman Utama
                                 <form id="fileUploadForm" enctype="multipart/form-data"
                                     action="{{ route('import-excel-home') }}" method="POST">
                                     @csrf
+                                    <div class="form-group">
+                                        <label for="tahun">Tahun</label>
+                                        <input type="text" class="form-control" id="tahun" name="tahun">
+                                    </div>
+
                                     <input type="file" id="fileInput" name="file"
                                         accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
                                 </form>
@@ -261,9 +324,6 @@ Halaman Utama
 
                 <!-- Export Excel -->
                 <a href="{{ url('export_excel') }}" class="btn btn-info mt-3" style="height: 40px;">Download</a>
-
-
-                {{-- <a href="{{ url('home') }}" class="btn btn-success mt-3">Refresh</a> --}}
 
                 <button id="reset-home-button" class="btn btn-danger mt-3">Reset</button>
 
@@ -333,9 +393,9 @@ Halaman Utama
                                         <label for="editSection">Section</label>
                                         <select class="form-control" id="editSection" name="section">
                                             <option value="">Pilih Section</option>
-                                            @foreach($cost as $cost_center)
-                                            <option value="{{ $cost_center->cost_center }}">{{
-                                                $cost_center->cost_center
+                                            @foreach($cost as $detail_cost_center)
+                                            <option value="{{ $detail_cost_center->detail_cost_center }}">{{
+                                                $detail_cost_center->detail_cost_center
                                                 }}</option>
                                             @endforeach
                                         </select>
@@ -570,7 +630,23 @@ Halaman Utama
 
             </div>
 
-            <div class="input-group col-md-3 mr-4">
+            <div class="input-group col-md-3 mr-4 mt-1">
+
+                <!-- Dropdown untuk memilih tahun -->
+                <div class="dropdown mr-2">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Tahun
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                        @foreach($tahun as $year)
+                        <li>
+                            <a class="dropdown-item" href="{{ route('filterByYear', $year->tahun) }}">{{ $year->tahun
+                                }}</a>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
                 <input type="text" name="search" style="height: 2.4rem; font-size: 12pt; margin-top: 0.10rem;"
                     id="searchp" class="form-control input-text" placeholder="Cari disini ..."
                     aria-label="Recipient's username" aria-describedby="basic-addon2">
@@ -647,18 +723,18 @@ Halaman Utama
                     </thead>
                     <tbody>
                         <?php $no=1 ?>
-                        @foreach ($home as $h)
+                        @foreach ($filteredData as $h)
                         <tr id="tr_{{ $h->id }}">
                             <td><input type="checkbox" class="sub_chk" data-id="{{$h->id}}"
                                     onclick="handleCheckboxChange({{ $h->id }})"></td>
                             <td>{{$no++}}</td>
-                            {{--  <td>
+                            {{-- <td>
                                 @if(Auth::user()->role === 'Admin')
                                 {{ $h->section }}
                                 @else
                                 {{ Auth::user()->role }}
                                 @endif
-                            </td>  --}}
+                            </td> --}}
                             <td>{{ $h->section }}</td>
                             <td>{{ $h->code }}</td>
                             <td>{{ $h->nama }}</td>
@@ -712,6 +788,52 @@ Halaman Utama
         </div>
     </div>
 </body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Event change untuk #addCode
+        $('#addCode').change(function () {
+            var selectedCode = $(this).val();
+            
+            $.ajax({
+                url: '{{ url('getMasterBarangName') }}', // Sesuaikan dengan rute yang benar
+                method: 'GET',
+                data: { code: selectedCode },
+                success: function (response) {
+                    $('#addName').val(response.name);
+                },
+                error: function () {
+                    console.log('Gagal memuat data.');
+                }
+            });
+        });
+
+        // Fungsi untuk menghitung total amount pada input addQTY, addPrice, addAmount
+        function calculateAmount(bulan) {
+            const addQtyInput = document.querySelector(`#addQTY_${bulan}`);
+            const addPriceInput = document.querySelector(`#addPrice_${bulan}`);
+            const addAmountInput = document.querySelector(`#addAmount_${bulan}`);
+            
+            function updateAmount() {
+                const qty = parseFloat(addQtyInput.value) || 0;
+                const price = parseFloat(addPriceInput.value) || 0;
+                const amount = qty * price;
+                addAmountInput.value = amount;
+            }
+            
+            addQtyInput.addEventListener('input', updateAmount);
+            addPriceInput.addEventListener('input', updateAmount);
+        }
+
+        // Setelah perubahan pada elemen #addCode, panggil calculateAmount
+        const bulanList = ['jan', 'feb', 'mar','apr','may','jun', 'jul','aug','sep','okt','nov','dec']; // Sesuaikan dengan daftar bulan yang diperlukan
+
+        for (const bulan of bulanList) {
+            calculateAmount(bulan);
+        }
+    });
+</script>
 
 <script>
     $(document).ready(function () {
@@ -836,14 +958,13 @@ document.getElementById('searchp').addEventListener('input', function() {
             cancelButtonText: 'Batal'
           }).then((result) => {
             if (result.isConfirmed) {
-              // Lakukan penghapusan data dengan AJAX
               $.ajax({
                 url: '{{ url('delete-home') }}',
                 method: 'POST',
                 data: {
                   _token: '{{ csrf_token() }}',
-                  ids: selectedIds, // Kirim array ID yang akan dihapus
-                  _method: 'DELETE' // Tambahkan _method dengan nilai 'DELETE' untuk metode DELETE
+                  ids: selectedIds, 
+                  _method: 'DELETE'
                 },
                 success: function (response) {
                   console.log(response);

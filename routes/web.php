@@ -59,6 +59,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/search-home', [HomeController::class, 'searchHome'])->name('search.home');
     Route::get('/export_excel', [HomeController::class, 'export_excel']);
     Route::post('/add-home', [HomeController::class, 'addHome']);
+    Route::get('/filter/{tahun}', [HomeController::class, 'filterByYear'])->name('filterByYear');
+    Route::get('/getMasterBarangName', [HomeController::class, 'getMasterBarangName']);
 
     // MASTER BARANG
     Route::resource('/master_barang', MasterBarangController::class)->middleware('auth');

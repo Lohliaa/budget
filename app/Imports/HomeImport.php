@@ -12,13 +12,22 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class HomeImport implements ToModel, WithHeadingRow, WithBatchInserts
 {
+    private $tahun;
+
+    public function __construct($tahun)
+    {
+        $this->tahun = $tahun;
+    }
+    
     public function model(array $row)
     {
         $role = Auth::id();
 
         $section = auth()->user()->role;
+        $tahun = $this->tahun;
 
         return new Home([
+            "tahun" => $tahun,
             "section" => $section,
             "code" => $row['code'],
             "nama" => $row['nama'],

@@ -10,6 +10,7 @@ use App\Models\Home;
 use App\Models\KodeBudget;
 use App\Models\MasterBarang;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -30,7 +31,7 @@ class HomeController extends Controller
         $home = null;
     
         if ($role === 'Admin') {
-            $home = Home::orderBy('id', 'asc')->get(); // Mengambil semua data 'home' jika peran adalah 'Admin'
+            $home = Home::orderBy('id', 'asc')->get();
         } else {
             $home = Home::where('section', $role)->orderBy('id', 'asc')->paginate(10000);
         }
@@ -41,8 +42,82 @@ class HomeController extends Controller
         $kode_budget = KodeBudget::all();
         $carline = Carline::all();
         $cost = Cost::all();
-    // dd($home);
-        return view('home', compact('home', 'count', 'data', 'master_barang', 'kode_budget', 'carline', 'cost', 'user'));
+    
+        $currentYear = Carbon::now()->year;
+    
+        // Filter data based on the role, if not an admin
+        if ($role !== 'Admin') {
+            $filteredData = Home::where('section', $role)->whereYear('created_at', $currentYear)->get();
+        } else {
+            $filteredData = Home::whereYear('created_at', $currentYear)->get();
+        }
+    
+        $tahun = Home::select('tahun')->distinct()->get();
+    
+        return view('home', compact('home', 'filteredData', 'count', 'data', 'master_barang', 'kode_budget', 'carline', 'cost', 'user', 'tahun'));
+    }
+    
+
+    public function getDataTahun()
+    {
+        set_time_limit(0);
+        $role = Auth::user()->role;
+        $user = User::all();
+        $home = null;
+
+        if ($role === 'Admin') {
+            $home = Home::orderBy('id', 'asc')->get();
+        } else {
+            $home = Home::where('section', $role)->orderBy('id', 'asc')->paginate(10000);
+        }
+
+        $count = $home->count();
+        $data = $home->all();
+        $master_barang = MasterBarang::all();
+        $kode_budget = KodeBudget::all();
+        $carline = Carline::all();
+        $cost = Cost::all();
+        $tahun = Home::select('tahun')->distinct()->get();
+
+        return view('home', ['tahun' => $tahun], compact('home', 'count', 'data', 'master_barang', 'kode_budget', 'carline', 'cost', 'user'));
+    }
+
+    public function filterByYear($tahun)
+    {
+        set_time_limit(0);
+        $role = Auth::user()->role;
+        $user = User::all();
+        $home = null;
+    
+        if ($role === 'Admin') {
+            $home = Home::orderBy('id', 'asc')->get();
+            $filteredData = Home::where('tahun', $tahun)->get();
+        } else {
+            $home = Home::where('section', $role)->orderBy('id', 'asc')->paginate(10000);
+            $filteredData = Home::where('tahun', $tahun)->where('section', $role)->get();
+        }
+    
+        $count = $home->count();
+        $data = $home->all();
+        $master_barang = MasterBarang::all();
+        $kode_budget = KodeBudget::all();
+        $carline = Carline::all();
+        $cost = Cost::all();
+    
+        $uniqueYears = Home::where('section', $role)->select('tahun')->distinct()->get();
+    
+        return view('home', [
+            'home' => $home,
+            'tahun' => $uniqueYears,
+            'filteredData' => $filteredData,
+            'count' => $count,
+            'data' => $data,
+            'master_barang' => $master_barang,
+            'kode_budget' => $kode_budget,
+            'carline' => $carline,
+            'cost' => $cost,
+            'user' => $user
+        ]);
     }
     
 
@@ -106,11 +181,14 @@ class HomeController extends Controller
 
         return view('partialhome', ['home' => $home]);
     }
-
-    public function export_excel()
+    
+    public function export_excel(Request $request)
     {
-        return Excel::download(new HomeExport, 'budget.xlsx');
+        $year = $request->input('year'); // Misalnya, parameter tahun diperoleh dari permintaan HTTP
+    
+        return Excel::download(new HomeExport($year), 'budget_' . $year . '.xlsx');
     }
+    
 
     public function import_excel_home(Request $request)
     {
@@ -124,29 +202,19 @@ class HomeController extends Controller
         $nama_file = rand() . $file->getClientOriginalName();
 
         $path = $file->storeAs('public/excel/', $nama_file);
-
-        Excel::import(new HomeImport(), storage_path('app/public/excel/' . $nama_file));
+        $tahun = $request->input('tahun');
+        Excel::import(new HomeImport($tahun), storage_path('app/public/excel/' . $nama_file));
 
         Storage::delete($path);
 
         return back()->with('success', "Data berhasil diimport!");
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function create()
     {
         return view('home.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -195,6 +263,8 @@ class HomeController extends Controller
             'qty_jun' => 'required',
             'price_jun' => 'required',
             'amount_jun' => 'required',
+            'tahun' => 'required',
+
         ]);
 
         $role = Auth::id();
@@ -245,6 +315,7 @@ class HomeController extends Controller
             'qty_jun' => $request->qty_jun,
             'price_jun' => $request->price_jun,
             'amount_jun' => $request->amount_jun,
+            'tahun' => $request->tahun,
 
             'role_id' => $role,
         ]);
@@ -258,58 +329,58 @@ class HomeController extends Controller
 
     public function addHome(Request $request)
     {
-        // Validate the form data
         $request->validate([
-            'section' => 'required',
-            'code' => 'required',
-            'nama' => 'required',
-            'kode_budget' => 'required',
-            'cur' => 'required',
-            'fixed' => 'required',
-            'prep' => 'required',
-            'kode_carline' => 'required',
-            'remark' => 'required',
-            'qty_jul' => 'required',
-            'price_jul' => 'required',
-            'amount_jul' => 'required',
-            'qty_aug' => 'required',
-            'price_aug' => 'required',
-            'amount_aug' => 'required',
-            'qty_sep' => 'required',
-            'price_sep' => 'required',
-            'amount_sep' => 'required',
-            'qty_okt' => 'required',
-            'price_okt' => 'required',
-            'amount_okt' => 'required',
-            'qty_nov' => 'required',
-            'price_nov' => 'required',
-            'amount_nov' => 'required',
-            'qty_dec' => 'required',
-            'price_dec' => 'required',
-            'amount_dec' => 'required',
-            'qty_jan' => 'required',
-            'price_jan' => 'required',
-            'amount_jan' => 'required',
-            'qty_feb' => 'required',
-            'price_feb' => 'required',
-            'amount_feb' => 'required',
-            'qty_mar' => 'required',
-            'price_mar' => 'required',
-            'amount_mar' => 'required',
-            'qty_apr' => 'required',
-            'price_apr' => 'required',
-            'amount_apr' => 'required',
-            'qty_may' => 'required',
-            'price_may' => 'required',
-            'amount_may' => 'required',
-            'qty_jun' => 'required',
-            'price_jun' => 'required',
-            'amount_jun' => 'required',
+            'section' => '',
+            'code' => '',
+            'nama' => '',
+            'kode_budget' => '',
+            'cur' => '',
+            'fixed' => '',
+            'prep' => '',
+            'kode_carline' => '',
+            'remark' => '',
+            'qty_jul' => '',
+            'price_jul' => '',
+            'amount_jul' => '',
+            'qty_aug' => '',
+            'price_aug' => '',
+            'amount_aug' => '',
+            'qty_sep' => '',
+            'price_sep' => '',
+            'amount_sep' => '',
+            'qty_okt' => '',
+            'price_okt' => '',
+            'amount_okt' => '',
+            'qty_nov' => '',
+            'price_nov' => '',
+            'amount_nov' => '',
+            'qty_dec' => '',
+            'price_dec' => '',
+            'amount_dec' => '',
+            'qty_jan' => '',
+            'price_jan' => '',
+            'amount_jan' => '',
+            'qty_feb' => '',
+            'price_feb' => '',
+            'amount_feb' => '',
+            'qty_mar' => '',
+            'price_mar' => '',
+            'amount_mar' => '',
+            'qty_apr' => '',
+            'price_apr' => '',
+            'amount_apr' => '',
+            'qty_may' => '',
+            'price_may' => '',
+            'amount_may' => '',
+            'qty_jun' => '',
+            'price_jun' => '',
+            'amount_jun' => '',
+            'tahun' => '',
+
         ]);
-      
+
         $role = Auth::id();
 
-        // Create a new UMH instance
         $home = new Home();
         $home->section = $request->input('section');
         $home->code = $request->input('code');
@@ -356,7 +427,8 @@ class HomeController extends Controller
         $home->qty_jun = $request->input('qty_jun');
         $home->price_jun = $request->input('price_jun');
         $home->amount_jun = $request->input('amount_jun');
-        
+        $home->tahun = $request->input('tahun');
+
         $home->role_id = $role;
 
         if ($home->save()) {
@@ -366,36 +438,22 @@ class HomeController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function getMasterBarangName(Request $request)
+    {
+        $code = $request->input('code');
+        $masterBarang = MasterBarang::where('code', $code)->first();
+        return response()->json(['name' => $masterBarang ? $masterBarang->name : '']);
+    }
+
     public function show($id)
     {
         //
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -531,17 +589,14 @@ class HomeController extends Controller
     public function reset_home()
     {
         $userRole = Auth::user()->role;
-    
+
         if ($userRole === 'Admin') {
-            // Jika pengguna adalah Admin, gunakan truncate
             Home::truncate();
             return response()->json(['success' => 'Data truncated successfully.']);
         } else {
-            // Jika pengguna bukan Admin, gunakan delete berdasarkan ID
             $role = Auth::id();
             Home::where('role_id', $role)->delete();
             return response()->json(['success' => 'Data deleted successfully.']);
         }
     }
-    
 }

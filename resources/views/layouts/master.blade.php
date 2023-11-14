@@ -20,7 +20,8 @@
     <script src="{{ asset('/sb_admin_2/popper.min.js') }}"></script>
     <script src="{{ asset('/sb_admin_2/bootstrap.min.js') }}"></script>
     <script src="{{ asset('/sb_admin_2/sweetalert2@11.js') }}"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <link href="{{ asset('/sb_admin_2/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
