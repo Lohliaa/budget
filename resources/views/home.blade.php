@@ -43,10 +43,7 @@ Halaman Utama
                                 <!-- Form for adding data -->
                                 <form id="addForm">
                                     @csrf
-                                    {{-- <div class="form-group">
-                                        <label for="addSection">Section</label>
-                                        <input type="text" class="form-control" id="addSection" name="section" disabled>
-                                    </div> --}}
+                           
                                     <div class="form-group">
                                         <label for="addSection">Section</label>
                                         <select class="form-control" id="addSection" name="section">
@@ -59,10 +56,6 @@ Halaman Utama
                                         </select>
                                     </div>
 
-                                    {{-- <div class="form-group">
-                                        <label for="addCode">Code</label>
-                                        <input type="text" class="form-control" id="addCode" name="code">
-                                    </div> --}}
                                     <div class="form-group">
                                         <label for="addCode">Code</label>
                                         <select class="form-control" id="addCode" name="code">
@@ -283,8 +276,8 @@ Halaman Utama
                                 </form>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" id="addSaveButton">Save</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                <button type="button" class="btn btn-primary" id="addSaveButton">Simpan</button>
                             </div>
                         </div>
                     </div>
@@ -327,9 +320,6 @@ Halaman Utama
                 </div>
 
                 <!-- Export Excel -->
-                {{-- <a href="{{ url('downloadFilteredData') }}" class="btn btn-info mt-3"
-                    style="height: 40px;">Download</a> --}}
-
                 <button onclick="exportData()" type="button" class="btn btn-info mt-3">
                     <span>Download</span>
                 </button>
@@ -347,7 +337,7 @@ Halaman Utama
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="confirmResetModalLabel">Reset Data</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -355,7 +345,7 @@ Halaman Utama
                                 <p>Apakah Anda yakin ingin reset seluruh data?</p>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                                 <button id="confirmResetButton" type="button" class="btn btn-danger">Reset</button>
                             </div>
                         </div>
@@ -394,7 +384,7 @@ Halaman Utama
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="editModalLabel">Edit</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -629,7 +619,7 @@ Halaman Utama
                                 </form>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 <button type="button" class="btn btn-primary" onclick="saveChanges()">Save
                                     Changes</button>
                             </div>
@@ -956,6 +946,7 @@ Halaman Utama
 </script>
 
 <script>
+    
     function searchHome() {
         const selected = document.getElementById('searchp').value;
     

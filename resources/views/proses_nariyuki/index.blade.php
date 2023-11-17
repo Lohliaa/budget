@@ -89,7 +89,9 @@ Summary
 </body>
 
 <script>
-    function searchPN() {
+    
+    function searchProses() {
+        console.log('Search function called'); // Tambahkan pesan ini
         const selected = document.getElementById('searchp').value;
     
         fetch(`{{ route('search.proses_nariyuki') }}?proses_nariyuki=${selected}`)
@@ -98,9 +100,10 @@ Summary
                 document.getElementById('pnTableBody').innerHTML = data;
             });
     }
+    
 
 document.getElementById('searchp').addEventListener('input', function() {
-    searchHome();
+    searchProses();
 });
 
     function handleCheckboxChange(id) {

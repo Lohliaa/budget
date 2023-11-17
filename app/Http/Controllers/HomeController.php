@@ -215,7 +215,7 @@ class HomeController extends Controller
     
         $sectionData = $query->get();
 
-        return Excel::download(new HomeFilterExport($sectionData), 'Filter Section.xlsx');
+        return Excel::download(new HomeFilterExport($sectionData), 'Detail Section.xlsx');
     }
     
 

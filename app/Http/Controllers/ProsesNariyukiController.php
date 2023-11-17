@@ -13,11 +13,6 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ProsesNariyukiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
 
     public function index(Request $request)
     {
@@ -154,7 +149,7 @@ class ProsesNariyukiController extends Controller
         return view('proses_nariyuki.index', compact('count', 'prosesNariyuki', 'data'));
     }
 
-    public function searchPN(Request $request)
+    public function searchProses(Request $request)
     {
         $searchTerm = $request->input('proses_nariyuki');
 
@@ -173,7 +168,7 @@ class ProsesNariyukiController extends Controller
             });
         }
 
-        $proses_nariyuki = $query->paginate(100);
+        $proses_nariyuki = $query->paginate(5000);
 
         return view('proses_nariyuki.partial.proses_nariyuki', ['proses_nariyuki' => $proses_nariyuki]);
     }
@@ -214,9 +209,9 @@ class ProsesNariyukiController extends Controller
         ]);
 
         if ($proses_nariyuki) {
-            return redirect()->route('pro$proses_nariyuki.index')->with(['success' => 'Data Berhasil Disimpan!']);
+            return redirect()->route('proses_nariyuki.index')->with(['success' => 'Data Berhasil Disimpan!']);
         } else {
-            return redirect()->route('pro$proses_nariyuki.index')->with(['error' => 'Data Gagal Disimpan!']);
+            return redirect()->route('proses_nariyuki.index')->with(['error' => 'Data Gagal Disimpan!']);
         }
     }
 
@@ -246,7 +241,7 @@ class ProsesNariyukiController extends Controller
 
         $proses_nariyuki->save();
 
-        return redirect('/proses_nariyuki')->with('success', 'UMH data added successfully.');
+        return redirect('/proses_nariyuki')->with('success', 'Proses Nariyuki data added successfully.');
     }
 
     /**

@@ -127,7 +127,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('edit_pn/{id}', [ProsesNariyukiController::class, 'edit']);
     Route::post('/update-pn/{id}', [ProsesNariyukiController::class, 'update'])->name('update.proses_nariyuki');
     Route::delete('/delete-pn',  [ProsesNariyukiController::class, 'deleteItems'])->name('proses_nariyuki.delete');
-    Route::get('/search-pn', [ProsesNariyukiController::class, 'searchPN'])->name('search.proses_nariyuki');
+    Route::get('/search-pn', [ProsesNariyukiController::class, 'searchProses'])->name('search.proses_nariyuki');
     Route::get('/create', [ProsesNariyukiController::class, 'create'])->name('proses_nariyuki.create');
     // Route::post('store', [ProsesNariyukiController::class, 'store'])->name('proses_nariyuki.store');
     Route::post('/add-pn', [ProsesNariyukiController::class, 'addPN']);

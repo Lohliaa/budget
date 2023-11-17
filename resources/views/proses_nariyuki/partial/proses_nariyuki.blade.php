@@ -15,7 +15,7 @@
     </thead>
     <tbody>
         <?php $no=1 ?>
-        @foreach ($prosesNariyuki as $u)
+        @foreach ($proses_nariyuki as $u)
         <tr id="tr_{{ $u->id }}">
             <td><input type="checkbox" class="sub_chk" data-id="{{$u->id}}"
                     onclick="handleCheckboxChange({{ $u->id }})"></td>

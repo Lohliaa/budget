@@ -108,7 +108,7 @@ Nariyuki
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="confirmResetModalLabel">Reset Data</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -116,7 +116,7 @@ Nariyuki
                                 <p>Apakah Anda yakin ingin reset seluruh data?</p>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                                 <button id="confirmResetButton" type="button" class="btn btn-danger">Reset</button>
                             </div>
                         </div>
@@ -155,7 +155,7 @@ Nariyuki
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="editModalLabel">Edit UMH</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -185,7 +185,7 @@ Nariyuki
                                 </form>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 <button type="button" class="btn btn-primary" onclick="saveChanges()">Save
                                     Changes</button>
                             </div>
@@ -308,7 +308,6 @@ document.getElementById('searchp').addEventListener('input', function() {
         console.log('Checkbox with ID ' + id + ' changed.');
     }
 </script>
-
 
 <script>
     // JavaScript to handle checkbox change
