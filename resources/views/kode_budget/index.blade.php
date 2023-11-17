@@ -167,37 +167,10 @@ Kode Budget
                     </div>
                 </div>
             </div>
-            <div class="input-group col-md-4 mr-4">
-                {{-- <input type="text" class="form-control" aria-label="Text input with dropdown button"
-                    id="search-input">
-                <div class="dropdown">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <select class="form-select" id="dropdown-select">
-                            @foreach($kode_budget->unique('kode_budget') as $item)
-                            <option value="{{ $item->kode_budget }}">{{ $item->kode_budget }}</option>
-                            @endforeach
-                        </select>
-                    </ul>
-                </div> --}}
+            <div class="input-group col-md-3 mr-4">
                 <input type="text" name="search" style="height: 2.4rem; font-size: 12pt; margin-top: 0.10rem;"
                     id="searchp" class="form-control input-text" placeholder="Cari disini ..."
                     aria-label="Recipient's username" aria-describedby="basic-addon2">
-
-                {{-- <div class="form-group col-2" style="margin-top: 0.60rem;">
-                    <form action="{{ route('kode_budget.cari') }}" method="get">
-                        @csrf
-                        <select name="cari" class="form-control d-inline" placeholder="">
-                            <option value="" disabled selected hidden> </option>
-                            @foreach($kode_budget->unique('kode_budget') as $kb)
-                            <option value="{{ $kb->kode_budget }}">{{ $kb->kode_budget }}</option>
-                            @endforeach
-                        </select>
-                        <button type="submit" class="btn btn-default ">Cari</button>
-                    </form>
-                </div> --}}
             </div>
 
             <div class="card-body pt-0">

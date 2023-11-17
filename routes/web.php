@@ -133,7 +133,6 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/add-pn', [ProsesNariyukiController::class, 'addPN']);
     Route::get('/export_pn', [ProsesNariyukiController::class, 'export_pn']);
 
-
     // DATA EXCEL
     Route::get('/excel-transaksi-pembelian', [TpembelianController::class, 'excel'])->name('excel-transaksi-pembelian')->middleware('auth');
     Route::get('/excel-transaksi-pembelian-barang', [TpembelianbarangController::class, 'excel'])->name('excel-transaksi-pembelian-barang')->middleware('auth');
