@@ -668,7 +668,7 @@ Halaman Utama
                     </div>
                 </form>
                 @endif
-                
+
                 <!-- Dropdown untuk memilih tahun -->
                 <div class="dropdown mr-2">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
@@ -759,7 +759,6 @@ Halaman Utama
                                 <td><input type="checkbox" class="sub_chk" data-id="{{$h->id}}"
                                         onclick="handleCheckboxChange({{ $h->id }})"></td>
                                 <td>{{$no++}}</td>
-
                                 <td>{{ $h->section }}</td>
                                 <td>{{ $h->code }}</td>
                                 <td>{{ $h->nama }}</td>
@@ -863,19 +862,15 @@ Halaman Utama
             return this.value;
         }).get();
     
-        // Create a form dynamically to send the selected sections for export
         var exportForm = $('<form action="{{ route("downloadFilteredData") }}" method="post"></form>');
         exportForm.append('<input type="hidden" name="_token" value="{{ csrf_token() }}" />');
         for (var i = 0; i < selectedSections.length; i++) {
             exportForm.append('<input type="hidden" name="sections[]" value="' + selectedSections[i] + '" />');
         }
     
-        // Append the form to the body and submit it
         $('body').append(exportForm);
         exportForm.submit();
-    }
-    
-    
+    }    
 </script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -961,7 +956,6 @@ Halaman Utama
 </script>
 
 <script>
-    // Fungsi untuk mengirim permintaan pencarian ke server dan mengganti konten tabel
     function searchHome() {
         const selected = document.getElementById('searchp').value;
     
@@ -972,30 +966,24 @@ Halaman Utama
             });
     }
 
-    // Menambahkan event listener untuk input pencarian
 document.getElementById('searchp').addEventListener('input', function() {
     searchHome();
 });
 
-    // Fungsi yang akan dipanggil ketika checkbox berubah
     function handleCheckboxChange(id) {
-        // Tambahkan logika yang sesuai untuk menangani perubahan checkbox di sini
         console.log('Checkbox with ID ' + id + ' changed.');
     }
 </script>
 
 <script>
-    // Mendapatkan elemen-elemen select
     var codeSelect = document.getElementById('editCode');
     var namaSelect = document.getElementById('editNama');
 
     codeSelect.addEventListener('change', function() {
         var selectedCode = codeSelect.value;
     
-       // Menghapus semua opsi dalam dropdown "Nama"
         namaSelect.innerHTML = '';
   
-        // Mengambil opsi nama yang cocok dengan kode yang dipilih
         @foreach($master_barang as $code)
             if ("{{ $code->code }}" === selectedCode) {
                 var option = document.createElement('option');

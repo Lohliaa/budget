@@ -206,23 +206,17 @@ class HomeController extends Controller
     {
         set_time_limit(0);
         $sections = $request->input('sections');
-        $userRole = auth()->user()->role;
-    
+        
         $query = Home::query();
     
-        if ($userRole !== 'Admin') {
-            // If the user is not an admin, filter based on the user's role
-            $query->where('section', $userRole);
-        } elseif (!empty($sections)) {
-            // If the user is an admin and there are selected sections, apply the section filter
+        if (!empty($sections)) {
             $query->whereIn('section', $sections);
         }
     
         $sectionData = $query->get();
-    
+
         return Excel::download(new HomeFilterExport($sectionData), 'Filter Section.xlsx');
     }
-    
     
 
     public function import_excel_home(Request $request)
