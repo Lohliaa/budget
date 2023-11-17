@@ -15,6 +15,7 @@ use App\Http\Controllers\DetailController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KodeBudgetController;
 use App\Http\Controllers\MasterBarangController;
+use App\Http\Controllers\ProsesNariyukiController;
 use App\Http\Controllers\UMHController;
 
 /*
@@ -49,7 +50,7 @@ Route::group(['middleware' => ['web']], function () {
 
     // HOME
     Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('auth');
-
+    
     // Route::resource('/home', HomeController::class)->middleware('auth');
     Route::post('/import-excel-home', [HomeController::class, 'import_excel_home'])->name('import-excel-home');
     Route::post('reset_home', [HomeController::class, 'reset_home'])->name('reset_home');
@@ -57,10 +58,15 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/update-home/{id}', [HomeController::class, 'update'])->name('update.home');
     Route::delete('/delete-home',  [HomeController::class, 'deleteItems'])->name('home.delete');
     Route::get('/search-home', [HomeController::class, 'searchHome'])->name('search.home');
-    Route::get('/export_excel', [HomeController::class, 'export_excel']);
+    // Route::get('/export_excel', [HomeController::class, 'export_excel']);
+    Route::get('/downloadFilteredData', [HomeController::class, 'downloadFilteredData'])->name('downloadFilteredData');
+    Route::post('/downloadFilteredData', [HomeController::class, 'downloadFilteredData'])->name('downloadFilteredData');
+
     Route::post('/add-home', [HomeController::class, 'addHome']);
     Route::get('/filter/{tahun}', [HomeController::class, 'filterByYear'])->name('filterByYear');
     Route::get('/getMasterBarangName', [HomeController::class, 'getMasterBarangName']);
+    Route::post('/filterBySection', [HomeController::class, 'filterBySection'])->name('filterBySection');
+    Route::get('/loadOriginalData', [HomeController::class, 'loadOriginalData'])->name('loadOriginalData');
 
     // MASTER BARANG
     Route::resource('/master_barang', MasterBarangController::class)->middleware('auth');
@@ -114,12 +120,19 @@ Route::group(['middleware' => ['web']], function () {
     // Route::post('store', [UMHController::class, 'store'])->name('umh.store');
     Route::post('/add-umh', [UMHController::class, 'addUMH']);
 
-    // DATA PDF
-    Route::get('/pdf-transaksi-pembelian', [TpembelianController::class, 'pdf'])->name('pdf-transaksi-pembelian')->middleware('auth');
-    Route::get('/pdf-transaksi-pembelian-barang', [TpembelianbarangController::class, 'pdf'])->name('pdf-transaksi-pembelian-barang')->middleware('auth');
-    Route::get('/pdf-master-barang', [MbarangController::class, 'pdf'])->name('pdf-master-barang')->middleware('checkRole:Admin');
-    Route::get('/pdf-user', [UserController::class, 'pdf'])->name('pdf-user')->middleware('checkRole:Admin');
-    // DATA PDF
+    // PROSES NARIYUKI
+    Route::resource('/proses_nariyuki', ProsesNariyukiController::class)->middleware('auth');
+    Route::post('/import-excel-pn', [ProsesNariyukiController::class, 'import_excel_pn'])->name('import-excel-pn');
+    Route::post('reset_pn', [ProsesNariyukiController::class, 'reset_pn'])->name('reset_pn');
+    Route::get('edit_pn/{id}', [ProsesNariyukiController::class, 'edit']);
+    Route::post('/update-pn/{id}', [ProsesNariyukiController::class, 'update'])->name('update.proses_nariyuki');
+    Route::delete('/delete-pn',  [ProsesNariyukiController::class, 'deleteItems'])->name('proses_nariyuki.delete');
+    Route::get('/search-pn', [ProsesNariyukiController::class, 'searchPN'])->name('search.proses_nariyuki');
+    Route::get('/create', [ProsesNariyukiController::class, 'create'])->name('proses_nariyuki.create');
+    // Route::post('store', [ProsesNariyukiController::class, 'store'])->name('proses_nariyuki.store');
+    Route::post('/add-pn', [ProsesNariyukiController::class, 'addPN']);
+    Route::get('/export_pn', [ProsesNariyukiController::class, 'export_pn']);
+
 
     // DATA EXCEL
     Route::get('/excel-transaksi-pembelian', [TpembelianController::class, 'excel'])->name('excel-transaksi-pembelian')->middleware('auth');

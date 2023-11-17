@@ -94,7 +94,12 @@
     <li class="nav-item">
         <a class="nav-link" href="{{ url('umh') }}">
             <i class="fas fa-fw fa-users"></i>
-            <span>UMH</span></a>
+            <span>Nariyuki</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url('proses_nariyuki') }}">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Summary</span></a>
     </li>
     {{--  @endif  --}}
     <li class="nav-item">

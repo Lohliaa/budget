@@ -2,104 +2,23 @@
 @section('judul')
 @endsection
 @section('judul_sub')
-Nariyuki
+Summary
 @endsection
 @section('content')
 
 <body>
     <div class="card shadow mb-4">
         <div class="card-header py-3" style="display: flex; justify-content: space-between; align-items: center;">
-            <h6 class="m-0 font-weight-bold text-primary">UMH</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Proses Nariyuki</h6>
         </div>
         <div class="row justify-content-between" style="align-items: center;">
             <div class="form-group col-md-6" style="margin-left: 12px">
-                <a href="{{ url('umh') }}" class="btn btn-success mt-3 ml-2" style="height: 40px;"><i
+                <a href="{{ url('proses_nariyuki') }}" class="btn btn-success mt-3 ml-2" style="height: 40px;"><i
                         class="bi bi-arrow-clockwise" style="font-size: 20px;"></i></a>
 
-                <!-- Button modal -->
-                <button style="height: 38px; width: 45px; position: relative;" type="button"
-                    class="btn btn-secondary p-0 mt-3" data-toggle="modal" data-target="#addModal">
-                    <i class="bi bi-plus"
-                        style="margin-top:3px; font-size: 2rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></i>
-                </button>
+                <a href="{{ url('export_pn') }}" class="btn btn-info mt-3" style="height: 40px;">Download</a>
 
-                <!-- Modal adding data -->
-                <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="addModalLabel">Tambah UMH</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <!-- Form for adding data -->
-                                <form id="addForm">
-                                    @csrf
-                                    <div class="form-group">
-                                        <label for="addMonth">Month</label>
-                                        <input type="text" class="form-control" id="addMonth" name="month">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addUMH">UMH</label>
-                                        <input type="text" class="form-control" id="addUMH" name="umh">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addAmount">Amount</label>
-                                        <input type="text" class="form-control" id="addAmount" name="amount">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addNewUMH">New UMH</label>
-                                        <input type="text" class="form-control" id="addNewUMH" name="new_umh">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addNewAmount">New Amount</label>
-                                        <input type="text" class="form-control" id="addNewAmount" name="new_amount">
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" id="addSaveButton">Save</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <button type="button" class="btn btn-primary mb-0 mt-3" data-toggle="modal"
-                    data-target="#uploadModal">Unggah Data</button>
-
-                <!-- Modal untuk mengunggah data -->
-                <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="uploadModalLabel">Unggah Data</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="fileUploadForm" enctype="multipart/form-data"
-                                    action="{{ route('import-excel-umh') }}" method="POST">
-                                    @csrf
-                                    <input type="file" id="fileInput" name="file"
-                                        accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                                <button type="button" class="btn btn-primary"
-                                    onclick="document.getElementById('fileUploadForm').submit()">Unggah</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <button id="reset-umh-button" class="btn btn-danger mt-3">Reset</button>
+                <button id="reset-pn-button" class="btn btn-danger mt-3">Reset</button>
 
                 <!-- Modal konfirmasi reset -->
                 <div class="modal fade" id="confirmResetModal" tabindex="-1" role="dialog"
@@ -154,7 +73,7 @@ Nariyuki
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="editModalLabel">Edit UMH</h5>
+                                <h5 class="modal-title" id="editModalLabel">Edit Proses Nariyuki</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -165,6 +84,18 @@ Nariyuki
                                     <div class="form-group">
                                         <label for="editMonth">Month</label>
                                         <input type="text" class="form-control" id="editMonth" name="month">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editSection">Section</label>
+                                        <input type="text" class="form-control" id="editSection" name="section">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editKodeBudget">Kode Budget</label>
+                                        <input type="text" class="form-control" id="editKodeBudget" name="kode_budget">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editFixed">Fixed/Variabel</label>
+                                        <input type="text" class="form-control" id="editFixed" name="fixed">
                                     </div>
                                     <div class="form-group">
                                         <label for="editUMH">UMH</label>
@@ -199,19 +130,6 @@ Nariyuki
 
             </div>
             <div class="input-group col-md-4 mr-4">
-                {{-- <input type="text" class="form-control" aria-label="Text input with dropdown button">
-                <div class="dropdown">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <select class="form-select" id="dropdown-select">
-                            @foreach($umh->unique('name') as $item)
-                            <option value="{{ $item->name }}">{{ $item->name }}</option>
-                            @endforeach
-                        </select>
-                    </ul>
-                </div> --}}
 
                 <input type="text" name="search" style="height: 2.4rem; font-size: 12pt; margin-top: 0.10rem;"
                     id="searchp" class="form-control input-text" placeholder="Cari disini ..."
@@ -222,36 +140,41 @@ Nariyuki
 
         <div class="card-body pt-0">
             <div class="table-responsive">
-                <table class="table table-striped" id="umhTableBody">
+                <table class="table table-striped" id="pnTableBody">
                     <thead style="background-color: #263a74; color:white; position: sticky; top: 0;">
                         <tr>
-                            <th scope="col"></th>
-                            <th scope="col">No</th>
-                            <th scope="col">Month</th>
-                            <th scope="col">Umh</th>
-                            <th scope="col">Amount</th>
-                            <th scope="col">New Umh</th>
-                            <th scope="col">New Amount</th>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;"></td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">No</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Month</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Section</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Kode Budget</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Fixed/Variabel</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Umh</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">New Umh</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">New Amount</td>
                         </tr>
                     </thead>
                     <tbody>
                         <?php $no=1 ?>
-                        @foreach ($umh as $u)
+                        @foreach ($prosesNariyuki as $u)
                         <tr id="tr_{{ $u->id }}">
                             <td><input type="checkbox" class="sub_chk" data-id="{{$u->id}}"
                                     onclick="handleCheckboxChange({{ $u->id }})"></td>
                             <td>{{$no++}}</td>
                             <td>{{ $u->month }}</td>
-                            <td>{{ $u->umh }}</td>
-                            <td>{{ $u->amount }}</td>
-                            <td>{{ $u->new_umh }}</td>
-                            <td>{{ $u->new_amount }}</td>
+                            <td>{{ $u->section }}</td>
+                            <td>{{ $u->kode_budget }}</td>
+                            <td>{{ $u->fixed }}</td>
+                            <td>{{ number_format($u->umh, 4) }}</td>
+                            <td>{{ number_format($u->amount, 4) }}</td>
+                            <td>{{ number_format($u->new_umh, 4) }}</td>
+                            <td>{{ number_format($u->new_amount, 4) }}</td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-            <br>{!! $umh->links() !!}
         </div>
     </div>
 </body>
@@ -269,13 +192,12 @@ Nariyuki
             }
         }
     
-        // Recalculate new_amount on change in any relevant field
         $('#addNewUMH, #addAmount, #addUMH').on('input', calculateNewAmount);
     
         $('#addSaveButton').click(function () {
             $.ajax({
                 type: 'POST',
-                url: '{{ url('add-umh') }}',
+                url: '{{ url('add-pn') }}',
                 data: $('#addForm').serialize(),
                 success: function (response) {
                     console.log(response);
@@ -302,25 +224,21 @@ Nariyuki
 </script>
 
 <script>
-    // Fungsi untuk mengirim permintaan pencarian ke server dan mengganti konten tabel
-    function searchUMH() {
+    function searchPN() {
         const selected = document.getElementById('searchp').value;
     
-        fetch(`{{ route('search.umh') }}?umh=${selected}`)
+        fetch(`{{ route('search.proses_nariyuki') }}?proses_nariyuki=${selected}`)
             .then(response => response.text())
             .then(data => {
-                document.getElementById('umhTableBody').innerHTML = data;
+                document.getElementById('pnTableBody').innerHTML = data;
             });
     }
 
-    // Menambahkan event listener untuk input pencarian
 document.getElementById('searchp').addEventListener('input', function() {
     searchUMH();
 });
 
-    // Fungsi yang akan dipanggil ketika checkbox berubah
     function handleCheckboxChange(id) {
-        // Tambahkan logika yang sesuai untuk menangani perubahan checkbox di sini
         console.log('Checkbox with ID ' + id + ' changed.');
     }
 </script>
@@ -364,7 +282,7 @@ document.getElementById('searchp').addEventListener('input', function() {
             if (result.isConfirmed) {
               // Lakukan penghapusan data dengan AJAX
               $.ajax({
-                url: '{{ url('delete-umh') }}',
+                url: '{{ url('delete-pn') }}',
                 method: 'POST',
                 data: {
                   _token: '{{ csrf_token() }}',
@@ -382,7 +300,7 @@ document.getElementById('searchp').addEventListener('input', function() {
                   });
       
                   setTimeout(function () {
-                    window.location.href = '{{ url('umh') }}';
+                    window.location.href = '{{ url('proses_nariyuki') }}';
                   }, 2000);
                 },
                 error: function (error) {
@@ -409,12 +327,18 @@ document.getElementById('searchp').addEventListener('input', function() {
       if (selectedCheckboxes.length === 1) {
         const selectedId = selectedCheckboxes[0].getAttribute('data-id');
         const month = document.querySelector(`#tr_${selectedId} td:nth-child(3)`).textContent;
-        const umh = document.querySelector(`#tr_${selectedId} td:nth-child(4)`).textContent;
-        const amount = document.querySelector(`#tr_${selectedId} td:nth-child(5)`).textContent;
-        const new_umh = document.querySelector(`#tr_${selectedId} td:nth-child(6)`).textContent;
-        const new_amount = document.querySelector(`#tr_${selectedId} td:nth-child(7)`).textContent;
+        const section = document.querySelector(`#tr_${selectedId} td:nth-child(4)`).textContent;
+        const kode_budget = document.querySelector(`#tr_${selectedId} td:nth-child(5)`).textContent;
+        const fixed = document.querySelector(`#tr_${selectedId} td:nth-child(6)`).textContent;
+        const umh = document.querySelector(`#tr_${selectedId} td:nth-child(7)`).textContent;
+        const amount = document.querySelector(`#tr_${selectedId} td:nth-child(8)`).textContent;
+        const new_umh = document.querySelector(`#tr_${selectedId} td:nth-child(9)`).textContent;
+        const new_amount = document.querySelector(`#tr_${selectedId} td:nth-child(10)`).textContent;
 
         document.querySelector('#editMonth').value = month;
+        document.querySelector('#editSection').value = month;
+        document.querySelector('#editKodeBudget').value = month;
+        document.querySelector('#editFixed').value = month;
         document.querySelector('#editUMH').value = umh;
         document.querySelector('#editAmount').value = amount;
         document.querySelector('#editNewUMH').value = new_umh;
@@ -440,6 +364,9 @@ document.getElementById('searchp').addEventListener('input', function() {
     }
     function saveChanges() {
         const month = document.querySelector('#editMonth').value;
+        const section = document.querySelector('#editSection').value;
+        const kode_budget = document.querySelector('#editKodeBudget').value;
+        const fixed = document.querySelector('#editFixed').value;
         const umh = document.querySelector('#editUMH').value;
         const amount = document.querySelector('#editAmount').value;
         const new_umh = document.querySelector('#editNewUMH').value;
@@ -451,10 +378,13 @@ document.getElementById('searchp').addEventListener('input', function() {
             const selectedId = selectedCheckboxes[0].getAttribute('data-id');
     
             $.ajax({
-                url: '{{ url('update-umh') }}/' + selectedId,
+                url: '{{ url('update-pn') }}/' + selectedId,
                 method: 'POST',
                 data: {
                     month: month,
+                    section: section,
+                    kode_budget: kode_budget,
+                    fixed: fixed,
                     umh: umh,
                     amount: amount,
                     new_umh: new_umh,
@@ -472,7 +402,7 @@ document.getElementById('searchp').addEventListener('input', function() {
                     });
     
                     setTimeout(function () {
-                        window.location.href = '{{ url('umh') }}/';
+                        window.location.href = '{{ url('proses_nariyuki') }}/';
                     }, 2000);
                 },
                 error: function (error) {
@@ -489,7 +419,7 @@ document.getElementById('searchp').addEventListener('input', function() {
 </script>
 
 <script>
-    document.getElementById('reset-umh-button').addEventListener('click', function () {
+    document.getElementById('reset-pn-button').addEventListener('click', function () {
         $('#confirmResetModal').modal('show');
     });
 
@@ -497,8 +427,8 @@ document.getElementById('searchp').addEventListener('input', function() {
         // Tutup modal konfirmasi
         $('#confirmResetModal').modal('hide');
 
-        // Kirim permintaan ke rute 'reset_umh' menggunakan fetch
-        fetch('{{ route('reset_umh') }}', {
+        // Kirim permintaan ke rute 'reset_pn' menggunakan fetch
+        fetch('{{ route('reset_pn') }}', {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
