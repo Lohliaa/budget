@@ -10,10 +10,10 @@ Halaman Utama
 <body>
     <div class="card shadow mb-4">
         <div class="card-header py-3" style="display: flex; justify-content: space-between; align-items: center;">
-            <h6 class="m-0 font-weight-bold text-primary">Note</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Halaman Utama</h6>
         </div>
         <div class="row justify-content-between" style="align-items: center;">
-            <div class="form-group col-md-8" style="margin-left: 12px">
+            <div class="form-group col-md-7" style="margin-left: 12px">
                 <a href="{{ url('home') }}" class="btn btn-success ml-2 mt-3" style="height: 40px;"><i
                         class="bi bi-arrow-clockwise" style="font-size: 20px;"></i></a>
 
@@ -23,6 +23,10 @@ Halaman Utama
                     <i class="bi bi-plus"
                         style="margin-top:3px; font-size: 2rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></i>
                 </button>
+
+                <!-- Tombol Hapus -->
+                <button type="button" class="btn btn-danger mt-3" id="deleteButton" onclick="handleDeleteClick()"
+                    disabled><i class="bi bi-trash3"></i></button>
 
                 <!-- Modal adding data -->
                 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
@@ -323,7 +327,16 @@ Halaman Utama
                 </div>
 
                 <!-- Export Excel -->
-                <a href="{{ url('export_excel') }}" class="btn btn-info mt-3" style="height: 40px;">Download</a>
+                {{-- <a href="{{ url('downloadFilteredData') }}" class="btn btn-info mt-3"
+                    style="height: 40px;">Download</a> --}}
+
+                <button onclick="exportData()" type="button" class="btn btn-info mt-3">
+                    <span>Download</span>
+                </button>
+                <form id="exportForm" action="{{ route('downloadFilteredData') }}" method="GET" style="display: none;">
+                    @csrf
+                    <input type="hidden" id="sectionExport" name="section">
+                </form>
 
                 <button id="reset-home-button" class="btn btn-danger mt-3">Reset</button>
 
@@ -624,14 +637,38 @@ Halaman Utama
                     </div>
                 </div>
 
-                <!-- Tombol Hapus -->
-                <button type="button" class="btn btn-danger mt-3" id="deleteButton" onclick="handleDeleteClick()"
-                    disabled>Hapus</button>
-
             </div>
 
-            <div class="input-group col-md-3 mr-4 mt-1">
+            <div class="input-group col-md-4 mr-4 mt-1">
 
+                @if(auth()->user()->role === 'Admin')
+                <form method="post" action="{{ route('filterBySection') }}" id="filterForm">
+                    @csrf
+                    <div class="dropdown mr-2 custom-dropdown-width">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Report
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                            @foreach($section as $sectionItem)
+                            @if(auth()->user()->role === 'Admin' || auth()->user()->role === $sectionItem->section)
+                            <li>
+                                <div class="form-check" style="width:250px;">
+                                    <input class="form-check-input" type="checkbox" style="width:20px;"
+                                        value="{{ $sectionItem->section }}" id="sectionCheckbox{{ $loop->index }}"
+                                        name="sections[]">
+                                    <label class="form-check-label" for="sectionCheckbox{{ $loop->index }}">
+                                        {{ $sectionItem->section }}
+                                    </label>
+                                </div>
+                            </li>
+                            @endif
+                            @endforeach
+                        </ul>
+                    </div>
+                </form>
+                @endif
+                
                 <!-- Dropdown untuk memilih tahun -->
                 <div class="dropdown mr-2">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
@@ -639,155 +676,207 @@ Halaman Utama
                         Tahun
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                        @foreach($tahun as $year)
+                        @php
+                        // Mengurutkan array tahun secara ascending
+                        $sortedYears = $tahun->sortBy('tahun');
+                        @endphp
+
+                        @foreach($sortedYears as $year)
                         <li>
-                            <a class="dropdown-item" href="{{ route('filterByYear', $year->tahun) }}">{{ $year->tahun
-                                }}</a>
+                            <a class="dropdown-item" href="{{ route('filterByYear', $year->tahun) }}">
+                                {{ $year->tahun }}
+                            </a>
                         </li>
                         @endforeach
                     </ul>
                 </div>
+
                 <input type="text" name="search" style="height: 2.4rem; font-size: 12pt; margin-top: 0.10rem;"
                     id="searchp" class="form-control input-text" placeholder="Cari disini ..."
                     aria-label="Recipient's username" aria-describedby="basic-addon2">
-
-                {{-- <input type="text" class="form-control" aria-label="Text input with dropdown button">
-                <div class="dropdown">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <select class="form-select" id="dropdown-select">
-                            @foreach($kode_budget->unique('name') as $item)
-                            <option value="{{ $item->name }}">{{ $item->name }}</option>
-                            @endforeach
-                        </select>
-                    </ul>
-                </div> --}}
             </div>
         </div>
 
-        <div class="card-body pt-0">
-            <div class="table-responsive">
-                <table class="table table-striped" id="homeTableBody">
-                    <thead style="background-color: #263a74; color:white; position: sticky; top: 0;">
-                        <tr>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;"></td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">No</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Section</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Code</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Name</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Kode Budget</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">CUR</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Fixed/Variabel</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Prep/Masspro</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Kode Carline</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Remark</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Jul</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Jul</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Jul</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Aug</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Aug</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Aug</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Sep</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Sep</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Sep</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Okt</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Okt</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Okt</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Nov</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Nov</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Nov</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Dec</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Dec</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Dec</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Jan</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Jan</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Jan</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Feb</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Feb</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Feb</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Mar</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Mar</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Mar</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Apr</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Apr</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Apr</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty May</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price May</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount May</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Jun</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Jun</td>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Jun</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $no=1 ?>
-                        @foreach ($filteredData as $h)
-                        <tr id="tr_{{ $h->id }}">
-                            <td><input type="checkbox" class="sub_chk" data-id="{{$h->id}}"
-                                    onclick="handleCheckboxChange({{ $h->id }})"></td>
-                            <td>{{$no++}}</td>
-                            {{-- <td>
-                                @if(Auth::user()->role === 'Admin')
-                                {{ $h->section }}
-                                @else
-                                {{ Auth::user()->role }}
-                                @endif
-                            </td> --}}
-                            <td>{{ $h->section }}</td>
-                            <td>{{ $h->code }}</td>
-                            <td>{{ $h->nama }}</td>
-                            <td>{{ $h->kode_budget }}</td>
-                            <td>{{ $h->cur }}</td>
-                            <td>{{ $h->fixed }}</td>
-                            <td>{{ $h->prep }}</td>
-                            <td>{{ $h->kode_carline }}</td>
-                            <td>{{ $h->remark }}</td>
-                            <td>{{ $h->qty_jul }}</td>
-                            <td>{{ $h->price_jul }}</td>
-                            <td>{{ $h->amount_jul }}</td>
-                            <td>{{ $h->qty_aug }}</td>
-                            <td>{{ $h->price_aug }}</td>
-                            <td>{{ $h->amount_aug }}</td>
-                            <td>{{ $h->qty_sep }}</td>
-                            <td>{{ $h->price_sep }}</td>
-                            <td>{{ $h->amount_sep }}</td>
-                            <td>{{ $h->qty_okt }}</td>
-                            <td>{{ $h->price_okt }}</td>
-                            <td>{{ $h->amount_okt }}</td>
-                            <td>{{ $h->qty_nov }}</td>
-                            <td>{{ $h->price_nov }}</td>
-                            <td>{{ $h->amount_nov }}</td>
-                            <td>{{ $h->qty_dec }}</td>
-                            <td>{{ $h->price_dec }}</td>
-                            <td>{{ $h->amount_dec }}</td>
-                            <td>{{ $h->qty_jan }}</td>
-                            <td>{{ $h->price_jan }}</td>
-                            <td>{{ $h->amount_jan }}</td>
-                            <td>{{ $h->qty_feb }}</td>
-                            <td>{{ $h->price_feb }}</td>
-                            <td>{{ $h->amount_feb }}</td>
-                            <td>{{ $h->qty_mar }}</td>
-                            <td>{{ $h->price_mar }}</td>
-                            <td>{{ $h->amount_mar }}</td>
-                            <td>{{ $h->qty_apr }}</td>
-                            <td>{{ $h->price_apr }}</td>
-                            <td>{{ $h->amount_apr }}</td>
-                            <td>{{ $h->qty_may }}</td>
-                            <td>{{ $h->price_may }}</td>
-                            <td>{{ $h->amount_may }}</td>
-                            <td>{{ $h->qty_jun }}</td>
-                            <td>{{ $h->price_jun }}</td>
-                            <td>{{ $h->amount_jun }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+        <div id="filtered-data-container">
+            <div class="card-body pt-0">
+                <div class="table-responsive">
+                    <table class="table table-striped" id="homeTableBody">
+                        <thead style="background-color: #263a74; color:white; position: sticky; top: 0;">
+                            <tr>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;"></td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">No</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Section</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Code</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Name</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Kode Budget</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">CUR</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Fixed/Variabel</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Prep/Masspro</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Kode Carline</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Remark</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Jul</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Jul</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Jul</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Aug</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Aug</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Aug</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Sep</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Sep</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Sep</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Okt</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Okt</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Okt</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Nov</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Nov</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Nov</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Dec</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Dec</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Dec</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Jan</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Jan</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Jan</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Feb</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Feb</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Feb</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Mar</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Mar</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Mar</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Apr</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Apr</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Apr</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty May</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price May</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount May</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Jun</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Jun</td>
+                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Jun</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $no=1 ?>
+                            @foreach ($home as $h)
+                            <tr id="tr_{{ $h->id }}">
+                                <td><input type="checkbox" class="sub_chk" data-id="{{$h->id}}"
+                                        onclick="handleCheckboxChange({{ $h->id }})"></td>
+                                <td>{{$no++}}</td>
+
+                                <td>{{ $h->section }}</td>
+                                <td>{{ $h->code }}</td>
+                                <td>{{ $h->nama }}</td>
+                                <td>{{ $h->kode_budget }}</td>
+                                <td>{{ $h->cur }}</td>
+                                <td>{{ $h->fixed }}</td>
+                                <td>{{ $h->prep }}</td>
+                                <td>{{ $h->kode_carline }}</td>
+                                <td>{{ $h->remark }}</td>
+                                <td>{{ $h->qty_jul }}</td>
+                                <td>{{ $h->price_jul }}</td>
+                                <td>{{ $h->amount_jul }}</td>
+                                <td>{{ $h->qty_aug }}</td>
+                                <td>{{ $h->price_aug }}</td>
+                                <td>{{ $h->amount_aug }}</td>
+                                <td>{{ $h->qty_sep }}</td>
+                                <td>{{ $h->price_sep }}</td>
+                                <td>{{ $h->amount_sep }}</td>
+                                <td>{{ $h->qty_okt }}</td>
+                                <td>{{ $h->price_okt }}</td>
+                                <td>{{ $h->amount_okt }}</td>
+                                <td>{{ $h->qty_nov }}</td>
+                                <td>{{ $h->price_nov }}</td>
+                                <td>{{ $h->amount_nov }}</td>
+                                <td>{{ $h->qty_dec }}</td>
+                                <td>{{ $h->price_dec }}</td>
+                                <td>{{ $h->amount_dec }}</td>
+                                <td>{{ $h->qty_jan }}</td>
+                                <td>{{ $h->price_jan }}</td>
+                                <td>{{ $h->amount_jan }}</td>
+                                <td>{{ $h->qty_feb }}</td>
+                                <td>{{ $h->price_feb }}</td>
+                                <td>{{ $h->amount_feb }}</td>
+                                <td>{{ $h->qty_mar }}</td>
+                                <td>{{ $h->price_mar }}</td>
+                                <td>{{ $h->amount_mar }}</td>
+                                <td>{{ $h->qty_apr }}</td>
+                                <td>{{ $h->price_apr }}</td>
+                                <td>{{ $h->amount_apr }}</td>
+                                <td>{{ $h->qty_may }}</td>
+                                <td>{{ $h->price_may }}</td>
+                                <td>{{ $h->amount_may }}</td>
+                                <td>{{ $h->qty_jun }}</td>
+                                <td>{{ $h->price_jun }}</td>
+                                <td>{{ $h->amount_jun }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </body>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Handle checkbox change event
+        $('input[name="sections[]"]').change(function() {
+            // Collect selected sections
+            var selectedSections = $('input[name="sections[]"]:checked').map(function() {
+                return this.value;
+            }).get();
+    
+            // Send AJAX request to server only if there are selected sections
+            if (selectedSections.length > 0) {
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route("filterBySection") }}',
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        "sections": selectedSections
+                    },
+                    success: function(data) {
+                        // Update the content of your view with the filtered data
+                        $('#filtered-data-container').html(data);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            } else {
+                // If no checkbox is selected, reset to the original state (load all data)
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ route("loadOriginalData") }}',
+                    success: function(data) {
+                        $('#filtered-data-container').html(data);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+        });
+    
+    });
+    function exportData() {
+        const selectedSections = $('input[name="sections[]"]:checked').map(function() {
+            return this.value;
+        }).get();
+    
+        // Create a form dynamically to send the selected sections for export
+        var exportForm = $('<form action="{{ route("downloadFilteredData") }}" method="post"></form>');
+        exportForm.append('<input type="hidden" name="_token" value="{{ csrf_token() }}" />');
+        for (var i = 0; i < selectedSections.length; i++) {
+            exportForm.append('<input type="hidden" name="sections[]" value="' + selectedSections[i] + '" />');
+        }
+    
+        // Append the form to the body and submit it
+        $('body').append(exportForm);
+        exportForm.submit();
+    }
+    
+    
+</script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>

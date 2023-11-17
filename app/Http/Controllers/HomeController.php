@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\HomeExport;
+use App\Exports\HomeFilterExport;
 use App\Imports\HomeImport;
 use App\Models\Carline;
 use App\Models\Cost;
@@ -13,6 +14,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -28,58 +30,24 @@ class HomeController extends Controller
         set_time_limit(0);
         $role = Auth::user()->role;
         $user = User::all();
-        $home = null;
-    
-        if ($role === 'Admin') {
-            $home = Home::orderBy('id', 'asc')->get();
-        } else {
-            $home = Home::where('section', $role)->orderBy('id', 'asc')->paginate(10000);
-        }
-    
-        $count = $home->count();
-        $data = $home->all();
-        $master_barang = MasterBarang::all();
-        $kode_budget = KodeBudget::all();
-        $carline = Carline::all();
-        $cost = Cost::all();
-    
+
         $currentYear = Carbon::now()->year;
-    
-        // Filter data based on the role, if not an admin
+
         if ($role !== 'Admin') {
-            $filteredData = Home::where('section', $role)->whereYear('created_at', $currentYear)->get();
+            $home = Home::where('section', $role)->whereYear('created_at', $currentYear)->get();
         } else {
-            $filteredData = Home::whereYear('created_at', $currentYear)->get();
-        }
-    
-        $tahun = Home::select('tahun')->distinct()->get();
-    
-        return view('home', compact('home', 'filteredData', 'count', 'data', 'master_barang', 'kode_budget', 'carline', 'cost', 'user', 'tahun'));
-    }
-    
-
-    public function getDataTahun()
-    {
-        set_time_limit(0);
-        $role = Auth::user()->role;
-        $user = User::all();
-        $home = null;
-
-        if ($role === 'Admin') {
-            $home = Home::orderBy('id', 'asc')->get();
-        } else {
-            $home = Home::where('section', $role)->orderBy('id', 'asc')->paginate(10000);
+            $home = Home::whereYear('created_at', $currentYear)->get();
         }
 
-        $count = $home->count();
-        $data = $home->all();
         $master_barang = MasterBarang::all();
         $kode_budget = KodeBudget::all();
         $carline = Carline::all();
         $cost = Cost::all();
-        $tahun = Home::select('tahun')->distinct()->get();
 
-        return view('home', ['tahun' => $tahun], compact('home', 'count', 'data', 'master_barang', 'kode_budget', 'carline', 'cost', 'user'));
+        $tahun = Home::select('tahun')->distinct()->get();
+        $section = Home::select('section')->distinct()->get();
+
+        return view('home', compact('home', 'master_barang', 'kode_budget', 'carline', 'cost', 'user', 'tahun', 'section'));
     }
 
     public function filterByYear($tahun)
@@ -88,30 +56,27 @@ class HomeController extends Controller
         $role = Auth::user()->role;
         $user = User::all();
         $home = null;
-    
+
         if ($role === 'Admin') {
             $home = Home::orderBy('id', 'asc')->get();
-            $filteredData = Home::where('tahun', $tahun)->get();
+            $home = Home::where('tahun', $tahun)->get();
         } else {
             $home = Home::where('section', $role)->orderBy('id', 'asc')->paginate(10000);
-            $filteredData = Home::where('tahun', $tahun)->where('section', $role)->get();
+            $home = Home::where('tahun', $tahun)->where('section', $role)->get();
         }
-    
-        $count = $home->count();
-        $data = $home->all();
+
         $master_barang = MasterBarang::all();
         $kode_budget = KodeBudget::all();
         $carline = Carline::all();
         $cost = Cost::all();
-    
+
+        $uniqueSection = Home::where('section', $role)->select('section')->distinct()->get();
         $uniqueYears = Home::where('section', $role)->select('tahun')->distinct()->get();
-    
+
         return view('home', [
             'home' => $home,
             'tahun' => $uniqueYears,
-            'filteredData' => $filteredData,
-            'count' => $count,
-            'data' => $data,
+            'section' => $uniqueSection,
             'master_barang' => $master_barang,
             'kode_budget' => $kode_budget,
             'carline' => $carline,
@@ -119,7 +84,62 @@ class HomeController extends Controller
             'user' => $user
         ]);
     }
-    
+
+    public function filterBySection(Request $request)
+    {
+        set_time_limit(0);
+        $role = Auth::user()->role;
+        $currentYear = Carbon::now()->year;
+
+        $selectedSections = $request->input('sections');
+
+        $homeQuery = Home::query();
+
+        if (!empty($selectedSections)) {
+            $homeQuery->whereIn('section', $selectedSections);
+        }
+
+        if ($role !== 'Admin') {
+            $homeQuery->where('section', $role);
+        }
+
+        $homeQuery->whereYear('created_at', $currentYear);
+
+        $home = $homeQuery->get();
+
+        $master_barang = MasterBarang::all();
+        $kode_budget = KodeBudget::all();
+        $carline = Carline::all();
+        $cost = Cost::all();
+        $tahun = Home::select('tahun')->distinct()->get();
+        $section = Home::select('section')->distinct()->get();
+
+        return view('partialhome', compact('home', 'cost', 'kode_budget', 'carline', 'master_barang', 'section', 'tahun'));
+    }
+
+
+    public function loadOriginalData(Request $request)
+    {
+        set_time_limit(0);
+
+        // Jika pengguna adalah admin, ambil semua data dari tabel Home
+        if (Auth::user()->role === 'Admin') {
+            $home = Home::all();
+        } else {
+            // Jika bukan admin, ambil data sesuai dengan peran pengguna
+            $home = Home::where('section', Auth::user()->role)->get();
+        }
+
+        // Load data lain yang mungkin diperlukan
+        $master_barang = MasterBarang::all();
+        $kode_budget = KodeBudget::all();
+        $carline = Carline::all();
+        $cost = Cost::all();
+        $tahun = Home::select('tahun')->distinct()->get();
+        $section = Home::select('section')->distinct()->get();
+
+        return view('partialhome', compact('home', 'cost', 'kode_budget', 'carline', 'master_barang', 'section', 'tahun'));
+    }
 
     public function searchHome(Request $request)
     {
@@ -181,13 +201,28 @@ class HomeController extends Controller
 
         return view('partialhome', ['home' => $home]);
     }
-    
-    public function export_excel(Request $request)
+
+    public function downloadFilteredData(Request $request)
     {
-        $year = $request->input('year'); // Misalnya, parameter tahun diperoleh dari permintaan HTTP
+        set_time_limit(0);
+        $sections = $request->input('sections');
+        $userRole = auth()->user()->role;
     
-        return Excel::download(new HomeExport($year), 'budget_' . $year . '.xlsx');
+        $query = Home::query();
+    
+        if ($userRole !== 'Admin') {
+            // If the user is not an admin, filter based on the user's role
+            $query->where('section', $userRole);
+        } elseif (!empty($sections)) {
+            // If the user is an admin and there are selected sections, apply the section filter
+            $query->whereIn('section', $sections);
+        }
+    
+        $sectionData = $query->get();
+    
+        return Excel::download(new HomeFilterExport($sectionData), 'Filter Section.xlsx');
     }
+    
     
 
     public function import_excel_home(Request $request)
@@ -209,7 +244,7 @@ class HomeController extends Controller
 
         return back()->with('success', "Data berhasil diimport!");
     }
-   
+
     public function create()
     {
         return view('home.create');
