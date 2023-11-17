@@ -23,7 +23,7 @@ class ProsesNariyukiController extends Controller
     {
         set_time_limit(0);
         $role = auth()->user()->role;
-        // dd($role);
+
         if ($role === 'Admin') {
             $dataHome = DB::table('home')
                 ->select(
@@ -93,13 +93,14 @@ class ProsesNariyukiController extends Controller
                 ->get();
         }
 
-        if (auth()->user()->role === 'admin') {
+        if (auth()->user()->role === 'Admin') {
             ProsesNariyuki::truncate();
         } else {
             ProsesNariyuki::where('section', auth()->user()->role)->delete();
         }
-        
+
         foreach ($dataHome as $data) {
+            $totalAmountPerMonth = [];
             foreach (['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'] as $month) {
                 $qtyColumn = 'qty_' . $month;
                 $amountColumn = 'amount_' . $month;
@@ -110,14 +111,16 @@ class ProsesNariyukiController extends Controller
                         ->where('month', $month)
                         ->value('umh');
 
+                    // Query untuk menghitung total amount per bulan
                     $totalAmountQuery = DB::table('home')
-                        ->where('kode_budget', $data->kode_budget);
+                        ->select('kode_budget', 'section', DB::raw("SUM($amountColumn) as total_amount"))
+                        ->where('kode_budget', $data->kode_budget)
+                        ->where('section', $data->section)
+                        ->groupBy('kode_budget', 'section');
 
-                    if ($role === 'Admin') {
-                        $totalAmountQuery->where('section', $data->section);
-                    }
-
-                    $totalAmount = $totalAmountQuery->sum($amountColumn);
+                    // Eksekusi query dan simpan hasilnya ke dalam array
+                    $totalAmountResult = $totalAmountQuery->first();
+                    $totalAmountPerMonth[$month] = $totalAmountResult->total_amount;
 
                     $new_umhValue = DB::table('umh')
                         ->where('month', $month)
@@ -130,19 +133,19 @@ class ProsesNariyukiController extends Controller
                             'fixed' => $data->fixed,
                             'month' => $month,
                             'umh' => $umhValue,
-                            'amount' => $totalAmount,
+                            'amount' => $totalAmountPerMonth[$month],
                             'new_umh' => $new_umhValue,
-                            'new_amount' => ($new_umhValue * $totalAmount) / $umhValue
+                            'new_amount' => ($new_umhValue * $totalAmountPerMonth[$month]) / $umhValue
                         ]
                     );
                 }
             }
         }
 
-        if($role === 'Admin'){
+        if ($role === 'Admin') {
             $prosesNariyuki = ProsesNariyuki::all();
         } else {
-        $prosesNariyuki = ProsesNariyuki::where('section', $role)->get();
+            $prosesNariyuki = ProsesNariyuki::where('section', $role)->get();
         }
 
         $count = $prosesNariyuki->count();
@@ -180,22 +183,11 @@ class ProsesNariyukiController extends Controller
         return Excel::download(new ProsesNariyukiExport, 'Summary Nariyuki.xlsx');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('proses_nariyuki.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $request->validate([

@@ -5,12 +5,13 @@ namespace App\Exports;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class ProsesNariyukiExport implements FromCollection, WithHeadings, WithStyles
+class ProsesNariyukiExport implements FromCollection, WithHeadings, WithStyles, ShouldAutoSize
 {
     public function collection()
     {

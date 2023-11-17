@@ -1,21 +1,21 @@
 <table class="table table-striped">
     <thead style="background-color: #263a74; color:white; position: sticky; top: 0;">
         <tr>
-            <th scope="col"></th>
-            <th scope="col">No</th>
-            <th scope="col">Month</th>
-            <th scope="col">Section</th>
-            <th scope="col">Kode Budget</th>
-            <th scope="col">Fixed/Variabel</th>
-            <th scope="col">Umh</th>
-            <th scope="col">Amount</th>
-            <th scope="col">New Umh</th>
-            <th scope="col">New Amount</th>
+            <td colspan="0" rowspan="3" style="vertical-align: middle;"></td>
+            <td colspan="0" rowspan="3" style="vertical-align: middle;">No</td>
+            <td colspan="0" rowspan="3" style="vertical-align: middle;">Month</td>
+            <td colspan="0" rowspan="3" style="vertical-align: middle;">Section</td>
+            <td colspan="0" rowspan="3" style="vertical-align: middle;">Kode Budget</td>
+            <td colspan="0" rowspan="3" style="vertical-align: middle;">Fixed/Variabel</td>
+            <td colspan="0" rowspan="3" style="vertical-align: middle;">Umh</td>
+            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount</td>
+            <td colspan="0" rowspan="3" style="vertical-align: middle;">New Umh</td>
+            <td colspan="0" rowspan="3" style="vertical-align: middle;">New Amount</td>
         </tr>
     </thead>
     <tbody>
         <?php $no=1 ?>
-        @foreach ($umh as $u)
+        @foreach ($prosesNariyuki as $u)
         <tr id="tr_{{ $u->id }}">
             <td><input type="checkbox" class="sub_chk" data-id="{{$u->id}}"
                     onclick="handleCheckboxChange({{ $u->id }})"></td>
@@ -24,10 +24,10 @@
             <td>{{ $u->section }}</td>
             <td>{{ $u->kode_budget }}</td>
             <td>{{ $u->fixed }}</td>
-            <td>{{ $u->umh }}</td>
-            <td>{{ $u->amount }}</td>
-            <td>{{ $u->new_umh }}</td>
-            <td>{{ $u->new_amount }}</td>
+            <td>{{ number_format($u->umh, 4) }}</td>
+            <td>{{ number_format($u->amount, 4) }}</td>
+            <td>{{ number_format($u->new_umh, 4) }}</td>
+            <td>{{ number_format($u->new_amount, 4) }}</td>
         </tr>
         @endforeach
     </tbody>
