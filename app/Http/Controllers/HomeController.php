@@ -117,20 +117,16 @@ class HomeController extends Controller
         return view('partialhome', compact('home', 'cost', 'kode_budget', 'carline', 'master_barang', 'section', 'tahun'));
     }
 
-
     public function loadOriginalData(Request $request)
     {
         set_time_limit(0);
 
-        // Jika pengguna adalah admin, ambil semua data dari tabel Home
         if (Auth::user()->role === 'Admin') {
             $home = Home::all();
         } else {
-            // Jika bukan admin, ambil data sesuai dengan peran pengguna
             $home = Home::where('section', Auth::user()->role)->get();
         }
 
-        // Load data lain yang mungkin diperlukan
         $master_barang = MasterBarang::all();
         $kode_budget = KodeBudget::all();
         $carline = Carline::all();
@@ -206,18 +202,21 @@ class HomeController extends Controller
     {
         set_time_limit(0);
         $sections = $request->input('sections');
-        
+
         $query = Home::query();
-    
-        if (!empty($sections)) {
-            $query->whereIn('section', $sections);
+
+        if (Auth::user()->role === 'Admin') {
+            if (!empty($sections)) {
+                $query->whereIn('section', $sections);
+            }
+        } else {
+            $query->where('section', Auth::user()->role);
         }
-    
+
         $sectionData = $query->get();
 
         return Excel::download(new HomeFilterExport($sectionData), 'Detail Section.xlsx');
     }
-    
 
     public function import_excel_home(Request $request)
     {

@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Exports\ProsesNariyukiExport;
+use App\Models\Carline;
+use App\Models\Cost;
 use App\Models\Home;
+use App\Models\KodeBudget;
+use App\Models\MasterBarang;
 use App\Models\ProsesNariyuki;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -22,6 +27,7 @@ class ProsesNariyukiController extends Controller
         if ($role === 'Admin') {
             $dataHome = DB::table('home')
                 ->select(
+                    'tahun',
                     'section',
                     'kode_budget',
                     'fixed',
@@ -55,6 +61,7 @@ class ProsesNariyukiController extends Controller
         } else {
             $dataHome = DB::table('home')
                 ->select(
+                    'tahun',
                     'section',
                     'kode_budget',
                     'fixed',
@@ -106,14 +113,13 @@ class ProsesNariyukiController extends Controller
                         ->where('month', $month)
                         ->value('umh');
 
-                    // Query untuk menghitung total amount per bulan
                     $totalAmountQuery = DB::table('home')
-                        ->select('kode_budget', 'section', DB::raw("SUM($amountColumn) as total_amount"))
+                        ->select('kode_budget', 'section', 'tahun', DB::raw("SUM($amountColumn) as total_amount"))
                         ->where('kode_budget', $data->kode_budget)
                         ->where('section', $data->section)
-                        ->groupBy('kode_budget', 'section');
+                        ->where('tahun', $data->tahun)
+                        ->groupBy('kode_budget', 'section', 'tahun');
 
-                    // Eksekusi query dan simpan hasilnya ke dalam array
                     $totalAmountResult = $totalAmountQuery->first();
                     $totalAmountPerMonth[$month] = $totalAmountResult->total_amount;
 
@@ -123,6 +129,7 @@ class ProsesNariyukiController extends Controller
 
                     ProsesNariyuki::updateOrInsert(
                         [
+                            'tahun' => $data->tahun,
                             'section' => $data->section,
                             'kode_budget' => $data->kode_budget,
                             'fixed' => $data->fixed,
@@ -145,8 +152,82 @@ class ProsesNariyukiController extends Controller
 
         $count = $prosesNariyuki->count();
         $data = $prosesNariyuki->all();
+        $section = ProsesNariyuki::select('section')->distinct()->get();
 
-        return view('proses_nariyuki.index', compact('count', 'prosesNariyuki', 'data'));
+        return view('proses_nariyuki.index', compact('count','section', 'prosesNariyuki', 'data'));
+    }
+
+    public function filterSection(Request $request)
+    {
+        set_time_limit(0);
+        $role = Auth::user()->role;
+        $currentYear = Carbon::now()->year;
+
+        $selectedSections = $request->input('sections');
+
+        $pnQuery = ProsesNariyuki::query();
+
+        if (!empty($selectedSections)) {
+            $pnQuery->whereIn('section', $selectedSections);
+        }   
+
+        if ($role !== 'Admin') {
+            $pnQuery->where('section', $role);
+        }
+
+        $pnQuery->whereYear('created_at', $currentYear);
+
+        $proses_nariyuki = $pnQuery->get();
+
+        $master_barang = MasterBarang::all();
+        $kode_budget = KodeBudget::all();
+        $carline = Carline::all();
+        $cost = Cost::all();
+        $prosesNariyuki = ProsesNariyuki::all();
+        $section = ProsesNariyuki::select('section')->distinct()->get();
+
+        return view('proses_nariyuki.partial.proses_nariyuki', compact('proses_nariyuki', 'cost', 'kode_budget', 'carline', 'master_barang', 'section'));
+    }
+
+    public function loadOriginal(Request $request)
+    {
+        set_time_limit(0);
+
+        if (Auth::user()->role === 'Admin') {
+            $proses_nariyuki = ProsesNariyuki::all();
+        } else {
+            $proses_nariyuki = ProsesNariyuki::where('section', Auth::user()->role)->get();
+        }
+
+        $master_barang = MasterBarang::all();
+        $kode_budget = KodeBudget::all();
+        $carline = Carline::all();
+        $cost = Cost::all();
+
+        $section = ProsesNariyuki::select('section')->distinct()->get();
+
+        return view('proses_nariyuki.partial.proses_nariyuki', compact('proses_nariyuki', 'cost', 'kode_budget', 'carline', 'master_barang', 'section', 'tahun'));
+    }
+
+    
+    public function downloadFiltered(Request $request)
+    {
+        set_time_limit(0);
+        $sections = $request->input('sections');
+
+        $query = ProsesNariyuki::query();
+
+        if (Auth::user()->role === 'Admin') {
+            if (!empty($sections)) {
+                $query->whereIn('section', $sections);
+            }
+        } else {
+            $query->where('section', Auth::user()->role);
+        }
+
+        $sectionData = $query->get();
+
+        return Excel::download(new ProsesNariyukiExport($sectionData), 'Nariyuki.xlsx');
     }
 
     public function searchProses(Request $request)

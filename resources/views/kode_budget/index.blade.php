@@ -14,7 +14,8 @@ Kode Budget
         <div class="row justify-content-between" style="align-items: center;">
             <div class="form-group col-md-6" style="margin-left: 12px">
 
-                <a href="{{ url('kode_budget') }}" class="btn btn-success mt-3" style="height: 40px;"><i class="bi bi-arrow-clockwise" style="font-size: 20px;"></i></a>
+                <a href="{{ url('kode_budget') }}" class="btn btn-success mt-3" style="height: 40px;"><i
+                        class="bi bi-arrow-clockwise" style="font-size: 20px;"></i></a>
 
                 <!-- Button modal -->
                 <button style="height: 38px; width: 45px; position: relative;" type="button"
@@ -82,8 +83,6 @@ Kode Budget
                         </div>
                     </div>
                 </div>
-
-                {{--  <a href="{{ url('kode_budget') }}" class="btn btn-success mt-3">Refresh</a>  --}}
 
                 <button id="reset-kb-button" class="btn btn-danger mt-3">Reset</button>
 
@@ -172,32 +171,33 @@ Kode Budget
                     id="searchp" class="form-control input-text" placeholder="Cari disini ..."
                     aria-label="Recipient's username" aria-describedby="basic-addon2">
             </div>
+        </div>
 
-            <div class="card-body pt-0">
-                <div class="table-responsive">
-                    <table class="table table-striped" id="kbTableBody">
-                        <thead style="background-color: #263a74; color:white; position: sticky; top: 0;">
-                            <tr>
-                                <th scope="col"></th>
-                                <th scope="col">No</th>
-                                <th scope="col">Kode Budget</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php $no=1 ?>
-                            @foreach ($kode_budget as $kb)
-                            <tr id="tr_{{ $kb->id }}">
-                                <td><input type="checkbox" class="sub_chk" data-id="{{$kb->id}}"
-                                        onclick="handleCheckboxChange({{ $kb->id }})"></td>
-                                <td>{{$no++}}</td>
-                                <td>{{ $kb->kode_budget }}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+        <div class="card-body pt-0">
+            <div class="table-responsive">
+                <table class="table table-striped" id="kbTableBody">
+                    <thead style="background-color: #263a74; color:white; position: sticky; top: 0;">
+                        <tr>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;"></td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">No</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Kode Budget</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $no=1 ?>
+                        @foreach ($kode_budget as $kb)
+                        <tr id="tr_{{ $kb->id }}">
+                            <td><input type="checkbox" class="sub_chk" data-id="{{$kb->id}}"
+                                    onclick="handleCheckboxChange({{ $kb->id }})"></td>
+                            <td>{{$no++}}</td>
+                            <td>{{ $kb->kode_budget }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
+    </div>
 </body>
 
 <script>

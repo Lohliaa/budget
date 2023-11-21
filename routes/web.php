@@ -34,9 +34,9 @@ Route::get('/', function () {
 });
 Auth::routes();
 
-    // REGISTER
-    Route::get('/register', [RegisterController::class, 'index']);
-    Route::post('/register', [RegisterController::class, 'store']);
+// REGISTER
+Route::get('/register', [RegisterController::class, 'index']);
+Route::post('/register', [RegisterController::class, 'store']);
 
 Route::group(['middleware' => ['web']], function () {
     // Halaman Utama
@@ -50,7 +50,7 @@ Route::group(['middleware' => ['web']], function () {
 
     // HOME
     Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('auth');
-    
+
     // Route::resource('/home', HomeController::class)->middleware('auth');
     Route::post('/import-excel-home', [HomeController::class, 'import_excel_home'])->name('import-excel-home');
     Route::post('reset_home', [HomeController::class, 'reset_home'])->name('reset_home');
@@ -132,38 +132,17 @@ Route::group(['middleware' => ['web']], function () {
     // Route::post('store', [ProsesNariyukiController::class, 'store'])->name('proses_nariyuki.store');
     Route::post('/add-pn', [ProsesNariyukiController::class, 'addPN']);
     Route::get('/export_pn', [ProsesNariyukiController::class, 'export_pn']);
+    Route::get('/downloadFiltered', [ProsesNariyukiController::class, 'downloadFiltered'])->name('downloadFiltered');
+    Route::post('/downloadFiltered', [ProsesNariyukiController::class, 'downloadFiltered'])->name('downloadFiltered');
+    Route::post('/filterSection', [ProsesNariyukiController::class, 'filterSection'])->name('filterSection');
+    Route::get('/loadOriginal', [ProsesNariyukiController::class, 'loadOriginal'])->name('loadOriginal');
 
-    // DATA EXCEL
-    Route::get('/excel-transaksi-pembelian', [TpembelianController::class, 'excel'])->name('excel-transaksi-pembelian')->middleware('auth');
-    Route::get('/excel-transaksi-pembelian-barang', [TpembelianbarangController::class, 'excel'])->name('excel-transaksi-pembelian-barang')->middleware('auth');
-    Route::get('/excel-master-barang', [MbarangController::class, 'excel'])->name('excel-master-barang')->middleware('checkRole:Admin');
-    Route::get('/excel-user', [UserController::class, 'excel'])->name('excel-user')->middleware('checkRole:Admin');
-    // DATA EXCEL
-
-    // DATA Print
-    Route::get('/print-transaksi-pembelian', [TpembelianController::class, 'print'])->name('print-transaksi-pembelian')->middleware('auth');
-    Route::get('/print-transaksi-pembelian-barang', [TpembelianbarangController::class, 'print'])->name('print-transaksi-pembelian-barang')->middleware('auth');
-    Route::get('/print-master-barang', [MbarangController::class, 'print'])->name('print-master-barang')->middleware('auth');
-    Route::get('/print-user', [UserController::class, 'print'])->name('print-user')->middleware('auth');
-    // DATA Print
-
-    // DATA PDF Detail
-    Route::get('/pdf-transaksi-pembelian-detail/{id}', [TpembelianController::class, 'pdf_detail'])->name('pdf-transaksi-pembelian-detail')->middleware('auth');
-    Route::get('/pdf-transaksi-pembelian-barang-detail/{id}', [TpembelianbarangController::class, 'pdf_detail'])->name('pdf-transaksi-pembelian-barang-detail')->middleware('auth');
-    Route::get('/pdf-master-barang-detail/{id}', [MbarangController::class, 'pdf_detail'])->name('pdf-master-barang-detail')->middleware('checkRole:Admin');
-    Route::get('/pdf-user-detail/{id}', [UserController::class, 'pdf_detail'])->name('pdf-master-barang-detail')->middleware('checkRole:Admin');
-    // DATA PDF Detail
-
-    // DATA Print Detail
-    Route::get('/print-transaksi-pembelian-detail/{id}', [TpembelianController::class, 'print_detail'])->name('print-transaksi-pembelian-detail')->middleware('auth');
-    Route::get('/print-transaksi-pembelian-barang-detail/{id}', [TpembelianbarangController::class, 'print_detail'])->name('print-transaksi-pembelian-barang-detail')->middleware('auth');
-    Route::get('/print-master-barang-detail/{id}', [MbarangController::class, 'print_detail'])->name('print-master-barang-detail')->middleware('checkRole:Admin');
-    Route::get('/print-user-detail/{id}', [UserController::class, 'print_detail'])->name('print-master-barang-detail')->middleware('checkRole:Admin');
-    // DATA Print Detail
-
-    // DATA Print Excel
-    Route::get('/pdf-transaksi-pembelian-detail/{id}', [TpembelianController::class, 'pdf_detail'])->name('pdf-transaksi-pembelian-detail')->middleware('auth');
-    Route::get('/pdf-transaksi-pembelian-barang-detail/{id}', [TpembelianbarangController::class, 'pdf_detail'])->name('pdf-transaksi-pembelian-barang-detail')->middleware('auth');
-    Route::get('/pdf-master-barang-detail/{id}', [MbarangController::class, 'pdf_detail'])->name('pdf-master-barang-detail')->middleware('checkRole:Admin');
-    Route::get('/pdf-user-detail/{id}', [UserController::class, 'pdf_detail'])->name('pdf-master-barang-detail')->middleware('checkRole:Admin');
+    // PROFILE
+    Route::resource('/profile', UserController::class)->middleware('auth');
+    Route::post('reset_profile', [UserController::class, 'reset_profile'])->name('reset_profile');
+    Route::get('edit_profile/{id}', [UserController::class, 'edit']);
+    Route::post('/update-profile/{id}', [UserController::class, 'update'])->name('update.profile');
+    Route::delete('/delete-profile',  [UserController::class, 'deleteItems'])->name('profile.delete');
+    Route::get('/search-profile', [UserController::class, 'searchProfile'])->name('search.profile');
+    Route::get('/cari', [UserController::class, 'cari'])->name('profile.cari');
 });

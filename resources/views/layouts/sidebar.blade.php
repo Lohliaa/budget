@@ -13,84 +13,36 @@
             <i class="fas fa-fw fa-home"></i>
             <span>Halaman Utama</span></a>
     </li>
-    @auth
-    <!-- Nav Item - Dashboard -->
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
     @if (Auth::user()->role === "Admin")
 
-    @endif
-
-
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-
-    <!-- Heading -->
-    {{-- <div class="sidebar-heading">
-        Interface
-    </div> --}}
-    {{--
-    @if (Auth::user()->role === "Admin" || Auth::user()->role === "Kasir")
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
-            aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Profile</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Custom Profile : </h6>
-                <a class="collapse-item" href="{{ url('profile/') }}">Profile</a>
-                <a class="collapse-item" href="{{ url('profile/show/') }}">Ubah Profile</a>
-            </div>
-        </div>
-    </li>
-    @endif --}}
-
-    {{-- @if (Auth::user()->role === "Admin")
-    <li class="nav-item">
-        <a class="nav-link" href="{{ url('user') }}">
-            <i class="fas fa-fw fa-users"></i>
-            <span>Data Pengguna</span></a>
-    </li>
-    @endif --}}
-
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-    {{--  @if (Auth::user()->role == "Admin" || Auth::user()->role == "Staff")  --}}
-    <!-- Heading -->
     <div class="sidebar-heading">
         Database
     </div>
-    @endif
-    {{--  @if (Auth::user()->role == "Admin" || Auth::user()->role == "Staff")  --}}
     <li class="nav-item">
         <a class="nav-link" href="{{ url('master_barang') }}">
             <i class="fas fa-fw fa-users"></i>
             <span>Master Barang</span></a>
     </li>
-    {{--  @endif  --}}
-
-    {{--  @if (Auth::user()->role == "Admin" || Auth::user()->role == "Staff")  --}}
     <li class="nav-item">
         <a class="nav-link" href="{{ url('cost') }}">
             <i class="fas fa-fw fa-users"></i>
             <span>Cost Center</span></a>
     </li>
-    {{--  @endif  --}}
-    {{--  @if (Auth::user()->role == "Admin" || Auth::user()->role == "Staff")  --}}
     <li class="nav-item">
         <a class="nav-link" href="{{ url('carline') }}">
             <i class="fas fa-fw fa-users"></i>
             <span>Carline</span></a>
     </li>
-    {{--  @endif  --}}
-    {{--  @if (Auth::user()->role == "Admin" || Auth::user()->role == "Staff")  --}}
     <li class="nav-item">
         <a class="nav-link" href="{{ url('kode_budget') }}">
             <i class="fas fa-fw fa-users"></i>
             <span>Kode Budget</span></a>
     </li>
-    {{--  @endif  --}}
-    {{--  @if (Auth::user()->role == "Admin" || Auth::user()->role == "Staff")  --}}
     <li class="nav-item">
         <a class="nav-link" href="{{ url('umh') }}">
             <i class="fas fa-fw fa-users"></i>
@@ -101,7 +53,21 @@
             <i class="fas fa-fw fa-users"></i>
             <span>Summary</span></a>
     </li>
-    {{--  @endif  --}}
+    @endif
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <div class="sidebar-heading">
+        Pengguna
+    </div>
+
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url('profile') }}">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Profile</span></a>
+    </li>
+
     <li class="nav-item">
         <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
         document.getElementById('logout-form').submit();">
@@ -112,10 +78,7 @@
             @csrf
         </form>
     </li>
-    {{--  @endauth  --}}
 
-    <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block">
 
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">

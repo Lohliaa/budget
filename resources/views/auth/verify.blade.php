@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('judul')
-Aplikasi Cek Harga
+Sobat Gula
 @endsection
 @section('judul_sub')
 Form Login

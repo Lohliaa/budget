@@ -21,15 +21,11 @@ class HomeFilterExport implements FromCollection, WithHeadings, WithStyles, Shou
         $this->data = $data;
     }
 
-    // public function collection()
-    // {
-    //     return collect($this->data);
-    // }
-
     public function collection()
     {
         $filteredData = $this->data->map(function ($item) {
             return [
+                'tahun' => $item['tahun'],
                 'section' => $item['section'],
                 'code' => $item['code'],
                 'nama' => $item['nama'],
@@ -84,6 +80,7 @@ class HomeFilterExport implements FromCollection, WithHeadings, WithStyles, Shou
     public function headings(): array
     {
         return [
+            'tahun',
             'section',
             'code',
             'nama',
@@ -167,6 +164,7 @@ class SheetDua implements FromCollection, WithHeadings, WithStyles, WithTitle, S
     {
         $filteredData = $this->data->map(function ($item) {
             return [
+                'tahun' => $item['tahun'],
                 'section' => $item['section'],
                 'code' => $item['code'],
                 'nama' => $item['nama'],
@@ -215,6 +213,7 @@ class SheetDua implements FromCollection, WithHeadings, WithStyles, WithTitle, S
     public function headings(): array
     {
         return [
+            'tahun',
             'section',
             'code',
             'nama',
@@ -283,6 +282,7 @@ class SheetTiga implements FromCollection, WithHeadings, WithStyles, WithTitle, 
     {
         $filteredData = $this->data->map(function ($item) {
             return [
+                'tahun' => $item['tahun'],
                 'section' => $item['section'],
                 'kode_budget' => $item['kode_budget'],
                 'qty_jul' => $item['qty_jul'],
@@ -330,6 +330,7 @@ class SheetTiga implements FromCollection, WithHeadings, WithStyles, WithTitle, 
     public function headings(): array
     {
         return [
+            'tahun',
             'section',
             'kode budget',
             'qty_jul',
@@ -397,6 +398,7 @@ class SheetEmpat implements FromCollection, WithHeadings, WithStyles, WithTitle,
     {
         $filteredData = $this->data->map(function ($item) {
             return [
+                'tahun' => $item['tahun'],
                 'section' => $item['section'],
                 'fixed' => $item['fixed'],
                 'qty_jul' => $item['qty_jul'],
@@ -444,6 +446,7 @@ class SheetEmpat implements FromCollection, WithHeadings, WithStyles, WithTitle,
     public function headings(): array
     {
         return [
+            'tahun',
             'section',
             'fixed/variabel',
             'qty_jul',
@@ -511,6 +514,7 @@ class SheetLima implements FromCollection, WithHeadings, WithStyles, WithTitle, 
     {
         $filteredData = $this->data->map(function ($item) {
             return [
+                'tahun' => $item['tahun'],
                 'section' => $item['section'],
                 'prep' => $item['prep'],
                 'kode_carline' => $item['kode_carline'],
@@ -559,6 +563,7 @@ class SheetLima implements FromCollection, WithHeadings, WithStyles, WithTitle, 
     public function headings(): array
     {
         return [
+            'tahun',
             'section',
             'prep/masspro',
             'kode carline',

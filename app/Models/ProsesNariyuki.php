@@ -11,6 +11,7 @@ class ProsesNariyuki extends Model
     protected $table = "proses_nariyuki";
     protected $primaryKey = 'id';
     protected $fillable = [
+        'tahun',
         'month',
         'section',
         'kode_budget',

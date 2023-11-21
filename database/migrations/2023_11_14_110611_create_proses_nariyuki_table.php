@@ -15,6 +15,7 @@ class CreateProsesNariyukiTable extends Migration
     {
         Schema::create('proses_nariyuki', function (Blueprint $table) {
             $table->id();
+            $table->string('tahun')->nullable();
             $table->string('month')->nullable();
             $table->string('section')->nullable();
             $table->string('kode_budget')->nullable();

@@ -13,43 +13,36 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class ProsesNariyukiExport implements FromCollection, WithHeadings, WithStyles, ShouldAutoSize
 {
+    protected $data;
+
+    public function __construct($data)
+    {
+        $this->data = $data;
+    }
+
     public function collection()
     {
-        $role = Auth::user()->role;
+        $filteredData = $this->data->map(function ($item) {
+            return [
+                'tahun' => $item['tahun'],
+                'month' => $item['month'],
+                'section' => $item['section'],
+                'kode_budget' => $item['kode_budget'],
+                'fixed' => $item['fixed'],
+                'umh' => $item['umh'],
+                'amount' => $item['amount'],
+                'new_umh' => $item['new_umh'],
+                'new_amount' => $item['new_amount'],
+            ];
+        });
 
-        if ($role === 'Admin'){
-            $type = DB::table('proses_nariyuki')->select(
-                'month',
-                'section',
-                'kode_budget',
-                'fixed',
-                'umh',
-                'amount',
-                'new_umh',
-                'new_amount',
-            )
-            ->get();
-        } else {
-            $type = DB::table('proses_nariyuki')->select(
-                'month',
-                'section',
-                'kode_budget',
-                'fixed',
-                'umh',
-                'amount',
-                'new_umh',
-                'new_amount',
-            )
-            ->where('section', $role)
-            ->get();
-        }
-
-        return $type;
+        return $filteredData;
     }
 
     public function headings(): array
     {
         return [
+            'tahun',
             'month',
             'section',
             'kode budget',

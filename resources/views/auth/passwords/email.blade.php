@@ -1,9 +1,9 @@
 @extends('layouts.app')
 @section('judul')
-Stock Control
+Sobat Gula
 @endsection
 @section('judul_sub')
-Form Login
+Form Reset
 @endsection
 @section('content')
 {{-- <div class="container">

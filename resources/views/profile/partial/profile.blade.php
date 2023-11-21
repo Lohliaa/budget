@@ -3,17 +3,21 @@
         <tr>
             <td colspan="0" rowspan="3" style="vertical-align: middle;"></td>
             <td colspan="0" rowspan="3" style="vertical-align: middle;">No</td>
-            <td colspan="0" rowspan="3" style="vertical-align: middle;">Kode Budget</td>
-</tr>
+            <td colspan="0" rowspan="3" style="vertical-align: middle;">Nama</td>
+            <td colspan="0" rowspan="3" style="vertical-align: middle;">Email</td>
+            <td colspan="0" rowspan="3" style="vertical-align: middle;">Status</td>
+        </tr>
     </thead>
     <tbody>
         <?php $no=1 ?>
-        @foreach ($kode_budget as $kb)
+        @foreach ($profile as $kb)
         <tr id="tr_{{ $kb->id }}">
             <td><input type="checkbox" class="sub_chk" data-id="{{$kb->id}}"
                     onclick="handleCheckboxChange({{ $kb->id }})"></td>
             <td>{{$no++}}</td>
-            <td>{{ $kb->kode_budget }}</td>
+            <td>{{ $kb->name }}</td>
+            <td>{{ $kb->email }}</td>
+            <td>{{ $kb->role }}</td>
         </tr>
         @endforeach
     </tbody>
