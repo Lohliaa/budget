@@ -48,16 +48,19 @@
             <i class="fas fa-fw fa-users"></i>
             <span>Nariyuki</span></a>
     </li>
+    @endif
+
+        
     <li class="nav-item">
         <a class="nav-link" href="{{ url('proses_nariyuki') }}">
             <i class="fas fa-fw fa-users"></i>
             <span>Summary</span></a>
     </li>
-    @endif
+
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
-
+    @if (Auth::user()->role === "Admin")
     <div class="sidebar-heading">
         Pengguna
     </div>
@@ -67,6 +70,7 @@
             <i class="fas fa-fw fa-users"></i>
             <span>Profile</span></a>
     </li>
+    @endif
 
     <li class="nav-item">
         <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();

@@ -43,7 +43,7 @@ Halaman Utama
                                 <!-- Form for adding data -->
                                 <form id="addForm">
                                     @csrf
-                           
+
                                     <div class="form-group">
                                         <label for="addSection">Section</label>
                                         <select class="form-control" id="addSection" name="section">
@@ -291,30 +291,33 @@ Halaman Utama
                     aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="uploadModalLabel">Unggah Data</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="fileUploadForm" enctype="multipart/form-data"
-                                    action="{{ route('import-excel-home') }}" method="POST">
-                                    @csrf
-                                    <div class="form-group">
-                                        <label for="tahun">Tahun</label>
-                                        <input type="text" class="form-control" id="tahun" name="tahun">
-                                    </div>
+                            <form id="fileUploadForm" enctype="multipart/form-data"
+                                action="{{ route('import-excel-home') }}" method="POST">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="uploadModalLabel">Unggah Data</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    {{-- <form id="fileUploadForm" enctype="multipart/form-data" --}} {{--
+                                        action="{{ route('import-excel-home') }}" method="POST"> --}}
+                                        @csrf
+                                        <div class="form-group">
+                                            <label for="tahun">Tahun</label>
+                                            <input type="text" class="form-control" id="tahun" name="tahun">
+                                        </div>
 
-                                    <input type="file" id="fileInput" name="file"
-                                        accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                                <button type="button" class="btn btn-primary"
-                                    onclick="document.getElementById('fileUploadForm').submit()">Unggah</button>
-                            </div>
+                                        <input type="file" id="fileInput" name="file"
+                                            accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                                        {{--
+                                    </form> --}}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                    <button type="submit" class="btn btn-primary">Unggah</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -660,26 +663,32 @@ Halaman Utama
                 @endif
 
                 <!-- Dropdown untuk memilih tahun -->
-                <div class="dropdown mr-2">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        Tahun
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                        @php
-                        // Mengurutkan array tahun secara ascending
-                        $sortedYears = $tahun->sortBy('tahun');
-                        @endphp
+                <form method="post" action="{{ route('filterByTahun') }}" id="filterForm">
+                    @csrf
+                    <div class="dropdown mr-2 custom-dropdown-width">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Tahun
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                            @foreach($tahun as $tahunItem)
+                            @if(auth()->user()->role === 'Admin' || auth()->user()->role === $tahunItem->tahun)
+                            <li>
+                                <div class="form-check" style="width:250px;">
+                                    <input class="form-check-input" type="checkbox" style="width:20px;"
+                                        value="{{ $tahunItem->tahun }}" id="tahunCheckbox{{ $loop->index }}"
+                                        name="tahun[]">
+                                    <label class="form-check-label" for="tahunCheckbox{{ $loop->index }}">
+                                        {{ $tahunItem->tahun }}
+                                    </label>
+                                </div>
+                            </li>
+                            @endif
+                            @endforeach
+                        </ul>
+                    </div>
+                </form>
 
-                        @foreach($sortedYears as $year)
-                        <li>
-                            <a class="dropdown-item" href="{{ route('filterByYear', $year->tahun) }}">
-                                {{ $year->tahun }}
-                            </a>
-                        </li>
-                        @endforeach
-                    </ul>
-                </div>
 
                 <input type="text" name="search" style="height: 2.4rem; font-size: 12pt; margin-top: 0.10rem;"
                     id="searchp" class="form-control input-text" placeholder="Cari disini ..."
@@ -847,20 +856,73 @@ Halaman Utama
         });
     
     });
+    $(document).ready(function() {
+        // Handle checkbox change event for tahun
+        $('input[name="tahun[]"]').change(function() {
+            // Collect selected tahun
+            var selectedYear = $('input[name="tahun[]"]:checked').map(function() {
+                return this.value;
+            }).get();
+
+            // Send AJAX request to server only if there are selected tahun
+            if (selectedYear.length > 0) {
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route("filterByTahun") }}',
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        "tahun": selectedYear
+                    },
+                    success: function(data) {
+                        // Update the content of your view with the filtered data
+                        $('#filtered-data-container').html(data);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            } else {
+                // If no checkbox is selected, reset to the original state (load all data)
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ route("loadOriginalData") }}',
+                    success: function(data) {
+                        $('#filtered-data-container').html(data);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+        });
+    });
+
     function exportData() {
         const selectedSections = $('input[name="sections[]"]:checked').map(function() {
             return this.value;
         }).get();
     
+        const selectedYear = $('input[name="tahun[]"]:checked').map(function() {
+            return this.value;
+        }).get();
+    
         var exportForm = $('<form action="{{ route("downloadFilteredData") }}" method="post"></form>');
         exportForm.append('<input type="hidden" name="_token" value="{{ csrf_token() }}" />');
+    
+        // Tambahkan input untuk setiap bagian yang dipilih
         for (var i = 0; i < selectedSections.length; i++) {
             exportForm.append('<input type="hidden" name="sections[]" value="' + selectedSections[i] + '" />');
         }
     
+        // Tambahkan input untuk setiap tahun yang dipilih
+        for (var j = 0; j < selectedYear.length; j++) {
+            exportForm.append('<input type="hidden" name="tahun[]" value="' + selectedYear[j] + '" />');
+        }
+    
         $('body').append(exportForm);
         exportForm.submit();
-    }    
+    }
+      
 </script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -946,7 +1008,6 @@ Halaman Utama
 </script>
 
 <script>
-    
     function searchHome() {
         const selected = document.getElementById('searchp').value;
     

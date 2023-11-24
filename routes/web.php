@@ -66,6 +66,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/filter/{tahun}', [HomeController::class, 'filterByYear'])->name('filterByYear');
     Route::get('/getMasterBarangName', [HomeController::class, 'getMasterBarangName']);
     Route::post('/filterBySection', [HomeController::class, 'filterBySection'])->name('filterBySection');
+    Route::post('/filterByTahun', [HomeController::class, 'filterBySection'])->name('filterByTahun');
     Route::get('/loadOriginalData', [HomeController::class, 'loadOriginalData'])->name('loadOriginalData');
 
     // MASTER BARANG

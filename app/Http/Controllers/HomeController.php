@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class HomeController extends Controller
 {
@@ -85,6 +86,38 @@ class HomeController extends Controller
         ]);
     }
 
+    // public function filterBySection(Request $request)
+    // {
+    //     set_time_limit(0);
+    //     $role = Auth::user()->role;
+    //     $currentYear = Carbon::now()->year;
+
+    //     $selectedSections = $request->input('sections');
+
+    //     $homeQuery = Home::query();
+
+    //     if (!empty($selectedSections)) {
+    //         $homeQuery->whereIn('section', $selectedSections);
+    //     }
+
+    //     if ($role !== 'Admin') {
+    //         $homeQuery->where('section', $role);
+    //     }
+
+    //     $homeQuery->whereYear('created_at', $currentYear);
+
+    //     $home = $homeQuery->get();
+
+    //     $master_barang = MasterBarang::all();
+    //     $kode_budget = KodeBudget::all();
+    //     $carline = Carline::all();
+    //     $cost = Cost::all();
+    //     $tahun = Home::select('tahun')->distinct()->get();
+    //     $section = Home::select('section')->distinct()->get();
+
+    //     return view('partialhome', compact('home', 'cost', 'kode_budget', 'carline', 'master_barang', 'section', 'tahun'));
+    // }
+
     public function filterBySection(Request $request)
     {
         set_time_limit(0);
@@ -92,6 +125,7 @@ class HomeController extends Controller
         $currentYear = Carbon::now()->year;
 
         $selectedSections = $request->input('sections');
+        $selectedYear = $request->input('tahun');
 
         $homeQuery = Home::query();
 
@@ -103,7 +137,9 @@ class HomeController extends Controller
             $homeQuery->where('section', $role);
         }
 
-        $homeQuery->whereYear('created_at', $currentYear);
+        if (!empty($selectedYear)) {
+            $homeQuery->whereIn('tahun', $selectedYear);
+        }
 
         $home = $homeQuery->get();
 
@@ -201,7 +237,9 @@ class HomeController extends Controller
     public function downloadFilteredData(Request $request)
     {
         set_time_limit(0);
+
         $sections = $request->input('sections');
+        $tahun = $request->input('tahun'); // Tambahkan baris ini untuk mendapatkan tahun dari permintaan
 
         $query = Home::query();
 
@@ -212,6 +250,13 @@ class HomeController extends Controller
         } else {
             $query->where('section', Auth::user()->role);
         }
+        if (Auth::user()->role === 'Admin') {
+            if (!empty($tahun)) {
+                $query->whereIn('tahun', $tahun);
+            }
+        } else {
+            $query->where('tahun', Auth::user()->role);
+        }
 
         $sectionData = $query->get();
 
@@ -220,23 +265,40 @@ class HomeController extends Controller
 
     public function import_excel_home(Request $request)
     {
-        set_time_limit(0);
+        $file = $request->file('file');
         $this->validate($request, [
             'file' => 'required|mimes:csv,xls,xlsx'
         ]);
-
-        $file = $request->file('file');
-
         $nama_file = rand() . $file->getClientOriginalName();
+        // Absensi::truncate();
 
         $path = $file->storeAs('public/excel/', $nama_file);
         $tahun = $request->input('tahun');
-        Excel::import(new HomeImport($tahun), storage_path('app/public/excel/' . $nama_file));
+        $import = new HomeImport($tahun);
+        Excel::import($import, $file);
+
+        // dd($import);
+        $errorMessages = [];
+        $i = "1";
+        foreach ($import->failures() as $failure) {
+            $error = $failure->errors();
+            $errorMessages[] = ($i++ . ". Kesalahan pada baris " . $failure->row() . ', ' . implode(", ", $error) . "<br>");
+        }
+        // dd($errorMessages);
+        if (!empty($errorMessages)) {
+            $error = implode(" ", $errorMessages);
+            Alert::html('<small>Impor Gagal</small>', '<small>Error pada: <br>' . $error, '</small> error')->width('575px');
+            return redirect()->back();
+        } else {
+            // Excel::import($import, $file);
+            Alert::success('Impor Berhasil', $nama_file . ' Berhasil diimpor');
+            return redirect()->back();
+        }
 
         Storage::delete($path);
-
-        return back()->with('success', "Data berhasil diimport!");
+        return redirect()->back();
     }
+
 
     public function create()
     {

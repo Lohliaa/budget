@@ -6,12 +6,34 @@ use App\Models\Home;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
+use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\SkipsFailures;
+use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithValidation;
+use Throwable;
 
-class HomeImport implements ToModel, WithHeadingRow, WithBatchInserts
+class HomeImport implements ToModel, WithHeadingRow, WithBatchInserts, WithValidation, SkipsOnFailure
 {
+    protected $errors = [];
+use Importable, SkipsFailures;
+    public function rules(): array
+    {
+        return [
+            'code' => [
+                'required',
+                Rule::exists('master_barang', 'code'),
+            ],
+            'nama' => [
+                'required',
+                Rule::exists('master_barang', 'name'),
+            ],
+        ];
+    }
+
     private $tahun;
 
     public function __construct($tahun)
@@ -79,6 +101,24 @@ class HomeImport implements ToModel, WithHeadingRow, WithBatchInserts
 
     public function batchSize(): int
     {
-        return 1000;
+        return 500;
+    }
+
+    public function onError(Throwable $e)
+    {
+        $this->errors[] = $e->getMessage();
+    }
+
+    public function getErrors(): array
+    {
+        return $this->errors;
+    }
+    public function withValidation($validator)
+    {
+        $validator->after(function ($validator) {
+            if ($validator->errors()->any()) {
+                $this->errors[] = $validator->errors()->all();
+            }
+        });
     }
 }
