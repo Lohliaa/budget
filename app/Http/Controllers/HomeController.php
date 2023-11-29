@@ -266,6 +266,7 @@ class HomeController extends Controller
     
     public function import_excel_home(Request $request)
     {
+        set_time_limit(0);
         $file = $request->file('file');
         $this->validate($request, [
             'file' => 'required|mimes:csv,xls,xlsx',
