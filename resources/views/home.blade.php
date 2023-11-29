@@ -663,32 +663,41 @@ Halaman Utama
                 @endif
 
                 <!-- Dropdown untuk memilih tahun -->
-                <form method="post" action="{{ route('filterByTahun') }}" id="filterForm">
-                    @csrf
-                    <div class="dropdown mr-2 custom-dropdown-width">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Tahun
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                            @foreach($tahun as $tahunItem)
-                            @if(auth()->user()->role === 'Admin' || auth()->user()->role === $tahunItem->tahun)
-                            <li>
-                                <div class="form-check" style="width:250px;">
-                                    <input class="form-check-input" type="checkbox" style="width:20px;"
-                                        value="{{ $tahunItem->tahun }}" id="tahunCheckbox{{ $loop->index }}"
-                                        name="tahun[]">
-                                    <label class="form-check-label" for="tahunCheckbox{{ $loop->index }}">
-                                        {{ $tahunItem->tahun }}
-                                    </label>
-                                </div>
-                            </li>
-                            @endif
-                            @endforeach
-                        </ul>
-                    </div>
-                </form>
-
+                public function filterBySection(Request $request)
+                {
+                    set_time_limit(0);
+                    $role = Auth::user()->role;
+                    $currentYear = Carbon::now()->year;
+            
+                    $selectedSections = $request->input('sections');
+                    $selectedYear = $request->input('tahun');
+            
+                    $homeQuery = Home::query();
+            
+                    if (!empty($selectedSections)) {
+                        $homeQuery->whereIn('section', $selectedSections);
+                    }
+            
+                    if ($role !== 'Admin') {
+                        $homeQuery->where('section', $role);
+                    }
+            
+                    if (!empty($selectedYear)) {
+                        $homeQuery->whereIn('tahun', $selectedYear);
+                    }
+            
+                    $home = $homeQuery->get();
+            
+                    $master_barang = MasterBarang::all();
+                    $kode_budget = KodeBudget::all();
+                    $carline = Carline::all();
+                    $cost = Cost::all();
+                    $tahun = Home::select('tahun')->distinct()->get();
+                    $section = Home::select('section')->distinct()->get();
+            
+                    return view('partialhome', compact('home', 'cost', 'kode_budget', 'carline', 'master_barang', 'section', 'tahun'));
+                }
+            
 
                 <input type="text" name="search" style="height: 2.4rem; font-size: 12pt; margin-top: 0.10rem;"
                     id="searchp" class="form-control input-text" placeholder="Cari disini ..."

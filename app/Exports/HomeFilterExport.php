@@ -165,6 +165,7 @@ class SheetDua implements FromCollection, WithHeadings, WithStyles, WithTitle, S
 
     public function collection()
     {
+        
         return DB::table('home')
             ->select(
                 'tahun',

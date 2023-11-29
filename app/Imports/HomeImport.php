@@ -6,9 +6,12 @@ use App\Models\Home;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\SkipsErrors;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
+use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
@@ -16,43 +19,123 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Throwable;
 
-class HomeImport implements ToModel, WithHeadingRow, WithBatchInserts, WithValidation, SkipsOnFailure
+class HomeImport implements ToModel, WithHeadingRow, WithBatchInserts, WithValidation, SkipsOnError
 {
+    private $tahun;
+    protected $rowData;
     protected $errors = [];
-use Importable, SkipsFailures;
+    protected $currentRow = 1;
+    protected $rowsAndHeadings = [];
+    protected $errorsByRow = [];
+    protected $problematicColumns = [];
+
+    protected static $columnTitles = [
+        'name',
+        'code',
+        'kode_budget'
+    ];
+
     public function rules(): array
     {
-        return [
-            'code' => [
-                'required',
-                Rule::exists('master_barang', 'code'),
-            ],
-            'nama' => [
-                'required',
-                Rule::exists('master_barang', 'name'),
-            ],
-        ];
+        // Aturan validasi dengan referensi
+        $referenceRules = [];
+
+        foreach (self::$columnTitles as $title) {
+            if ($title === 'kode_budget') {
+                $referenceRules[$title] = ['required', Rule::exists('kode_budget', 'kode_budget')];
+            } elseif ($title === 'kode_carline') {
+                $referenceRules[$title] = ['required', Rule::exists('carline', 'kode_carline')];
+            } else {
+                $referenceRules[$title] = ['required', Rule::exists('master_barang', $title)];
+            }
+            
+        }
+
+        return $referenceRules;
     }
 
-    private $tahun;
+    public function customValidationAttributes()
+    {
+        $attributes = [];
+
+        foreach (self::$columnTitles as $title) {
+            $attributes[$title] = $title;
+        }
+
+        return $attributes;
+    }
+
+    public static function getColumnTitle($index)
+    {
+        return isset(self::$columnTitles[$index]) ? self::$columnTitles[$index] : null;
+    }
+
+    public function getProblematicColumns()
+    {
+        return array_unique($this->problematicColumns[$this->currentRow] ?? []);
+    }
+
+    public function onError(Throwable $e)
+    {
+        $this->errors[] = $e->getMessage();
+    }
+    
+    public static function getColumnIndex($columnName)
+    {
+        return array_search($columnName, self::$columnTitles, true);
+    }
+
+
+    public function getRowsAndHeadings()
+    {
+        return $this->rowsAndHeadings;
+    }
+
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    public function withValidation($validator)
+    {
+        $validator->after(function ($validator) {
+            if ($validator->errors()->any()) {
+                foreach ($validator->errors()->messages() as $columnName => $errorMessages) {
+                    $errorMessage = "Error on row {$this->currentRow}, column(s): $columnName: " . implode(", ", $errorMessages);
+                    $this->errors[] = $errorMessage;
+                }
+            }
+        });
+    }
 
     public function __construct($tahun)
     {
         $this->tahun = $tahun;
     }
-    
+
     public function model(array $row)
     {
+        $this->currentRow++;
+        $this->rowData = $row;
+
         $role = Auth::id();
 
         $section = auth()->user()->role;
         $tahun = $this->tahun;
 
+        $validator = Validator::make($row, $this->rules(), $this->customValidationAttributes());
+
+        if ($validator->fails()) {
+            foreach ($validator->errors()->messages() as $columnName => $errorMessages) {
+                $errorMessage = "Error on row {$this->currentRow}, column(s): $columnName " . implode(", ", $errorMessages);
+                $this->errors[] = $errorMessage;
+            }
+        }
         return new Home([
             "tahun" => $tahun,
             "section" => $section,
             "code" => $row['code'],
-            "nama" => $row['nama'],
+            "nama" => $row['name'],
             "kode_budget" => $row['kode_budget'],
             "cur" => $row['cur'],
             "fixed" => $row['fixed_variabel'],
@@ -104,21 +187,14 @@ use Importable, SkipsFailures;
         return 500;
     }
 
-    public function onError(Throwable $e)
+    public function customValidationMessages(): array
     {
-        $this->errors[] = $e->getMessage();
-    }
+        $customMessages = [];
 
-    public function getErrors(): array
-    {
-        return $this->errors;
-    }
-    public function withValidation($validator)
-    {
-        $validator->after(function ($validator) {
-            if ($validator->errors()->any()) {
-                $this->errors[] = $validator->errors()->all();
-            }
-        });
+        foreach (self::$columnTitles as $title) {
+            $customMessages["$title.required"] = "$title harus sesuai dengan master barang";
+        }
+
+        return $customMessages;
     }
 }

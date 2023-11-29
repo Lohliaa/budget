@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Validators\ValidationException;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class HomeController extends Controller
@@ -237,69 +238,106 @@ class HomeController extends Controller
     public function downloadFilteredData(Request $request)
     {
         set_time_limit(0);
-
+    
         $sections = $request->input('sections');
-        $tahun = $request->input('tahun'); // Tambahkan baris ini untuk mendapatkan tahun dari permintaan
-
+        $tahun = $request->input('tahun');
+    
         $query = Home::query();
-
+    
         if (Auth::user()->role === 'Admin') {
             if (!empty($sections)) {
                 $query->whereIn('section', $sections);
             }
-        } else {
-            $query->where('section', Auth::user()->role);
-        }
-        if (Auth::user()->role === 'Admin') {
+    
             if (!empty($tahun)) {
                 $query->whereIn('tahun', $tahun);
             }
         } else {
-            $query->where('tahun', Auth::user()->role);
+            if (!empty($sections)) {
+                $query->whereIn('section', $sections);
+            }
+            if (!empty($tahun)) {
+                $query->whereIn('tahun', $tahun);
+            }
         }
-
+    
         $sectionData = $query->get();
-
+    
         return Excel::download(new HomeFilterExport($sectionData), 'Detail Section.xlsx');
     }
-
+    
     public function import_excel_home(Request $request)
     {
         $file = $request->file('file');
         $this->validate($request, [
-            'file' => 'required|mimes:csv,xls,xlsx'
+            'file' => 'required|mimes:csv,xls,xlsx',
         ]);
         $nama_file = rand() . $file->getClientOriginalName();
-        // Absensi::truncate();
 
         $path = $file->storeAs('public/excel/', $nama_file);
         $tahun = $request->input('tahun');
         $import = new HomeImport($tahun);
-        Excel::import($import, $file);
 
-        // dd($import);
-        $errorMessages = [];
-        $i = "1";
-        foreach ($import->failures() as $failure) {
-            $error = $failure->errors();
-            $errorMessages[] = ($i++ . ". Kesalahan pada baris " . $failure->row() . ', ' . implode(", ", $error) . "<br>");
-        }
-        // dd($errorMessages);
-        if (!empty($errorMessages)) {
-            $error = implode(" ", $errorMessages);
-            Alert::html('<small>Impor Gagal</small>', '<small>Error pada: <br>' . $error, '</small> error')->width('575px');
-            return redirect()->back();
-        } else {
-            // Excel::import($import, $file);
-            Alert::success('Impor Berhasil', $nama_file . ' Berhasil diimpor');
-            return redirect()->back();
-        }
+        try {
+            Excel::import($import, $file);
+        } catch (ValidationException $e) {
+            $validationErrors = $e->failures();
+            $errorMessages = [];
+            $i = 1;
 
-        Storage::delete($path);
+            foreach ($validationErrors as $failure) {
+                $row = $failure->row();
+                $errors = $failure->errors();
+        
+                $problematicColumns = array_keys($errors);
+        
+                $columnNames = array_map(function ($index) {
+                    return HomeImport::getColumnTitle($index);
+                }, $problematicColumns);
+
+                $formattedColumnNames = implode(", ", $columnNames);
+        
+                $errorMessages[] = "$i. Kesalahan pada baris $row, kolom: $formattedColumnNames: ";
+                $i++;
+            }
+        
+            $error = implode("<br>", $errorMessages);
+            Alert::html('<small>Impor Gagal</small>', '<small>Error pada: <br>' . $error)->width('575px');
+            Storage::delete($path);
+            return redirect()->back();
+        } catch (\Exception $e) {
+            $error = $e->getMessage();
+            Alert::html('<small>Impor Gagal</small>', '<small>Error pada: <br>' . $error)->width('575px');
+            Storage::delete($path);
+            return redirect()->back();
+        }
+        
+        Alert::success('Impor Berhasil', $nama_file . ' Berhasil diimpor');
         return redirect()->back();
     }
 
 
+    // public function import_excel_home(Request $request)
+    // {
+    //     set_time_limit(0);
+    //     $tahun = $request->input('tahun');
+
+    //     $this->validate($request, [
+    //         'file' => 'required|mimes:csv,xls,xlsx'
+    //     ]);
+
+    //     $file = $request->file('file');
+
+    //     $nama_file = rand() . $file->getClientOriginalName();
+
+    //     $path = $file->storeAs('public/excel/', $nama_file);
+
+    //     $import = Excel::import(new HomeImport($tahun), storage_path('app/public/excel/' . $nama_file));
+
+    //     Storage::delete($path);
+
+    //     return back()->with('success', "Data berhasil diimport!");
+    // }
     public function create()
     {
         return view('home.create');
