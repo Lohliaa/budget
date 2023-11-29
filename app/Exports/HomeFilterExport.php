@@ -5,6 +5,7 @@ namespace App\Exports;
 
 use App\Models\Home;
 use App\Models\UMH;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -165,48 +166,37 @@ class SheetDua implements FromCollection, WithHeadings, WithStyles, WithTitle, S
 
     public function collection()
     {
-        
-        return DB::table('home')
-            ->select(
+        $userRole = Auth::user()->role;
+
+        $query = DB::table('home')
+        ->select(
                 'tahun',
                 'section',
                 'code',
                 'nama',
                 DB::raw('SUM(qty_jul) as qty_jul'),
-                DB::raw('price_jul'),
                 DB::raw('SUM(qty_jul * price_jul) as total_amount_jul'),
                 DB::raw('SUM(qty_aug) as qty_aug'),
-                DB::raw('price_aug'),
                 DB::raw('SUM(qty_aug * price_aug) as total_amount_aug'),
                 DB::raw('SUM(qty_sep) as qty_sep'),
-                DB::raw('price_sep'),
                 DB::raw('SUM(qty_sep * price_sep) as total_amount_sep'),
                 DB::raw('SUM(qty_okt) as qty_okt'),
-                DB::raw('price_okt'),
                 DB::raw('SUM(qty_okt * price_okt) as total_amount_okt'),
                 DB::raw('SUM(qty_nov) as qty_nov'),
-                DB::raw('price_nov'),
                 DB::raw('SUM(qty_nov * price_nov) as total_amount_nov'),
                 DB::raw('SUM(qty_dec) as qty_dec'),
-                DB::raw('price_dec'),
                 DB::raw('SUM(qty_dec * price_dec) as total_amount_dec'),
                 DB::raw('SUM(qty_jan) as qty_jan'),
-                DB::raw('price_jan'),
                 DB::raw('SUM(qty_jan * price_jan) as total_amount_jan'),
                 DB::raw('SUM(qty_feb) as qty_feb'),
-                DB::raw('price_feb'),
                 DB::raw('SUM(qty_feb * price_feb) as total_amount_feb'),
                 DB::raw('SUM(qty_mar) as qty_mar'),
-                DB::raw('price_mar'),
                 DB::raw('SUM(qty_mar * price_mar) as total_amount_mar'),
                 DB::raw('SUM(qty_apr) as qty_apr'),
-                DB::raw('price_apr'),
                 DB::raw('SUM(qty_apr * price_apr) as total_amount_apr'),
                 DB::raw('SUM(qty_may) as qty_may'),
-                DB::raw('price_may'),
                 DB::raw('SUM(qty_may * price_may) as total_amount_may'),
                 DB::raw('SUM(qty_jun) as qty_jun'),
-                DB::raw('price_jun'),
                 DB::raw('SUM(qty_jun * price_jun) as total_amount_jun'),
             )
             ->groupBy(
@@ -214,20 +204,15 @@ class SheetDua implements FromCollection, WithHeadings, WithStyles, WithTitle, S
                 'section',
                 'code',
                 'nama',
-                'price_jul',
-                'price_aug',
-                'price_sep',
-                'price_okt',
-                'price_nov',
-                'price_dec',
-                'price_jan',
-                'price_feb',
-                'price_mar',
-                'price_apr',
-                'price_may',
-                'price_jun',
-            )
-            ->get();
+            );
+    
+        if ($userRole !== 'Admin') {
+            $query->where('section', $userRole);
+        }
+    
+        $result = $query->get();
+    
+        return $result;
     }
 
     public function headings(): array
@@ -238,40 +223,28 @@ class SheetDua implements FromCollection, WithHeadings, WithStyles, WithTitle, S
             'code',
             'nama',
             'qty_jul',
-            'price_jul',
             'amount_jul',
             'qty_aug',
-            'price_aug',
             'amount_aug',
             'qty_sep',
-            'price_sep',
             'amount_sep',
             'qty_okt',
-            'price_okt',
             'amount_okt',
             'qty_nov',
-            'price_nov',
             'amount_nov',
             'qty_dec',
-            'price_dec',
             'amount_dec',
             'qty_jan',
-            'price_jan',
             'amount_jan',
             'qty_feb',
-            'price_feb',
             'amount_feb',
             'qty_mar',
-            'price_mar',
             'amount_mar',
             'qty_apr',
-            'price_apr',
             'amount_apr',
             'qty_may',
-            'price_may',
             'amount_may',
             'qty_jun',
-            'price_jun',
             'amount_jun',
         ];
     }
@@ -300,15 +273,17 @@ class SheetTiga implements FromCollection, WithHeadings, WithStyles, WithTitle, 
 
     public function collection()
     {
-        return DB::table('home')
-            ->select(
+        $userRole = Auth::user()->role;
+
+        $query = DB::table('home')
+        ->select(
                 'tahun',
                 'section',
                 'kode_budget',
                 DB::raw('SUM(qty_jul) as qty_jul'),
                 DB::raw('SUM(amount_jul)'),
                 DB::raw('SUM(qty_aug) as qty_aug'),
-                DB::raw('SUM(amount_jul)'),
+                DB::raw('SUM(amount_aug)'),
                 DB::raw('SUM(qty_sep) as qty_sep'),
                 DB::raw('SUM(amount_sep)'),
                 DB::raw('SUM(qty_okt) as qty_okt'),
@@ -335,8 +310,14 @@ class SheetTiga implements FromCollection, WithHeadings, WithStyles, WithTitle, 
                 'section',
                 'kode_budget'
 
-            )
-            ->get();
+            );
+            if ($userRole !== 'Admin') {
+                $query->where('section', $userRole);
+            }
+        
+            $result = $query->get();
+        
+            return $result;
     }
 
     public function headings(): array
@@ -396,8 +377,10 @@ class SheetEmpat implements FromCollection, WithHeadings, WithStyles, WithTitle,
 
     public function collection()
     {
-        return DB::table('home')
-            ->select(
+        $userRole = Auth::user()->role;
+
+        $query = DB::table('home')
+        ->select(
                 'tahun',
                 'section',
                 'fixed',
@@ -430,8 +413,14 @@ class SheetEmpat implements FromCollection, WithHeadings, WithStyles, WithTitle,
                 'tahun',
                 'section',
                 'fixed'
-            )
-            ->get();
+            );
+            if ($userRole !== 'Admin') {
+                $query->where('section', $userRole);
+            }
+        
+            $result = $query->get();
+        
+            return $result;
     }
 
     public function headings(): array
@@ -491,8 +480,10 @@ class SheetLima implements FromCollection, WithHeadings, WithStyles, WithTitle, 
 
     public function collection()
     {
-        return DB::table('home')
-            ->select(
+        $userRole = Auth::user()->role;
+
+        $query = DB::table('home')
+        ->select(
                 'tahun',
                 'section',
                 'prep',
@@ -527,8 +518,14 @@ class SheetLima implements FromCollection, WithHeadings, WithStyles, WithTitle, 
                 'section',
                 'prep',
                 'kode_carline',
-            )
-            ->get();
+            );
+            if ($userRole !== 'Admin') {
+                $query->where('section', $userRole);
+            }
+        
+            $result = $query->get();
+        
+            return $result;
     }
 
 

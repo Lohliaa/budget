@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -239,30 +240,27 @@ class HomeController extends Controller
     {
         set_time_limit(0);
     
-        $sections = $request->input('sections');
         $tahun = $request->input('tahun');
+        $userRole = Auth::user()->role;
     
         $query = Home::query();
     
-        if (Auth::user()->role === 'Admin') {
+        if ($userRole === 'Admin') {
+            $sections = $request->input('sections');
             if (!empty($sections)) {
                 $query->whereIn('section', $sections);
-            }
-    
-            if (!empty($tahun)) {
-                $query->whereIn('tahun', $tahun);
             }
         } else {
-            if (!empty($sections)) {
-                $query->whereIn('section', $sections);
-            }
-            if (!empty($tahun)) {
-                $query->whereIn('tahun', $tahun);
-            }
+            // Jika bukan admin, filter berdasarkan section dari role pengguna
+            $query->where('section', $userRole);
+        }
+    
+        if (!empty($tahun)) {
+            $query->whereIn('tahun', $tahun);
         }
     
         $sectionData = $query->get();
-    
+    // dd($sectionData);
         return Excel::download(new HomeFilterExport($sectionData), 'Detail Section.xlsx');
     }
     
@@ -272,35 +270,47 @@ class HomeController extends Controller
         $this->validate($request, [
             'file' => 'required|mimes:csv,xls,xlsx',
         ]);
+    
         $nama_file = rand() . $file->getClientOriginalName();
-
         $path = $file->storeAs('public/excel/', $nama_file);
         $tahun = $request->input('tahun');
-        $import = new HomeImport($tahun);
-
+        $user = auth()->user();
+        $import = new HomeImport($tahun, $user);
+    
+        $validator = Validator::make([], [
+            'code.exists' => 'The selected :attribute is invalid.',
+            'name.exists' => 'The selected :attribute is invalid.',
+            'kode_budget.exists' => 'The selected :attribute is invalid.',
+            'carline.exists' => 'The selected :attribute is invalid.',
+        ]);
+    
         try {
             Excel::import($import, $file);
         } catch (ValidationException $e) {
             $validationErrors = $e->failures();
             $errorMessages = [];
             $i = 1;
-
+    
             foreach ($validationErrors as $failure) {
                 $row = $failure->row();
                 $errors = $failure->errors();
-        
                 $problematicColumns = array_keys($errors);
-        
-                $columnNames = array_map(function ($index) {
-                    return HomeImport::getColumnTitle($index);
-                }, $problematicColumns);
-
-                $formattedColumnNames = implode(", ", $columnNames);
-        
-                $errorMessages[] = "$i. Kesalahan pada baris $row, kolom: $formattedColumnNames: ";
+    
+                $errorMessages[] = "$i. Kesalahan pada baris $row, kolom: ";
+    
+                foreach ($problematicColumns as $columnIndex) {
+                    $columnName = $this->getColumnNameFromRules($columnIndex, $import->rules());
+    
+                    // Check if the error is due to "exists" rule
+                    if ($errors[$columnIndex][0] === "validation.exists") {
+                        $errorMessages[] = "$columnName (data tidak ditemukan)";
+                    } else {
+                        $errorMessages[] = "$columnName";
+                    }
+                }
                 $i++;
             }
-        
+    
             $error = implode("<br>", $errorMessages);
             Alert::html('<small>Impor Gagal</small>', '<small>Error pada: <br>' . $error)->width('575px');
             Storage::delete($path);
@@ -311,33 +321,48 @@ class HomeController extends Controller
             Storage::delete($path);
             return redirect()->back();
         }
-        
+    
         Alert::success('Impor Berhasil', $nama_file . ' Berhasil diimpor');
         return redirect()->back();
     }
-
+    
+    private function getColumnNameFromRules($columnIndex, $rules)
+    {
+        $columnRules = array_keys($rules);
+        return $columnRules[$columnIndex] ?? $columnIndex;
+    }
+    
+    private function getColumnNameFromIndex($columnIndex)
+    {
+        $columnRules = $this->rules()['columnRules'];
+        return $columnRules[$columnIndex][0] ?? $columnIndex;
+    }
+    
 
     // public function import_excel_home(Request $request)
     // {
     //     set_time_limit(0);
     //     $tahun = $request->input('tahun');
-
     //     $this->validate($request, [
     //         'file' => 'required|mimes:csv,xls,xlsx'
     //     ]);
-
+    
     //     $file = $request->file('file');
-
     //     $nama_file = rand() . $file->getClientOriginalName();
-
     //     $path = $file->storeAs('public/excel/', $nama_file);
-
-    //     $import = Excel::import(new HomeImport($tahun), storage_path('app/public/excel/' . $nama_file));
-
+    
+    //     $user = auth()->user();
+    //     $import = new HomeImport($tahun, $user);
+    //     Excel::import($import, storage_path('app/public/excel/' . $nama_file));
+    
+    //     // Retrieve errors from the import
+    //     $errors = $import->getErrors();    
     //     Storage::delete($path);
-
-    //     return back()->with('success', "Data berhasil diimport!");
-    // }
+    
+    //     return back()->with(['success' => 'Data berhasil diimport!', 'errors' => $errors]);
+    //     }
+    
+    
     public function create()
     {
         return view('home.create');
@@ -722,8 +747,8 @@ class HomeController extends Controller
             Home::truncate();
             return response()->json(['success' => 'Data truncated successfully.']);
         } else {
-            $role = Auth::id();
-            Home::where('role_id', $role)->delete();
+            $role = Auth::user()->role;
+            Home::where('section', $role)->delete();
             return response()->json(['success' => 'Data deleted successfully.']);
         }
     }
