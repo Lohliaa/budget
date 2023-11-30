@@ -13,8 +13,9 @@ Master Barang
         </div>
         <div class="row justify-content-between" style="align-items: center;">
             <div class="form-group col-md-6" style="margin-left: 12px">
-                <a href="{{ url('master_barang') }}" class="btn btn-success mt-3 ml-2" style="height: 40px;"><i class="bi bi-arrow-clockwise" style="font-size: 20px;"></i></a>
-               
+                <a href="{{ url('master_barang') }}" class="btn btn-success mt-3 ml-2" style="height: 40px;"><i
+                        class="bi bi-arrow-clockwise" style="font-size: 20px;"></i></a>
+
                 <!-- Button modal -->
                 <button style="height: 38px; width: 45px; position: relative;" type="button"
                     class="btn btn-secondary p-0 mt-3" data-toggle="modal" data-target="#addModal">
@@ -103,8 +104,8 @@ Master Barang
                     data-target="#uploadModal">Unggah Data</button>
 
                 <!-- Modal untuk mengunggah data -->
-                <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
-                    aria-hidden="true">
+                {{-- <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog"
+                    aria-labelledby="uploadModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -128,8 +129,37 @@ Master Barang
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
+                <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <form id="fileUploadForm" enctype="multipart/form-data"
+                                action="{{ route('import-excel-mb') }}" method="POST">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="uploadModalLabel">Unggah Data</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    {{-- <form id="fileUploadForm" enctype="multipart/form-data" --}} {{--
+                                        action="{{ route('import-excel-home') }}" method="POST"> --}}
+                                        @csrf
 
+                                        <input type="file" id="fileInput" name="file"
+                                            accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                                        {{--
+                                    </form> --}}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                    <button type="submit" class="btn btn-primary">Unggah</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 <button id="reset-mb-button" class="btn btn-danger mt-3">Reset</button>
 
                 <!-- Modal konfirmasi reset -->
@@ -178,8 +208,8 @@ Master Barang
                 <!-- Tombol Edit -->
                 <button type="button" class="btn btn-warning mt-3" id="editButton" onclick="handleEditClick()"
                     disabled>Edit</button>
-               
-                    <!-- Tombol Hapus -->
+
+                <!-- Tombol Hapus -->
                 <button type="button" class="btn btn-danger mt-3" id="deleteButton" onclick="handleDeleteClick()"
                     disabled>Hapus</button>
 
@@ -262,8 +292,8 @@ Master Barang
             </div>
             <div class="input-group col-md-3 mr-4">
                 <input type="text" name="search" style="height: 2.4rem; font-size: 12pt; margin-top: 0.10rem;"
-                id="searchp" class="form-control input-text" placeholder="Cari disini ..."
-                aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    id="searchp" class="form-control input-text" placeholder="Cari disini ..."
+                    aria-label="Recipient's username" aria-describedby="basic-addon2">
 
             </div>
         </div>
