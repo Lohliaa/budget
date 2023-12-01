@@ -300,8 +300,6 @@ Halaman Utama
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    {{-- <form id="fileUploadForm" enctype="multipart/form-data" --}} {{--
-                                        action="{{ route('import-excel-home') }}" method="POST"> --}}
                                         @csrf
                                         <div class="form-group">
                                             <label for="tahun">Tahun</label>

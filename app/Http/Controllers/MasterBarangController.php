@@ -55,11 +55,6 @@ class MasterBarangController extends Controller
         return view('master_barang.partial.master_barang', ['master_barang' => $master_barang]);
     }
 
-    public function export_excel_mb()
-    {
-        return Excel::download(new MasterBarangExport, 'master barang.xlsx');
-    }
-
     public function import_excel_mb(Request $request)
     {
         set_time_limit(0);
@@ -73,7 +68,6 @@ class MasterBarangController extends Controller
     
         $path = $file->storeAs('public/excel/', $nama_file);
     
-        // Menggunakan import() tanpa antrian
         Excel::import(new MasterBarangImport(), storage_path('app/public/excel/' . $nama_file));
     
         Storage::delete($path);

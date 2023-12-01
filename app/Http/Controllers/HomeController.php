@@ -267,65 +267,77 @@ class HomeController extends Controller
     public function import_excel_home(Request $request)
     {
         set_time_limit(0);
-        $file = $request->file('file');
-        $this->validate($request, [
+    
+        // Validasi file
+        $request->validate([
             'file' => 'required|mimes:csv,xls,xlsx',
         ]);
     
+        // Validasi tahun
+        $tahun = $request->input('tahun');
+        if (empty($tahun)) {
+            $errorMessages[] = "Kolom Tahun harus diisi.";
+        }
+    
+        $file = $request->file('file');
         $nama_file = rand() . $file->getClientOriginalName();
         $path = $file->storeAs('public/excel/', $nama_file);
-        $tahun = $request->input('tahun');
+    
+        if (isset($errorMessages)) {
+            $error = implode("<br>", $errorMessages);
+            Alert::html('<medium>Impor Gagal</medium>', '<medium><br>' . $error)->width('575px');
+            Storage::delete($path);
+            return redirect()->back();
+        }
+    
         $user = auth()->user();
         $import = new HomeImport($tahun, $user);
-    
-        $validator = Validator::make([], [
-            'code.exists' => 'The selected :attribute is invalid.',
-            'name.exists' => 'The selected :attribute is invalid.',
-            'kode_budget.exists' => 'The selected :attribute is invalid.',
-            'carline.exists' => 'The selected :attribute is invalid.',
-        ]);
-    
+        
         try {
             Excel::import($import, $file);
         } catch (ValidationException $e) {
             $validationErrors = $e->failures();
-            $errorMessages = [];
-            $i = 1;
-    
-            foreach ($validationErrors as $failure) {
-                $row = $failure->row();
-                $errors = $failure->errors();
-                $problematicColumns = array_keys($errors);
-    
-                $errorMessages[] = "$i. Kesalahan pada baris $row, kolom: ";
-    
-                foreach ($problematicColumns as $columnIndex) {
-                    $columnName = $this->getColumnNameFromRules($columnIndex, $import->rules());
-    
-                    // Check if the error is due to "exists" rule
-                    if ($errors[$columnIndex][0] === "validation.exists") {
-                        $errorMessages[] = "$columnName (data tidak ditemukan)";
+        
+            if (!empty($validationErrors) && is_array($validationErrors)) {
+                $errorMessages = [];
+                $i = 1;
+        
+                foreach ($validationErrors as $failure) {
+                    if (is_object($failure) && method_exists($failure, 'row') && method_exists($failure, 'attribute')) {
+                        $row = $failure->row();
+                        $attribute = $failure->attribute();
+        
+                        $errorMessages[] = "$i. Kesalahan pada baris $row, kolom: $attribute";
                     } else {
-                        $errorMessages[] = "$columnName";
+                        $errorMessages[] = "Invalid failure object";
                     }
+        
+                    $i++;
                 }
-                $i++;
+        
+                // dd($errorMessages);
+                $error = implode("<br>", $errorMessages);
+                Alert::html('<small>Impor Gagal</small>', '<small>Error pada: <br>' . $error)->width('575px');
+                Storage::delete($path);
+                return redirect()->back();
+            } else {
+                // Handle the case where $validationErrors is not an array
+                $error = "Invalid data in validation errors";
+                Alert::html('<small>Impor Gagal</small>', '<small>Error pada: <br>' . $error)->width('575px');
+                Storage::delete($path);
+                return redirect()->back();
             }
-    
-            $error = implode("<br>", $errorMessages);
-            Alert::html('<small>Impor Gagal</small>', '<small>Error pada: <br>' . $error)->width('575px');
-            Storage::delete($path);
-            return redirect()->back();
         } catch (\Exception $e) {
             $error = $e->getMessage();
             Alert::html('<small>Impor Gagal</small>', '<small>Error pada: <br>' . $error)->width('575px');
             Storage::delete($path);
             return redirect()->back();
         }
-    
+            
         Alert::success('Impor Berhasil', $nama_file . ' Berhasil diimpor');
         return redirect()->back();
     }
+    
     
     private function getColumnNameFromRules($columnIndex, $rules)
     {

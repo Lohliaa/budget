@@ -57,7 +57,7 @@ Kode Budget
                     data-target="#uploadModal">Unggah Data</button>
 
                 <!-- Modal untuk mengunggah data -->
-                <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
+                {{--  <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -82,8 +82,37 @@ Kode Budget
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>  --}}
+                <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <form id="fileUploadForm" enctype="multipart/form-data"
+                            action="{{ route('import-excel-kb') }}" method="POST">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="uploadModalLabel">Unggah Data</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                {{-- <form id="fileUploadForm" enctype="multipart/form-data" --}} {{--
+                                    action="{{ route('import-excel-home') }}" method="POST"> --}}
+                                    @csrf
 
+                                    <input type="file" id="fileInput" name="file"
+                                        accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                                    {{--
+                                </form> --}}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                <button type="submit" class="btn btn-primary">Unggah</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
                 <button id="reset-kb-button" class="btn btn-danger mt-3">Reset</button>
 
                 <!-- Modal konfirmasi reset -->

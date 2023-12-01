@@ -217,18 +217,6 @@ class HomeImport implements ToModel, WithHeadingRow, WithBatchInserts, WithValid
         ];
     }
 
-    public function customValidationMessages()
-    {
-        return [
-            'code.exists' => 'The selected :attribute is invalid.',
-            'name.exists' => 'The selected :attribute is invalid.',
-            'kode_budget.exists' => 'The selected :attribute is invalid.',
-            'carline.exists' => 'The selected :attribute is invalid.',
-        ];
-    }
-
-
-
     public function __construct($tahun, $user)
     {
         $this->tahun = $tahun;
@@ -239,7 +227,7 @@ class HomeImport implements ToModel, WithHeadingRow, WithBatchInserts, WithValid
     {
         $this->row++;
         $this->columnNames = array_keys($row); // Store column names for the current row
-
+        
         $role = $this->user->role;
         $section = auth()->user()->role;
         $tahun = $this->tahun;
@@ -293,6 +281,7 @@ class HomeImport implements ToModel, WithHeadingRow, WithBatchInserts, WithValid
             "role_id" => $role,
         ]);
     }
+    
     public function batchSize(): int
     {
         return 1000;
