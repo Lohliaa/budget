@@ -40,40 +40,40 @@ class HomeFilterExport implements FromCollection, WithHeadings, WithStyles, Shou
                 'remark' => $item['remark'],
                 'qty_jul' => $item['qty_jul'],
                 'price_jul' => $item['price_jul'],
-                'amount_jul' => $item['amount_jul'],
+                'amount_jul' => number_format($item['amount_jul'], 2),
                 'qty_aug' => $item['qty_aug'],
                 'price_aug' => $item['price_aug'],
-                'amount_aug' => $item['amount_aug'],
+                'amount_aug' => number_format($item['amount_aug'], 2),
                 'qty_sep' => $item['qty_sep'],
                 'price_sep' => $item['price_sep'],
-                'amount_sep' => $item['amount_sep'],
+                'amount_sep' => number_format($item['amount_sep'], 2),
                 'qty_okt' => $item['qty_okt'],
                 'price_okt' => $item['price_okt'],
-                'amount_okt' => $item['amount_okt'],
+                'amount_okt' => number_format($item['amount_okt'], 2),
                 'qty_nov' => $item['qty_nov'],
                 'price_nov' => $item['price_nov'],
-                'amount_nov' => $item['amount_nov'],
+                'amount_nov' => number_format($item['amount_nov'], 2),
                 'qty_dec' => $item['qty_dec'],
                 'price_dec' => $item['price_dec'],
-                'amount_dec' => $item['amount_dec'],
+                'amount_dec' => number_format($item['amount_dec'], 2),
                 'qty_jan' => $item['qty_jan'],
                 'price_jan' => $item['price_jan'],
-                'amount_jan' => $item['amount_jan'],
+                'amount_jan' => number_format($item['amount_jan'], 2),
                 'qty_feb' => $item['qty_feb'],
                 'price_feb' => $item['price_feb'],
-                'amount_feb' => $item['amount_feb'],
+                'amount_feb' => number_format($item['amount_feb'], 2),
                 'qty_mar' => $item['qty_mar'],
                 'price_mar' => $item['price_mar'],
-                'amount_mar' => $item['amount_mar'],
+                'amount_mar' => number_format($item['amount_mar'], 2),
                 'qty_apr' => $item['qty_apr'],
                 'price_apr' => $item['price_apr'],
-                'amount_apr' => $item['amount_apr'],
+                'amount_apr' => number_format($item['amount_apr'], 2),
                 'qty_may' => $item['qty_may'],
                 'price_may' => $item['price_may'],
-                'amount_may' => $item['amount_may'],
+                'amount_may' => number_format($item['amount_may'], 2),
                 'qty_jun' => $item['qty_jun'],
                 'price_jun' => $item['price_jun'],
-                'amount_jun' => $item['amount_jun'],
+                'amount_jun' => number_format($item['amount_jun'], 2),
             ];
         });
 
@@ -181,29 +181,29 @@ class SheetDua implements FromCollection, WithHeadings, WithStyles, WithTitle, S
 
                     // Sum quantities and total amounts for each month
                     $carry['qty_jul'] += $item->qty_jul;
-                    $carry['total_amount_jul'] += $item->amount_jul;
+                    $carry['total_amount_jul'] += round($item->amount_jul, 2);
                     $carry['qty_aug'] += $item->qty_aug;
-                    $carry['total_amount_aug'] += $item->amount_aug;
+                    $carry['total_amount_aug'] += round($item->amount_aug, 2);
                     $carry['qty_sep'] += $item->qty_sep;
-                    $carry['total_amount_sep'] += $item->amount_sep;
+                    $carry['total_amount_sep'] += round($item->amount_sep, 2);
                     $carry['qty_okt'] += $item->qty_okt;
-                    $carry['total_amount_okt'] += $item->amount_okt;
+                    $carry['total_amount_okt'] += round($item->amount_okt, 2);
                     $carry['qty_nov'] += $item->qty_nov;
-                    $carry['total_amount_nov'] += $item->amount_nov;
+                    $carry['total_amount_nov'] += round($item->amount_nov, 2);
                     $carry['qty_dec'] += $item->qty_dec;
-                    $carry['total_amount_dec'] += $item->amount_dec;
+                    $carry['total_amount_dec'] += round($item->amount_dec, 2);
                     $carry['qty_jan'] += $item->qty_jan;
-                    $carry['total_amount_jan'] += $item->amount_jan;
+                    $carry['total_amount_jan'] += round($item->amount_jan, 2);
                     $carry['qty_feb'] += $item->qty_feb;
-                    $carry['total_amount_feb'] += $item->amount_feb;
+                    $carry['total_amount_feb'] += round($item->amount_feb, 2);
                     $carry['qty_mar'] += $item->qty_mar;
-                    $carry['total_amount_mar'] += $item->amount_mar;
+                    $carry['total_amount_mar'] += round($item->amount_mar, 2);
                     $carry['qty_apr'] += $item->qty_apr;
-                    $carry['total_amount_apr'] += $item->amount_apr;
+                    $carry['total_amount_apr'] += round($item->amount_apr, 2);
                     $carry['qty_may'] += $item->qty_may;
-                    $carry['total_amount_may'] += $item->amount_may;
+                    $carry['total_amount_may'] += round($item->amount_may, 2);
                     $carry['qty_jun'] += $item->qty_jun;
-                    $carry['total_amount_jun'] += $item->amount_jun;
+                    $carry['total_amount_jun'] += round($item->amount_jun, 2);
 
                     if ($userRole !== 'Admin' && $item->section !== $userRole) {
                         // If not admin and section doesn't match, set values to 0
@@ -320,29 +320,29 @@ class SheetTiga implements FromCollection, WithHeadings, WithStyles, WithTitle, 
 
                     // Sum quantities and total amounts for each month
                     $carry['qty_jul'] += $item->qty_jul;
-                    $carry['total_amount_jul'] += $item->amount_jul;
+                    $carry['total_amount_jul'] += round($item->amount_jul, 2);
                     $carry['qty_aug'] += $item->qty_aug;
-                    $carry['total_amount_aug'] += $item->amount_aug;
+                    $carry['total_amount_aug'] += round($item->amount_aug, 2);
                     $carry['qty_sep'] += $item->qty_sep;
-                    $carry['total_amount_sep'] += $item->amount_sep;
+                    $carry['total_amount_sep'] += round($item->amount_sep, 2);
                     $carry['qty_okt'] += $item->qty_okt;
-                    $carry['total_amount_okt'] += $item->amount_okt;
+                    $carry['total_amount_okt'] += round($item->amount_okt, 2);
                     $carry['qty_nov'] += $item->qty_nov;
-                    $carry['total_amount_nov'] += $item->amount_nov;
+                    $carry['total_amount_nov'] += round($item->amount_nov, 2);
                     $carry['qty_dec'] += $item->qty_dec;
-                    $carry['total_amount_dec'] += $item->amount_dec;
+                    $carry['total_amount_dec'] += round($item->amount_dec, 2);
                     $carry['qty_jan'] += $item->qty_jan;
-                    $carry['total_amount_jan'] += $item->amount_jan;
+                    $carry['total_amount_jan'] += round($item->amount_jan, 2);
                     $carry['qty_feb'] += $item->qty_feb;
-                    $carry['total_amount_feb'] += $item->amount_feb;
+                    $carry['total_amount_feb'] += round($item->amount_feb, 2);
                     $carry['qty_mar'] += $item->qty_mar;
-                    $carry['total_amount_mar'] += $item->amount_mar;
+                    $carry['total_amount_mar'] += round($item->amount_mar, 2);
                     $carry['qty_apr'] += $item->qty_apr;
-                    $carry['total_amount_apr'] += $item->amount_apr;
+                    $carry['total_amount_apr'] += round($item->amount_apr, 2);
                     $carry['qty_may'] += $item->qty_may;
-                    $carry['total_amount_may'] += $item->amount_may;
+                    $carry['total_amount_may'] += round($item->amount_may, 2);
                     $carry['qty_jun'] += $item->qty_jun;
-                    $carry['total_amount_jun'] += $item->amount_jun;
+                    $carry['total_amount_jun'] += round($item->amount_jun, 2);
 
                     if ($userRole !== 'Admin' && $item->section !== $userRole) {
                         // If not admin and section doesn't match, set values to 0
@@ -457,29 +457,29 @@ class SheetEmpat implements FromCollection, WithHeadings, WithStyles, WithTitle,
 
                     // Sum quantities and total amounts for each month
                     $carry['qty_jul'] += $item->qty_jul;
-                    $carry['total_amount_jul'] += $item->amount_jul;
+                    $carry['total_amount_jul'] += round($item->amount_jul, 2);
                     $carry['qty_aug'] += $item->qty_aug;
-                    $carry['total_amount_aug'] += $item->amount_aug;
+                    $carry['total_amount_aug'] += round($item->amount_aug, 2);
                     $carry['qty_sep'] += $item->qty_sep;
-                    $carry['total_amount_sep'] += $item->amount_sep;
+                    $carry['total_amount_sep'] += round($item->amount_sep, 2);
                     $carry['qty_okt'] += $item->qty_okt;
-                    $carry['total_amount_okt'] += $item->amount_okt;
+                    $carry['total_amount_okt'] += round($item->amount_okt, 2);
                     $carry['qty_nov'] += $item->qty_nov;
-                    $carry['total_amount_nov'] += $item->amount_nov;
+                    $carry['total_amount_nov'] += round($item->amount_nov, 2);
                     $carry['qty_dec'] += $item->qty_dec;
-                    $carry['total_amount_dec'] += $item->amount_dec;
+                    $carry['total_amount_dec'] += round($item->amount_dec, 2);
                     $carry['qty_jan'] += $item->qty_jan;
-                    $carry['total_amount_jan'] += $item->amount_jan;
+                    $carry['total_amount_jan'] += round($item->amount_jan, 2);
                     $carry['qty_feb'] += $item->qty_feb;
-                    $carry['total_amount_feb'] += $item->amount_feb;
+                    $carry['total_amount_feb'] += round($item->amount_feb, 2);
                     $carry['qty_mar'] += $item->qty_mar;
-                    $carry['total_amount_mar'] += $item->amount_mar;
+                    $carry['total_amount_mar'] += round($item->amount_mar, 2);
                     $carry['qty_apr'] += $item->qty_apr;
-                    $carry['total_amount_apr'] += $item->amount_apr;
+                    $carry['total_amount_apr'] += round($item->amount_apr, 2);
                     $carry['qty_may'] += $item->qty_may;
-                    $carry['total_amount_may'] += $item->amount_may;
+                    $carry['total_amount_may'] += round($item->amount_may, 2);
                     $carry['qty_jun'] += $item->qty_jun;
-                    $carry['total_amount_jun'] += $item->amount_jun;
+                    $carry['total_amount_jun'] += round($item->amount_jun, 2);
 
                     if ($userRole !== 'Admin' && $item->section !== $userRole) {
                         // If not admin and section doesn't match, set values to 0
@@ -591,31 +591,32 @@ class SheetLima implements FromCollection, WithHeadings, WithStyles, WithTitle, 
                     $carry['section'] = $item->section;
                     $carry['prep'] = $item->prep;
                     $carry['kode_carline'] = $item->kode_carline;
+
                     // Sum quantities and total amounts for each month
                     $carry['qty_jul'] += $item->qty_jul;
-                    $carry['total_amount_jul'] += $item->amount_jul;
+                    $carry['total_amount_jul'] += round($item->amount_jul, 2);
                     $carry['qty_aug'] += $item->qty_aug;
-                    $carry['total_amount_aug'] += $item->amount_aug;
+                    $carry['total_amount_aug'] += round($item->amount_aug, 2);
                     $carry['qty_sep'] += $item->qty_sep;
-                    $carry['total_amount_sep'] += $item->amount_sep;
+                    $carry['total_amount_sep'] += round($item->amount_sep, 2);
                     $carry['qty_okt'] += $item->qty_okt;
-                    $carry['total_amount_okt'] += $item->amount_okt;
+                    $carry['total_amount_okt'] += round($item->amount_okt, 2);
                     $carry['qty_nov'] += $item->qty_nov;
-                    $carry['total_amount_nov'] += $item->amount_nov;
+                    $carry['total_amount_nov'] += round($item->amount_nov, 2);
                     $carry['qty_dec'] += $item->qty_dec;
-                    $carry['total_amount_dec'] += $item->amount_dec;
+                    $carry['total_amount_dec'] += round($item->amount_dec, 2);
                     $carry['qty_jan'] += $item->qty_jan;
-                    $carry['total_amount_jan'] += $item->amount_jan;
+                    $carry['total_amount_jan'] += round($item->amount_jan, 2);
                     $carry['qty_feb'] += $item->qty_feb;
-                    $carry['total_amount_feb'] += $item->amount_feb;
+                    $carry['total_amount_feb'] += round($item->amount_feb, 2);
                     $carry['qty_mar'] += $item->qty_mar;
-                    $carry['total_amount_mar'] += $item->amount_mar;
+                    $carry['total_amount_mar'] += round($item->amount_mar, 2);
                     $carry['qty_apr'] += $item->qty_apr;
-                    $carry['total_amount_apr'] += $item->amount_apr;
+                    $carry['total_amount_apr'] += round($item->amount_apr, 2);
                     $carry['qty_may'] += $item->qty_may;
-                    $carry['total_amount_may'] += $item->amount_may;
+                    $carry['total_amount_may'] += round($item->amount_may, 2);
                     $carry['qty_jun'] += $item->qty_jun;
-                    $carry['total_amount_jun'] += $item->amount_jun;
+                    $carry['total_amount_jun'] += round($item->amount_jun, 2);
 
                     if ($userRole !== 'Admin' && $item->section !== $userRole) {
                         // If not admin and section doesn't match, set values to 0
