@@ -155,4 +155,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::delete('/delete-profile',  [UserController::class, 'deleteItems'])->name('profile.delete');
     Route::get('/search-profile', [UserController::class, 'searchProfile'])->name('search.profile');
     Route::get('/cari', [UserController::class, 'cari'])->name('profile.cari');
+
+    Route::get('/unduh/{nama_file}', [HomeController::class, 'unduh'])->name('unduh');
+
 });

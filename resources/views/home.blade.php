@@ -300,511 +300,511 @@ Halaman Utama
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                        @csrf
-                                        <div class="form-group">
-                                            <label for="tahun">Tahun</label>
-                                            <input type="text" class="form-control" id="tahun" name="tahun">
-                                        </div>
+                                    @csrf
+                                    <div class="form-group">
+                                        <label for="tahun">Tahun</label>
+                                        <input type="text" class="form-control" id="tahun" name="tahun">
+                                    </div>
 
-                                        <input type="file" id="fileInput" name="file"
-                                            accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
-                                        {{--
-                                    </form> --}}
+                                    <input type="file" id="fileInput" name="file"
+                                        accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                                    {{--
+                            </form> --}}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                            <button type="submit" class="btn btn-primary">Unggah</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Export Excel -->
+            <button onclick="exportData()" type="button" class="btn btn-info mt-3">
+                <span>Download</span>
+            </button>
+            <form id="exportForm" action="{{ route('downloadFilteredData') }}" method="GET" style="display: none;">
+                @csrf
+                <input type="hidden" id="sectionExport" name="section">
+            </form>
+
+            <button id="reset-home-button" class="btn btn-danger mt-3">Reset</button>
+
+            <!-- Modal konfirmasi reset -->
+            <div class="modal fade" id="confirmResetModal" tabindex="-1" role="dialog"
+                aria-labelledby="confirmResetModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmResetModalLabel">Reset Data</h5>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Apakah Anda yakin ingin reset seluruh data?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                            <button id="confirmResetButton" type="button" class="btn btn-danger">Reset</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal pesan sukses -->
+            <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="successModalLabel">Pesan Sukses</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Data berhasil direset.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tombol Edit -->
+            <button type="button" class="btn btn-warning mt-3" id="editButton" onclick="handleEditClick()"
+                disabled>Edit</button>
+            <a href="{{ route('unduh', ['nama_file' => 'template_upload.xlsx']) }}" class="btn unduh btn-outline-success mt-3 ms-1 px-2" style="height:38px">
+                <i class='bi bi-cloud-download me-1'></i> <span>Template</span> </a>
+            <!-- Modal Edit-->
+            <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editModalLabel">Edit</h5>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Form for editing data -->
+                            <form id="editForm">
+
+                                <div class="form-group">
+                                    <label for="editSection">Section</label>
+                                    <select class="form-control" id="editSection" name="section">
+                                        <option value="">Pilih Section</option>
+                                        @foreach($cost as $detail_cost_center)
+                                        <option value="{{ $detail_cost_center->detail_cost_center }}">{{
+                                            $detail_cost_center->detail_cost_center
+                                            }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                                    <button type="submit" class="btn btn-primary">Unggah</button>
+                                <div class="form-group">
+                                    <label for="editCode">Code</label>
+                                    <select class="form-control" id="editCode" name="code">
+                                        <option value="">Pilih Code</option>
+                                        @foreach($master_barang as $code)
+                                        <option value="{{ $code->code }}">{{ $code->code }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editNama">Nama</label>
+                                    <select class="form-control" id="editNama" name="nama">
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editKodeBudget">Kode Budget</label>
+                                    <select class="form-control" id="editKodeBudget" name="kode_budget">
+                                        <option value="">Pilih Kode Budget</option>
+                                        @foreach($kode_budget->unique('kode_budget') as $kode_budget)
+                                        <option value="{{ $kode_budget->kode_budget }}">{{
+                                            $kode_budget->kode_budget
+                                            }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editCur">CUR</label>
+                                    <select class="form-control" id="editCur" name="cur">
+                                        <option value="USD" selected>USD</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editFixed">Fixed/Variable</label>
+                                    <select class="form-control" id="editFixed" name="fixed">
+                                        <option value="Fixed">Fixed</option>
+                                        <option value="Variabel">Variabel</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editPrep">Prep/Maspro</label>
+                                    <select class="form-control" id="editPrep" name="prep">
+                                        <option value="Prep">Prep</option>
+                                        <option value="Maspro">Maspro</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editKodeCarline">Kode Carline</label>
+                                    <select class="form-control" id="editKodeCarline" name="kode_carline">
+                                        @foreach($carline->unique('kode') as $kode)
+                                        <option value="{{ $kode->kode }}">{{ $kode->kode}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editRemark">Remark</label>
+                                    <input type="text" class="form-control" id="editRemark" name="remark">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editQTY_jul">QTY Jul</label>
+                                    <input type="text" class="form-control" id="editQTY_jul" name="qty_jul">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editPrice_jul">Price Jul</label>
+                                    <input type="text" class="form-control" id="editPrice_jul" name="price_jul">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editAmount_jul">Amount Jul</label>
+                                    <input type="text" class="form-control" id="editAmount_jul" name="amount_jul"
+                                        disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editQTY_aug">QTY Aug</label>
+                                    <input type="text" class="form-control" id="editQTY_aug" name="qty_aug">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editPrice_aug">Price Aug</label>
+                                    <input type="text" class="form-control" id="editPrice_aug" name="price_aug">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editAmount_aug">Amount Aug</label>
+                                    <input type="text" class="form-control" id="editAmount_aug" name="amount_aug"
+                                        disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editQTY_sep">QTY Sep</label>
+                                    <input type="text" class="form-control" id="editQTY_sep" name="qty_sep">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editPrice_sep">Price Sep</label>
+                                    <input type="text" class="form-control" id="editPrice_sep" name="price_sep">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editAmount_sep">Amount Sep</label>
+                                    <input type="text" class="form-control" id="editAmount_sep" name="amount_sep"
+                                        disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editQTY_okt">QTY Okt</label>
+                                    <input type="text" class="form-control" id="editQTY_okt" name="qty_okt">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editPrice_okt">Price Okt</label>
+                                    <input type="text" class="form-control" id="editPrice_okt" name="price_okt">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editAmount_okt">Amount Okt</label>
+                                    <input type="text" class="form-control" id="editAmount_okt" name="amount_okt"
+                                        disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editQTY_nov">QTY Nov</label>
+                                    <input type="text" class="form-control" id="editQTY_nov" name="qty_nov">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editPrice_nov">Price Nov</label>
+                                    <input type="text" class="form-control" id="editPrice_nov" name="price_nov">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editAmount_nov">Amount Nov</label>
+                                    <input type="text" class="form-control" id="editAmount_nov" name="amount_nov"
+                                        disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editQTY_dec">QTY Dec</label>
+                                    <input type="text" class="form-control" id="editQTY_dec" name="qty_dec">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editPrice_dec">Price Dec</label>
+                                    <input type="text" class="form-control" id="editPrice_dec" name="price_dec">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editAmount_dec">Amount Dec</label>
+                                    <input type="text" class="form-control" id="editAmount_dec" name="amount_dec"
+                                        disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editQTY_jan">QTY Jan</label>
+                                    <input type="text" class="form-control" id="editQTY_jan" name="qty_jan">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editPrice_jan">Price Jan</label>
+                                    <input type="text" class="form-control" id="editPrice_jan" name="price_jan">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editAmount_jan">Amount Jan</label>
+                                    <input type="text" class="form-control" id="editAmount_jan" name="amount_jan"
+                                        disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editQTY_feb">QTY Feb</label>
+                                    <input type="text" class="form-control" id="editQTY_feb" name="qty_feb">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editPrice_feb">Price Feb</label>
+                                    <input type="text" class="form-control" id="editPrice_feb" name="price_feb">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editAmount_feb">Amount Feb</label>
+                                    <input type="text" class="form-control" id="editAmount_feb" name="amount_feb"
+                                        disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editQTY_mar">QTY Mar</label>
+                                    <input type="text" class="form-control" id="editQTY_mar" name="qty_mar">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editPrice_mar">Price Mar</label>
+                                    <input type="text" class="form-control" id="editPrice_mar" name="price_mar">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editAmount_mar">Amount Mar</label>
+                                    <input type="text" class="form-control" id="editAmount_mar" name="amount_mar"
+                                        disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editQTY_apr">QTY Apr</label>
+                                    <input type="text" class="form-control" id="editQTY_apr" name="qty_apr">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editPrice_apr">Price Apr</label>
+                                    <input type="text" class="form-control" id="editPrice_apr" name="price_apr">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editAmount_apr">Amount Apr</label>
+                                    <input type="text" class="form-control" id="editAmount_apr" name="amount_apr"
+                                        disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editQTY_may">QTY May</label>
+                                    <input type="text" class="form-control" id="editQTY_may" name="qty_may">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editPrice_may">Price May</label>
+                                    <input type="text" class="form-control" id="editPrice_may" name="price_may">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editAmount_may">Amount May</label>
+                                    <input type="text" class="form-control" id="editAmount_may" name="amount_may"
+                                        disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editQTY_jun">QTY Jun</label>
+                                    <input type="text" class="form-control" id="editQTY_jun" name="qty_jun">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editPrice_jun">Price Jun</label>
+                                    <input type="text" class="form-control" id="editPrice_jun" name="price_jun">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editAmount_jun">Amount Jun</label>
+                                    <input type="text" class="form-control" id="editAmount_jun" name="amount_jun"
+                                        disabled>
                                 </div>
                             </form>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Export Excel -->
-                <button onclick="exportData()" type="button" class="btn btn-info mt-3">
-                    <span>Download</span>
-                </button>
-                <form id="exportForm" action="{{ route('downloadFilteredData') }}" method="GET" style="display: none;">
-                    @csrf
-                    <input type="hidden" id="sectionExport" name="section">
-                </form>
-
-                <button id="reset-home-button" class="btn btn-danger mt-3">Reset</button>
-
-                <!-- Modal konfirmasi reset -->
-                <div class="modal fade" id="confirmResetModal" tabindex="-1" role="dialog"
-                    aria-labelledby="confirmResetModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="confirmResetModalLabel">Reset Data</h5>
-                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <p>Apakah Anda yakin ingin reset seluruh data?</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                                <button id="confirmResetButton" type="button" class="btn btn-danger">Reset</button>
-                            </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="saveChanges()">Save
+                                Changes</button>
                         </div>
                     </div>
                 </div>
-
-                <!-- Modal pesan sukses -->
-                <div class="modal fade" id="successModal" tabindex="-1" role="dialog"
-                    aria-labelledby="successModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="successModalLabel">Pesan Sukses</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <p>Data berhasil direset.</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tombol Edit -->
-                <button type="button" class="btn btn-warning mt-3" id="editButton" onclick="handleEditClick()"
-                    disabled>Edit</button>
-
-                <!-- Modal Edit-->
-                <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="editModalLabel">Edit</h5>
-                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <!-- Form for editing data -->
-                                <form id="editForm">
-
-                                    <div class="form-group">
-                                        <label for="editSection">Section</label>
-                                        <select class="form-control" id="editSection" name="section">
-                                            <option value="">Pilih Section</option>
-                                            @foreach($cost as $detail_cost_center)
-                                            <option value="{{ $detail_cost_center->detail_cost_center }}">{{
-                                                $detail_cost_center->detail_cost_center
-                                                }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editCode">Code</label>
-                                        <select class="form-control" id="editCode" name="code">
-                                            <option value="">Pilih Code</option>
-                                            @foreach($master_barang as $code)
-                                            <option value="{{ $code->code }}">{{ $code->code }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editNama">Nama</label>
-                                        <select class="form-control" id="editNama" name="nama">
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editKodeBudget">Kode Budget</label>
-                                        <select class="form-control" id="editKodeBudget" name="kode_budget">
-                                            <option value="">Pilih Kode Budget</option>
-                                            @foreach($kode_budget->unique('kode_budget') as $kode_budget)
-                                            <option value="{{ $kode_budget->kode_budget }}">{{
-                                                $kode_budget->kode_budget
-                                                }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editCur">CUR</label>
-                                        <select class="form-control" id="editCur" name="cur">
-                                            <option value="USD" selected>USD</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editFixed">Fixed/Variable</label>
-                                        <select class="form-control" id="editFixed" name="fixed">
-                                            <option value="Fixed">Fixed</option>
-                                            <option value="Variabel">Variabel</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editPrep">Prep/Maspro</label>
-                                        <select class="form-control" id="editPrep" name="prep">
-                                            <option value="Prep">Prep</option>
-                                            <option value="Maspro">Maspro</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editKodeCarline">Kode Carline</label>
-                                        <select class="form-control" id="editKodeCarline" name="kode_carline">
-                                            @foreach($carline->unique('kode') as $kode)
-                                            <option value="{{ $kode->kode }}">{{ $kode->kode}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editRemark">Remark</label>
-                                        <input type="text" class="form-control" id="editRemark" name="remark">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editQTY_jul">QTY Jul</label>
-                                        <input type="text" class="form-control" id="editQTY_jul" name="qty_jul">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editPrice_jul">Price Jul</label>
-                                        <input type="text" class="form-control" id="editPrice_jul" name="price_jul">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editAmount_jul">Amount Jul</label>
-                                        <input type="text" class="form-control" id="editAmount_jul" name="amount_jul"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editQTY_aug">QTY Aug</label>
-                                        <input type="text" class="form-control" id="editQTY_aug" name="qty_aug">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editPrice_aug">Price Aug</label>
-                                        <input type="text" class="form-control" id="editPrice_aug" name="price_aug">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editAmount_aug">Amount Aug</label>
-                                        <input type="text" class="form-control" id="editAmount_aug" name="amount_aug"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editQTY_sep">QTY Sep</label>
-                                        <input type="text" class="form-control" id="editQTY_sep" name="qty_sep">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editPrice_sep">Price Sep</label>
-                                        <input type="text" class="form-control" id="editPrice_sep" name="price_sep">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editAmount_sep">Amount Sep</label>
-                                        <input type="text" class="form-control" id="editAmount_sep" name="amount_sep"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editQTY_okt">QTY Okt</label>
-                                        <input type="text" class="form-control" id="editQTY_okt" name="qty_okt">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editPrice_okt">Price Okt</label>
-                                        <input type="text" class="form-control" id="editPrice_okt" name="price_okt">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editAmount_okt">Amount Okt</label>
-                                        <input type="text" class="form-control" id="editAmount_okt" name="amount_okt"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editQTY_nov">QTY Nov</label>
-                                        <input type="text" class="form-control" id="editQTY_nov" name="qty_nov">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editPrice_nov">Price Nov</label>
-                                        <input type="text" class="form-control" id="editPrice_nov" name="price_nov">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editAmount_nov">Amount Nov</label>
-                                        <input type="text" class="form-control" id="editAmount_nov" name="amount_nov"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editQTY_dec">QTY Dec</label>
-                                        <input type="text" class="form-control" id="editQTY_dec" name="qty_dec">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editPrice_dec">Price Dec</label>
-                                        <input type="text" class="form-control" id="editPrice_dec" name="price_dec">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editAmount_dec">Amount Dec</label>
-                                        <input type="text" class="form-control" id="editAmount_dec" name="amount_dec"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editQTY_jan">QTY Jan</label>
-                                        <input type="text" class="form-control" id="editQTY_jan" name="qty_jan">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editPrice_jan">Price Jan</label>
-                                        <input type="text" class="form-control" id="editPrice_jan" name="price_jan">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editAmount_jan">Amount Jan</label>
-                                        <input type="text" class="form-control" id="editAmount_jan" name="amount_jan"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editQTY_feb">QTY Feb</label>
-                                        <input type="text" class="form-control" id="editQTY_feb" name="qty_feb">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editPrice_feb">Price Feb</label>
-                                        <input type="text" class="form-control" id="editPrice_feb" name="price_feb">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editAmount_feb">Amount Feb</label>
-                                        <input type="text" class="form-control" id="editAmount_feb" name="amount_feb"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editQTY_mar">QTY Mar</label>
-                                        <input type="text" class="form-control" id="editQTY_mar" name="qty_mar">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editPrice_mar">Price Mar</label>
-                                        <input type="text" class="form-control" id="editPrice_mar" name="price_mar">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editAmount_mar">Amount Mar</label>
-                                        <input type="text" class="form-control" id="editAmount_mar" name="amount_mar"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editQTY_apr">QTY Apr</label>
-                                        <input type="text" class="form-control" id="editQTY_apr" name="qty_apr">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editPrice_apr">Price Apr</label>
-                                        <input type="text" class="form-control" id="editPrice_apr" name="price_apr">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editAmount_apr">Amount Apr</label>
-                                        <input type="text" class="form-control" id="editAmount_apr" name="amount_apr"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editQTY_may">QTY May</label>
-                                        <input type="text" class="form-control" id="editQTY_may" name="qty_may">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editPrice_may">Price May</label>
-                                        <input type="text" class="form-control" id="editPrice_may" name="price_may">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editAmount_may">Amount May</label>
-                                        <input type="text" class="form-control" id="editAmount_may" name="amount_may"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editQTY_jun">QTY Jun</label>
-                                        <input type="text" class="form-control" id="editQTY_jun" name="qty_jun">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editPrice_jun">Price Jun</label>
-                                        <input type="text" class="form-control" id="editPrice_jun" name="price_jun">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editAmount_jun">Amount Jun</label>
-                                        <input type="text" class="form-control" id="editAmount_jun" name="amount_jun"
-                                            disabled>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" onclick="saveChanges()">Save
-                                    Changes</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
 
-            <div class="input-group col-md-4 mr-4 mt-1">
-
-                @if(auth()->user()->role === 'Admin')
-                <form method="post" action="{{ route('filterBySection') }}" id="filterForm">
-                    @csrf
-                    <div class="dropdown mr-2 custom-dropdown-width">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Report
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                            @foreach($section as $sectionItem)
-                            @if(auth()->user()->role === 'Admin' || auth()->user()->role === $sectionItem->section)
-                            <li>
-                                <div class="form-check" style="width:250px;">
-                                    <input class="form-check-input" type="checkbox" style="width:20px;"
-                                        value="{{ $sectionItem->section }}" id="sectionCheckbox{{ $loop->index }}"
-                                        name="sections[]">
-                                    <label class="form-check-label" for="sectionCheckbox{{ $loop->index }}">
-                                        {{ $sectionItem->section }}
-                                    </label>
-                                </div>
-                            </li>
-                            @endif
-                            @endforeach
-                        </ul>
-                    </div>
-                </form>
-                @endif
-
-                <!-- Dropdown untuk memilih tahun -->
-                <form method="post" action="{{ route('filterByTahun') }}" id="filterForm">
-                    @csrf
-                    <div class="dropdown mr-2 custom-dropdown-width">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Tahun
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                            @foreach($tahun as $tahunItem)
-                            <li>
-                                <div class="form-check" style="width:250px;">
-                                    <input class="form-check-input" type="checkbox" style="width:20px;"
-                                        value="{{ $tahunItem->tahun }}" id="tahunCheckbox{{ $loop->index }}"
-                                        name="tahun[]">
-                                    <label class="form-check-label" for="tahunCheckbox{{ $loop->index }}">
-                                        {{ $tahunItem->tahun }}
-                                    </label>
-                                </div>
-                            </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </form>
-
-                <input type="text" name="search" style="height: 2.4rem; font-size: 12pt; margin-top: 0.10rem;"
-                    id="searchp" class="form-control input-text" placeholder="Cari disini ..."
-                    aria-label="Recipient's username" aria-describedby="basic-addon2">
-            </div>
         </div>
 
-        <div id="filtered-data-container">
-            <div class="card-body pt-0">
-                <div class="table-responsive">
-                    <table class="table table-striped" id="homeTableBody">
-                        <thead style="background-color: #263a74; color:white; position: sticky; top: 0;">
-                            <tr>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;"></td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">No</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Section</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Code</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Name</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Kode Budget</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">CUR</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Fixed/Variabel</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Prep/Masspro</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Kode Carline</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Remark</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Jul</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Jul</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Jul</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Aug</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Aug</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Aug</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Sep</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Sep</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Sep</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Okt</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Okt</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Okt</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Nov</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Nov</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Nov</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Dec</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Dec</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Dec</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Jan</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Jan</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Jan</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Feb</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Feb</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Feb</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Mar</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Mar</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Mar</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Apr</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Apr</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Apr</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty May</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price May</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount May</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Jun</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Jun</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Jun</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php $no=1 ?>
-                            @foreach ($home as $h)
-                            <tr id="tr_{{ $h->id }}">
-                                <td><input type="checkbox" class="sub_chk" data-id="{{$h->id}}"
-                                        onclick="handleCheckboxChange({{ $h->id }})"></td>
-                                <td>{{$no++}}</td>
-                                <td>{{ $h->section }}</td>
-                                <td>{{ $h->code }}</td>
-                                <td>{{ $h->nama }}</td>
-                                <td>{{ $h->kode_budget }}</td>
-                                <td>{{ $h->cur }}</td>
-                                <td>{{ $h->fixed }}</td>
-                                <td>{{ $h->prep }}</td>
-                                <td>{{ $h->kode_carline }}</td>
-                                <td>{{ $h->remark }}</td>
-                                <td>{{ $h->qty_jul }}</td>
-                                <td>{{ $h->price_jul }}</td>
-                                <td>{{ $h->amount_jul }}</td>
-                                <td>{{ $h->qty_aug }}</td>
-                                <td>{{ $h->price_aug }}</td>
-                                <td>{{ $h->amount_aug }}</td>
-                                <td>{{ $h->qty_sep }}</td>
-                                <td>{{ $h->price_sep }}</td>
-                                <td>{{ $h->amount_sep }}</td>
-                                <td>{{ $h->qty_okt }}</td>
-                                <td>{{ $h->price_okt }}</td>
-                                <td>{{ $h->amount_okt }}</td>
-                                <td>{{ $h->qty_nov }}</td>
-                                <td>{{ $h->price_nov }}</td>
-                                <td>{{ $h->amount_nov }}</td>
-                                <td>{{ $h->qty_dec }}</td>
-                                <td>{{ $h->price_dec }}</td>
-                                <td>{{ $h->amount_dec }}</td>
-                                <td>{{ $h->qty_jan }}</td>
-                                <td>{{ $h->price_jan }}</td>
-                                <td>{{ $h->amount_jan }}</td>
-                                <td>{{ $h->qty_feb }}</td>
-                                <td>{{ $h->price_feb }}</td>
-                                <td>{{ $h->amount_feb }}</td>
-                                <td>{{ $h->qty_mar }}</td>
-                                <td>{{ $h->price_mar }}</td>
-                                <td>{{ $h->amount_mar }}</td>
-                                <td>{{ $h->qty_apr }}</td>
-                                <td>{{ $h->price_apr }}</td>
-                                <td>{{ $h->amount_apr }}</td>
-                                <td>{{ $h->qty_may }}</td>
-                                <td>{{ $h->price_may }}</td>
-                                <td>{{ $h->amount_may }}</td>
-                                <td>{{ $h->qty_jun }}</td>
-                                <td>{{ $h->price_jun }}</td>
-                                <td>{{ $h->amount_jun }}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+        <div class="input-group col-md-4 mr-4 mt-1">
+
+            @if(auth()->user()->role === 'Admin')
+            <form method="post" action="{{ route('filterBySection') }}" id="filterForm">
+                @csrf
+                <div class="dropdown mr-2 custom-dropdown-width">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Report
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                        @foreach($section as $sectionItem)
+                        @if(auth()->user()->role === 'Admin' || auth()->user()->role === $sectionItem->section)
+                        <li>
+                            <div class="form-check" style="width:250px;">
+                                <input class="form-check-input" type="checkbox" style="width:20px;"
+                                    value="{{ $sectionItem->section }}" id="sectionCheckbox{{ $loop->index }}"
+                                    name="sections[]">
+                                <label class="form-check-label" for="sectionCheckbox{{ $loop->index }}">
+                                    {{ $sectionItem->section }}
+                                </label>
+                            </div>
+                        </li>
+                        @endif
+                        @endforeach
+                    </ul>
                 </div>
+            </form>
+            @endif
+
+            <!-- Dropdown untuk memilih tahun -->
+            <form method="post" action="{{ route('filterByTahun') }}" id="filterForm">
+                @csrf
+                <div class="dropdown mr-2 custom-dropdown-width">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Tahun
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                        @foreach($tahun as $tahunItem)
+                        <li>
+                            <div class="form-check" style="width:250px;">
+                                <input class="form-check-input" type="checkbox" style="width:20px;"
+                                    value="{{ $tahunItem->tahun }}" id="tahunCheckbox{{ $loop->index }}" name="tahun[]">
+                                <label class="form-check-label" for="tahunCheckbox{{ $loop->index }}">
+                                    {{ $tahunItem->tahun }}
+                                </label>
+                            </div>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </form>
+
+            <input type="text" name="search" style="height: 2.4rem; font-size: 12pt; margin-top: 0.10rem;" id="searchp"
+                class="form-control input-text" placeholder="Cari disini ..." aria-label="Recipient's username"
+                aria-describedby="basic-addon2">
+        </div>
+    </div>
+
+    <div id="filtered-data-container">
+        <div class="card-body pt-0">
+            <div class="table-responsive">
+                <table class="table table-striped" id="homeTableBody">
+                    <thead style="background-color: #263a74; color:white; position: sticky; top: 0;">
+                        <tr>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;"></td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">No</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Section</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Code</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Name</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Kode Budget</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">CUR</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Fixed/Variabel</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Prep/Masspro</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Kode Carline</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Remark</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Jul</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Jul</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Jul</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Aug</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Aug</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Aug</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Sep</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Sep</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Sep</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Okt</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Okt</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Okt</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Nov</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Nov</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Nov</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Dec</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Dec</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Dec</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Jan</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Jan</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Jan</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Feb</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Feb</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Feb</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Mar</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Mar</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Mar</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Apr</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Apr</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Apr</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty May</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price May</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount May</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Jun</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Jun</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Jun</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $no=1 ?>
+                        @foreach ($home as $h)
+                        <tr id="tr_{{ $h->id }}">
+                            <td><input type="checkbox" class="sub_chk" data-id="{{$h->id}}"
+                                    onclick="handleCheckboxChange({{ $h->id }})"></td>
+                            <td>{{$no++}}</td>
+                            <td>{{ $h->section }}</td>
+                            <td>{{ $h->code }}</td>
+                            <td>{{ $h->nama }}</td>
+                            <td>{{ $h->kode_budget }}</td>
+                            <td>{{ $h->cur }}</td>
+                            <td>{{ $h->fixed }}</td>
+                            <td>{{ $h->prep }}</td>
+                            <td>{{ $h->kode_carline }}</td>
+                            <td>{{ $h->remark }}</td>
+                            <td>{{ $h->qty_jul }}</td>
+                            <td>{{ $h->price_jul }}</td>
+                            <td>{{ $h->amount_jul }}</td>
+                            <td>{{ $h->qty_aug }}</td>
+                            <td>{{ $h->price_aug }}</td>
+                            <td>{{ $h->amount_aug }}</td>
+                            <td>{{ $h->qty_sep }}</td>
+                            <td>{{ $h->price_sep }}</td>
+                            <td>{{ $h->amount_sep }}</td>
+                            <td>{{ $h->qty_okt }}</td>
+                            <td>{{ $h->price_okt }}</td>
+                            <td>{{ $h->amount_okt }}</td>
+                            <td>{{ $h->qty_nov }}</td>
+                            <td>{{ $h->price_nov }}</td>
+                            <td>{{ $h->amount_nov }}</td>
+                            <td>{{ $h->qty_dec }}</td>
+                            <td>{{ $h->price_dec }}</td>
+                            <td>{{ $h->amount_dec }}</td>
+                            <td>{{ $h->qty_jan }}</td>
+                            <td>{{ $h->price_jan }}</td>
+                            <td>{{ $h->amount_jan }}</td>
+                            <td>{{ $h->qty_feb }}</td>
+                            <td>{{ $h->price_feb }}</td>
+                            <td>{{ $h->amount_feb }}</td>
+                            <td>{{ $h->qty_mar }}</td>
+                            <td>{{ $h->price_mar }}</td>
+                            <td>{{ $h->amount_mar }}</td>
+                            <td>{{ $h->qty_apr }}</td>
+                            <td>{{ $h->price_apr }}</td>
+                            <td>{{ $h->amount_apr }}</td>
+                            <td>{{ $h->qty_may }}</td>
+                            <td>{{ $h->price_may }}</td>
+                            <td>{{ $h->amount_may }}</td>
+                            <td>{{ $h->qty_jun }}</td>
+                            <td>{{ $h->price_jun }}</td>
+                            <td>{{ $h->amount_jun }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
+    </div>
     </div>
 </body>
 

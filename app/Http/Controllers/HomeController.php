@@ -351,7 +351,17 @@ class HomeController extends Controller
         return $columnRules[$columnIndex][0] ?? $columnIndex;
     }
     
+    public function unduh($nama_file)
+    {
+        $path = storage_path('app/public/Download/' . $nama_file);
 
+        if (file_exists($path)) {
+            return response()->download($path);
+        } else {
+            abort(404);
+        }
+    }
+    
     // public function import_excel_home(Request $request)
     // {
     //     set_time_limit(0);

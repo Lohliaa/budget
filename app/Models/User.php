@@ -23,6 +23,7 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
+        'chain',
         'role',
     ];
 
@@ -57,10 +58,6 @@ class User extends Authenticatable
     ];
 
     protected $table = 'users';
-    // public function cost()
-    // {
-    //     return $this->belongsTo(Cost::class, 'cost_center_id');
-    // }
     
     public function profile()
     {

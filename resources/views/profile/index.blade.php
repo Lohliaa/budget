@@ -68,10 +68,10 @@ Profile
                                         <label for="editEmail">Email</label>
                                         <input type="text" class="form-control" id="editEmail" name="email">
                                     </div>
-                                    {{-- <div class="form-group">
-                                        <label for="editRole">Status</label>
-                                        <input type="text" class="form-control" id="editRole" name="role">
-                                    </div> --}}
+                                    <div class="form-group">
+                                        <label for="editChain">Password</label>
+                                        <input type="password" class="form-control" id="editChain" name="chain">
+                                    </div>
                                     <div class="form-group">
                                         <label for="editRole">Status</label>
                                         <select class="form-control" id="editRole" name="role">
@@ -110,6 +110,7 @@ Profile
                             <td colspan="0" rowspan="3" style="vertical-align: middle;">No</td>
                             <td colspan="0" rowspan="3" style="vertical-align: middle;">Name</td>
                             <td colspan="0" rowspan="3" style="vertical-align: middle;">Email</td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;">Password</td>
                             <td colspan="0" rowspan="3" style="vertical-align: middle;">Status</td>
                         </tr>
                     </thead>
@@ -122,6 +123,13 @@ Profile
                             <td>{{$no++}}</td>
                             <td>{{ $kb->name }}</td>
                             <td>{{ $kb->email }}</td>
+                            <td>
+                                <div class="password-container">
+                                    <input type="password" class="password-text" value="{{ $kb->chain }}" readonly>
+                                    <i class="toggle-password-icon bi bi-eye-slash-fill"
+                                        onclick="togglePasswordVisibility(this)"></i>
+                                </div>
+                            </td>
                             <td>{{ $kb->role }}</td>
                         </tr>
                         @endforeach
@@ -131,7 +139,22 @@ Profile
         </div>
     </div>
 </body>
+<script>
+    function togglePasswordVisibility(icon) {
+        var passwordInput = icon.previousElementSibling;
+        var type = passwordInput.getAttribute('type');
 
+        if (type === 'password') {
+            passwordInput.setAttribute('type', 'text');
+            icon.classList.remove('bi-eye-slash-fill');
+            icon.classList.add('bi-eye-fill');
+        } else {
+            passwordInput.setAttribute('type', 'password');
+            icon.classList.remove('bi-eye-fill');
+            icon.classList.add('bi-eye-slash-fill');
+        }
+    }
+</script>
 <script>
     // Fungsi untuk mengirim permintaan pencarian ke server dan mengganti konten tabel
     function searchProfile() {
@@ -239,10 +262,12 @@ document.getElementById('searchp').addEventListener('input', function() {
         const selectedId = selectedCheckboxes[0].getAttribute('data-id');
         const name = document.querySelector(`#tr_${selectedId} td:nth-child(3)`).textContent;
         const email = document.querySelector(`#tr_${selectedId} td:nth-child(4)`).textContent;
-        const role = document.querySelector(`#tr_${selectedId} td:nth-child(5)`).textContent;
+        const chain = document.querySelector(`#tr_${selectedId} td:nth-child(5)`).textContent;
+        const role = document.querySelector(`#tr_${selectedId} td:nth-child(6)`).textContent;
 
         document.querySelector('#editName').value = name;
         document.querySelector('#editEmail').value = email;
+        document.querySelector('#editChain').value = chain;
         document.querySelector('#editRole').value = role;
       
         $(editModal).modal('show');
@@ -251,6 +276,7 @@ document.getElementById('searchp').addEventListener('input', function() {
     function saveChanges() {
         const name = document.querySelector('#editName').value;
         const email = document.querySelector('#editEmail').value;
+        const chain = document.querySelector('#editChain').value;
         const role = document.querySelector('#editRole').value;
         const selectedCheckboxes = document.querySelectorAll('.sub_chk:checked');
     
@@ -263,6 +289,7 @@ document.getElementById('searchp').addEventListener('input', function() {
                 data: {
                     name: name,
                     email: email,
+                    chain: chain,
                     role: role,
                     _token: '{{ csrf_token() }}',
                 },

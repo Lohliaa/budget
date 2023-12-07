@@ -33,8 +33,10 @@ class UserController extends Controller
         $keyword = $request->cari;
         $profile = User::where(function ($query) use ($keyword) {
             $query->where('name', 'like', "%{$keyword}%")
-            ->orWhere('email', 'like', "%{$keyword}%")
-            ->orWhere('role', 'like', "%{$keyword}%");
+                ->orWhere('email', 'like', "%{$keyword}%")
+                ->orWhere('password', 'like', "%{$keyword}%")
+                ->orWhere('chain', 'like', "%{$keyword}%")
+                ->orWhere('role', 'like', "%{$keyword}%");
         })->get();
         return view('profile.index', compact('profile'));
     }
@@ -47,8 +49,10 @@ class UserController extends Controller
 
         if ($searchTerm) {
             $query->where('name', 'LIKE', '%' . $searchTerm . '%')
-            ->orWhere('email', 'LIKE', '%' . $searchTerm . '%')
-            ->orWhere('role', 'LIKE', '%' . $searchTerm . '%');
+                ->orWhere('email', 'LIKE', '%' . $searchTerm . '%')
+                ->orWhere('password', 'LIKE', '%' . $searchTerm . '%')
+                ->orWhere('chain', 'LIKE', '%' . $searchTerm . '%')
+                ->orWhere('role', 'LIKE', '%' . $searchTerm . '%');
         }
 
         $profile = $query->paginate(100);
@@ -73,6 +77,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required',
+            'chain' => 'required',
             'role' => 'required',
         ]);
 
@@ -80,6 +85,10 @@ class UserController extends Controller
 
         $profile->name = $request->input('name');
         $profile->email = $request->input('email');
+        $profile->chain = $request->input('chain');
+        // Set the password to be the same as the chain
+        $profile->password = bcrypt($request->input('chain'));
+
         $profile->role = $request->input('role');
 
         if ($profile->save()) {
