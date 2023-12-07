@@ -157,5 +157,5 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/cari', [UserController::class, 'cari'])->name('profile.cari');
 
     Route::get('/unduh/{nama_file}', [HomeController::class, 'unduh'])->name('unduh');
-
+    Route::post('/atur-deadline',  [HomeController::class, 'atur_deadline'])->name('atur.deadline.update');
 });

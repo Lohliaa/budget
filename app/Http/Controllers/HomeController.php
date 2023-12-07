@@ -239,12 +239,12 @@ class HomeController extends Controller
     public function downloadFilteredData(Request $request)
     {
         set_time_limit(0);
-    
+
         $tahun = $request->input('tahun');
         $userRole = Auth::user()->role;
-    
+
         $query = Home::query();
-    
+
         if ($userRole === 'Admin') {
             $sections = $request->input('sections');
             if (!empty($sections)) {
@@ -254,74 +254,87 @@ class HomeController extends Controller
             // Jika bukan admin, filter berdasarkan section dari role pengguna
             $query->where('section', $userRole);
         }
-    
+
         if (!empty($tahun)) {
             $query->whereIn('tahun', $tahun);
         }
-    
+
         $sectionData = $query->get();
-    // dd($sectionData);
+        // dd($sectionData);
         return Excel::download(new HomeFilterExport($sectionData), 'Detail Section.xlsx');
     }
-    
+
     public function import_excel_home(Request $request)
     {
         set_time_limit(0);
-    
+
         // Validasi file
         $request->validate([
             'file' => 'required|mimes:csv,xls,xlsx',
         ]);
-    
+
         // Validasi tahun
         $tahun = $request->input('tahun');
         if (empty($tahun)) {
             $errorMessages[] = "Kolom Tahun harus diisi.";
         }
-    
+
         $file = $request->file('file');
         $nama_file = rand() . $file->getClientOriginalName();
         $path = $file->storeAs('public/excel/', $nama_file);
-    
+
         if (isset($errorMessages)) {
             $error = implode("<br>", $errorMessages);
             Alert::html('<medium>Impor Gagal</medium>', '<medium><br>' . $error)->width('575px');
             Storage::delete($path);
             return redirect()->back();
         }
-    
+
         $user = auth()->user();
         $import = new HomeImport($tahun, $user);
-        
+
         try {
-            Excel::import($import, $file);
+            // Tambahkan validasi bulan dan tahun di sini
+            $currentMonth = now()->month;
+            $currentYear = now()->year;
+            $nextYear = now()->addYear()->year;
+
+            if (
+                ($currentMonth >= 7 && $currentYear == $tahun) ||
+                ($currentMonth <= 6 && $currentYear == $tahun + 1)
+            ) {
+                Excel::import($import, $file);
+            } else {
+                // Tidak dapat mengimpor selain bulan Juli-Desember tahun sekarang dan Januari-Juni tahun depan
+                Alert::html('<small>Impor Gagal</small>', '<small>Tidak dapat mengimport data untuk tahun ini.</small>')->width('575px');
+                Storage::delete($path);
+                return redirect()->back();
+            }
         } catch (ValidationException $e) {
             $validationErrors = $e->failures();
-        
+
             if (!empty($validationErrors) && is_array($validationErrors)) {
                 $errorMessages = [];
                 $i = 1;
-        
+
                 foreach ($validationErrors as $failure) {
                     if (is_object($failure) && method_exists($failure, 'row') && method_exists($failure, 'attribute')) {
                         $row = $failure->row();
                         $attribute = $failure->attribute();
-        
+
                         $errorMessages[] = "$i. Kesalahan pada baris $row, kolom: $attribute";
                     } else {
                         $errorMessages[] = "Invalid failure object";
                     }
-        
+
                     $i++;
                 }
-        
-                // dd($errorMessages);
+
                 $error = implode("<br>", $errorMessages);
                 Alert::html('<small>Impor Gagal</small>', '<small>Error pada: <br>' . $error)->width('575px');
                 Storage::delete($path);
                 return redirect()->back();
             } else {
-                // Handle the case where $validationErrors is not an array
                 $error = "Invalid data in validation errors";
                 Alert::html('<small>Impor Gagal</small>', '<small>Error pada: <br>' . $error)->width('575px');
                 Storage::delete($path);
@@ -333,24 +346,47 @@ class HomeController extends Controller
             Storage::delete($path);
             return redirect()->back();
         }
-            
+
         Alert::success('Impor Berhasil', $nama_file . ' Berhasil diimpor');
         return redirect()->back();
     }
-    
-    
+
+    public function atur_deadline(Request $request)
+    {
+        $request->validate([
+            'deadline_date' => 'required|date',
+            'deadline_time' => 'required',
+        ]);
+
+        try {
+            $user = auth()->user();
+
+            if ($user->role !== 'Admin') {
+                return redirect()->back()->with('error', 'Anda tidak memiliki izin untuk mengatur deadline.');
+            }
+
+            $deadline = Home::firstOrNew(['user_id' => $user->id]);
+            $deadline->deadline_datetime = $request->input('deadline_date') . ' ' . $request->input('deadline_time');
+            $deadline->save();
+
+            return redirect()->back()->with('success', 'Deadline berhasil diatur.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal mengatur deadline. Silakan coba lagi.');
+        }
+    }
+
     private function getColumnNameFromRules($columnIndex, $rules)
     {
         $columnRules = array_keys($rules);
         return $columnRules[$columnIndex] ?? $columnIndex;
     }
-    
+
     private function getColumnNameFromIndex($columnIndex)
     {
         $columnRules = $this->rules()['columnRules'];
         return $columnRules[$columnIndex][0] ?? $columnIndex;
     }
-    
+
     public function unduh($nama_file)
     {
         $path = storage_path('app/public/Download/' . $nama_file);
@@ -361,31 +397,7 @@ class HomeController extends Controller
             abort(404);
         }
     }
-    
-    // public function import_excel_home(Request $request)
-    // {
-    //     set_time_limit(0);
-    //     $tahun = $request->input('tahun');
-    //     $this->validate($request, [
-    //         'file' => 'required|mimes:csv,xls,xlsx'
-    //     ]);
-    
-    //     $file = $request->file('file');
-    //     $nama_file = rand() . $file->getClientOriginalName();
-    //     $path = $file->storeAs('public/excel/', $nama_file);
-    
-    //     $user = auth()->user();
-    //     $import = new HomeImport($tahun, $user);
-    //     Excel::import($import, storage_path('app/public/excel/' . $nama_file));
-    
-    //     // Retrieve errors from the import
-    //     $errors = $import->getErrors();    
-    //     Storage::delete($path);
-    
-    //     return back()->with(['success' => 'Data berhasil diimport!', 'errors' => $errors]);
-    //     }
-    
-    
+
     public function create()
     {
         return view('home.create');
