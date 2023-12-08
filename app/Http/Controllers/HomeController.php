@@ -294,7 +294,7 @@ class HomeController extends Controller
         $currentYear = date('Y');
 
         // Periksa apakah startYear lebih besar atau sama dengan tahun saat ini dan endYear setidaknya 2 tahun lebih besar dari tahun saat ini
-        if ($startYear >= $currentYear && $endYear >= $currentYear+1) {
+        if ($startYear == $currentYear && $endYear >= $currentYear+1) {
             $user = auth()->user();
             $import = new HomeImport($tahun, $user);
             Excel::import($import, $file);
@@ -303,7 +303,7 @@ class HomeController extends Controller
             return redirect()->back();
         } else {
             // Pesan kesalahan jika kondisi tidak terpenuhi
-            $errorMessages[] = "Tidak dapat menginputkan pada tahun ini.";
+            $errorMessages[] = "Tidak dapat impor data pada tahun ini.";
             Alert::html('<medium>Impor Gagal</medium>', '<medium><br>' . implode("<br>", $errorMessages))->width('575px');
             Storage::delete($path);
             return redirect()->back();
