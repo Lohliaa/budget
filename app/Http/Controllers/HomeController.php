@@ -297,11 +297,48 @@ class HomeController extends Controller
         if ($startYear == $currentYear && $endYear >= $currentYear+1) {
             $user = auth()->user();
             $import = new HomeImport($tahun, $user);
-            Excel::import($import, $file);
-            // dd($import, $file);
+    
+            try {
+                Excel::import($import, $file);
+            } catch (ValidationException $e) {
+                $validationErrors = $e->failures();
+    
+                if (!empty($validationErrors) && is_array($validationErrors)) {
+                    $errorMessages = [];
+                    $i = 1;
+    
+                    foreach ($validationErrors as $failure) {
+                        if (is_object($failure) && method_exists($failure, 'row') && method_exists($failure, 'attribute')) {
+                            $row = $failure->row();
+                            $attribute = $failure->attribute();
+    
+                            $errorMessages[] = "$i. Kesalahan pada baris $row, kolom: $attribute";
+                        } else {
+                            $errorMessages[] = "Invalid failure object";
+                        }
+    
+                        $i++;
+                    }
+    
+                    $error = implode("<br>", $errorMessages);
+                    Alert::html('<small>Impor Gagal</small>', '<small>Error pada: <br>' . $error)->width('575px');
+                    Storage::delete($path);
+                    return redirect()->back();
+                } else {
+                    $error = "Invalid data in validation errors";
+                    Alert::html('<small>Impor Gagal</small>', '<small>Error pada: <br>' . $error)->width('575px');
+                    Storage::delete($path);
+                    return redirect()->back();
+                }
+            } catch (\Exception $e) {
+                $error = $e->getMessage();
+                Alert::html('<small>Impor Gagal</small>', '<small>Error pada: <br>' . $error)->width('575px');
+                Storage::delete($path);
+                return redirect()->back();
+            }
+    
             Alert::success('Impor Berhasil', $nama_file . ' Berhasil diimpor');
-            return redirect()->back();
-        } else {
+            return redirect()->back();        } else {
             // Pesan kesalahan jika kondisi tidak terpenuhi
             $errorMessages[] = "Tidak dapat impor data pada tahun ini.";
             Alert::html('<medium>Impor Gagal</medium>', '<medium><br>' . implode("<br>", $errorMessages))->width('575px');
