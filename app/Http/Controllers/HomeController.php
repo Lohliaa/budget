@@ -7,6 +7,7 @@ use App\Exports\HomeFilterExport;
 use App\Imports\HomeImport;
 use App\Models\Carline;
 use App\Models\Cost;
+use App\Models\Deadline;
 use App\Models\Home;
 use App\Models\KodeBudget;
 use App\Models\MasterBarang;
@@ -267,11 +268,18 @@ class HomeController extends Controller
     public function import_excel_home(Request $request)
     {
         set_time_limit(0);
+        $role = Auth::user()->role;
 
         // Validasi file
         $request->validate([
             'file' => 'required|mimes:csv,xls,xlsx',
+            'tahun' => 'required|regex:/^\d{4}-\d{4}$/',
         ]);
+
+
+        $file = $request->file('file');
+        $nama_file = rand() . $file->getClientOriginalName();
+        $path = $file->storeAs('public/excel/', $nama_file);
 
         // Validasi tahun
         $tahun = $request->input('tahun');
@@ -279,9 +287,27 @@ class HomeController extends Controller
             $errorMessages[] = "Kolom Tahun harus diisi.";
         }
 
-        $file = $request->file('file');
-        $nama_file = rand() . $file->getClientOriginalName();
-        $path = $file->storeAs('public/excel/', $nama_file);
+        // Validasi tahun
+        $tahun = $request->input('tahun');
+        list($startYear, $endYear) = explode('-', $tahun);
+
+        $currentYear = date('Y');
+
+        // Periksa apakah startYear lebih besar atau sama dengan tahun saat ini dan endYear setidaknya 2 tahun lebih besar dari tahun saat ini
+        if ($startYear >= $currentYear && $endYear >= $currentYear+1) {
+            $user = auth()->user();
+            $import = new HomeImport($tahun, $user);
+            Excel::import($import, $file);
+            // dd($import, $file);
+            Alert::success('Impor Berhasil', $nama_file . ' Berhasil diimpor');
+            return redirect()->back();
+        } else {
+            // Pesan kesalahan jika kondisi tidak terpenuhi
+            $errorMessages[] = "Tidak dapat menginputkan pada tahun ini.";
+            Alert::html('<medium>Impor Gagal</medium>', '<medium><br>' . implode("<br>", $errorMessages))->width('575px');
+            Storage::delete($path);
+            return redirect()->back();
+        }
 
         if (isset($errorMessages)) {
             $error = implode("<br>", $errorMessages);
@@ -336,29 +362,6 @@ class HomeController extends Controller
         return redirect()->back();
     }
 
-    public function atur_deadline(Request $request)
-    {
-        $request->validate([
-            'deadline_date' => 'required|date',
-            'deadline_time' => 'required',
-        ]);
-
-        try {
-            $user = auth()->user();
-
-            if ($user->role !== 'Admin') {
-                return redirect()->back()->with('error', 'Anda tidak memiliki izin untuk mengatur deadline.');
-            }
-
-            $deadline = Home::firstOrNew(['user_id' => $user->id]);
-            $deadline->deadline_datetime = $request->input('deadline_date') . ' ' . $request->input('deadline_time');
-            $deadline->save();
-
-            return redirect()->back()->with('success', 'Deadline berhasil diatur.');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal mengatur deadline. Silakan coba lagi.');
-        }
-    }
 
     private function getColumnNameFromRules($columnIndex, $rules)
     {
