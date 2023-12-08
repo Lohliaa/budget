@@ -12,6 +12,7 @@ use App\Http\Controllers\MbarangController;
 use App\Http\Controllers\TpembelianController;
 use App\Http\Controllers\TpembelianbarangController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DeadlineController;
 use App\Http\Controllers\DetailController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KodeBudgetController;
@@ -157,5 +158,5 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/cari', [UserController::class, 'cari'])->name('profile.cari');
 
     Route::get('/unduh/{nama_file}', [HomeController::class, 'unduh'])->name('unduh');
-    Route::post('/atur-deadline',  [HomeController::class, 'atur_deadline'])->name('atur.deadline.update');
+    Route::post('/atur-deadline',  [DeadlineController::class, 'update'])->name('atur.deadline.update');
 });

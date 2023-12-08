@@ -294,22 +294,7 @@ class HomeController extends Controller
         $import = new HomeImport($tahun, $user);
 
         try {
-            // Tambahkan validasi bulan dan tahun di sini
-            $currentMonth = now()->month;
-            $currentYear = now()->year;
-            $nextYear = now()->addYear()->year;
-
-            if (
-                ($currentMonth >= 7 && $currentYear == $tahun) ||
-                ($currentMonth <= 6 && $currentYear == $tahun + 1)
-            ) {
-                Excel::import($import, $file);
-            } else {
-                // Tidak dapat mengimpor selain bulan Juli-Desember tahun sekarang dan Januari-Juni tahun depan
-                Alert::html('<small>Impor Gagal</small>', '<small>Tidak dapat mengimport data untuk tahun ini.</small>')->width('575px');
-                Storage::delete($path);
-                return redirect()->back();
-            }
+            Excel::import($import, $file);
         } catch (ValidationException $e) {
             $validationErrors = $e->failures();
 

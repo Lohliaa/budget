@@ -12614,3 +12614,20 @@ footer.sticky-footer .copyright {
 body.sidebar-toggled footer.sticky-footer {
     width: 100%
 }
+
+.password-container {
+    position: relative;
+  }
+  
+  .password-text {
+    display: inline-block;
+    border: none;
+    background-color: transparent;
+    /* text-align: left; */
+  }
+  
+  .toggle-password-icon {
+    position: absolute;
+    /* top: 50%; */
+    cursor: pointer;
+  }

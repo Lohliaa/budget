@@ -27,17 +27,21 @@ class User extends Authenticatable
         'role',
     ];
 
-        
+    public function isAdmin()
+    {
+        return $this->role == 'Admin'; // Sesuaikan dengan struktur peran Anda
+    }
+
     public function cost()
     {
         return $this->belongsTo(Cost::class, 'cost_center', 'cost_center');
     }
-    
+
     public function home()
     {
         return $this->hasMany(Home::class, 'user_id', 'id');
-    }    
-    
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -58,7 +62,7 @@ class User extends Authenticatable
     ];
 
     protected $table = 'users';
-    
+
     public function profile()
     {
         return $this->hasOne('App\Models\Profile');
@@ -73,5 +77,4 @@ class User extends Authenticatable
     {
         return Carbon::parse($this->attributes['updated_at'])->translatedFormat('l, d F Y H:i:s');
     }
-    
 }

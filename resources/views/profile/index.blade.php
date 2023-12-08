@@ -71,7 +71,9 @@ Profile
                                     <div class="form-group">
                                         <label for="editChain">Password</label>
                                         <input type="password" class="form-control" id="editChain" name="chain">
+                                        
                                     </div>
+                                    
                                     <div class="form-group">
                                         <label for="editRole">Status</label>
                                         <select class="form-control" id="editRole" name="role">

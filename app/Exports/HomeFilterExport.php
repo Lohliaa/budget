@@ -148,7 +148,7 @@ class HomeFilterExport implements FromCollection, WithHeadings, WithStyles, Shou
             'Sheet 3' => new SheetTiga($this->data),
             'Sheet 4' => new SheetEmpat($this->data),
             'Sheet 5' => new SheetLima($this->data),
-            'Sheet 6' => new SheetEnam($this->data),
+            // 'Sheet 6' => new SheetEnam($this->data),
         ];
 
         return $sheets;
@@ -720,244 +720,244 @@ class SheetLima implements FromCollection, WithHeadings, WithStyles, WithTitle, 
     }
 }
 
-class SheetEnam implements FromCollection, WithHeadings, WithStyles, WithTitle, ShouldAutoSize
-{
-    protected $data;
+// class SheetEnam implements FromCollection, WithHeadings, WithStyles, WithTitle, ShouldAutoSize
+// {
+//     protected $data;
 
-    public function __construct($data)
-    {
-        $this->data = $data;
-    }
-    public function collection()
-    {
-        $filteredData = $this->data->map(function ($item) {
-            // Ambil data UMH dari tabel berdasarkan bulan
-            $umhData = UMH::where('month', $item['month'])->first();
-            if ($umhData) {
-                // Ambil nilai umh dan new_umh dari tabel UMH
-                $umh = $umhData->umh;
-                $new_umh = $umhData->new_umh;
+//     public function __construct($data)
+//     {
+//         $this->data = $data;
+//     }
+//     public function collection()
+//     {
+//         $filteredData = $this->data->map(function ($item) {
+//             // Ambil data UMH dari tabel berdasarkan bulan
+//             $umhData = UMH::where('month', $item['month'])->first();
+//             if ($umhData) {
+//                 // Ambil nilai umh dan new_umh dari tabel UMH
+//                 $umh = $umhData->umh;
+//                 $new_umh = $umhData->new_umh;
 
-                // Hitung new_amount untuk setiap bulan
-                $newAmount_Jul = $item['amount_jul'] * $umh / $new_umh;
-                $newAmount_Aug = $item['amount_aug'] * $umh / $new_umh;
-                $newAmount_Sep = $item['amount_sep'] * $umh / $new_umh;
-                $newAmount_Okt = $item['amount_okt'] * $umh / $new_umh;
-                $newAmount_Nov = $item['amount_nov'] * $umh / $new_umh;
-                $newAmount_Dec = $item['amount_dec'] * $umh / $new_umh;
-                $newAmount_Jan = $item['amount_jan'] * $umh / $new_umh;
-                $newAmount_Feb = $item['amount_feb'] * $umh / $new_umh;
-                $newAmount_Mar = $item['amount_mar'] * $umh / $new_umh;
-                $newAmount_Apr = $item['amount_apr'] * $umh / $new_umh;
-                $newAmount_May = $item['amount_may'] * $umh / $new_umh;
-                $newAmount_Jun = $item['amount_jun'] * $umh / $new_umh;
+//                 // Hitung new_amount untuk setiap bulan
+//                 $newAmount_Jul = $item['amount_jul'] * $umh / $new_umh;
+//                 $newAmount_Aug = $item['amount_aug'] * $umh / $new_umh;
+//                 $newAmount_Sep = $item['amount_sep'] * $umh / $new_umh;
+//                 $newAmount_Okt = $item['amount_okt'] * $umh / $new_umh;
+//                 $newAmount_Nov = $item['amount_nov'] * $umh / $new_umh;
+//                 $newAmount_Dec = $item['amount_dec'] * $umh / $new_umh;
+//                 $newAmount_Jan = $item['amount_jan'] * $umh / $new_umh;
+//                 $newAmount_Feb = $item['amount_feb'] * $umh / $new_umh;
+//                 $newAmount_Mar = $item['amount_mar'] * $umh / $new_umh;
+//                 $newAmount_Apr = $item['amount_apr'] * $umh / $new_umh;
+//                 $newAmount_May = $item['amount_may'] * $umh / $new_umh;
+//                 $newAmount_Jun = $item['amount_jun'] * $umh / $new_umh;
 
-                // Tambahkan hasil perhitungan ke dalam array
-                $item['amount_jul'] = $newAmount_Jul;
-                $item['amount_aug'] = $newAmount_Aug;
-                $item['amount_sep'] = $newAmount_Sep;
-                $item['amount_okt'] = $newAmount_Okt;
-                $item['amount_nov'] = $newAmount_Nov;
-                $item['amount_dec'] = $newAmount_Dec;
-                $item['amount_jan'] = $newAmount_Jan;
-                $item['amount_feb'] = $newAmount_Feb;
-                $item['amount_mar'] = $newAmount_Mar;
-                $item['amount_apr'] = $newAmount_Apr;
-                $item['amount_may'] = $newAmount_May;
-                $item['amount_jun'] = $newAmount_Jun;
-            } else {
-                // Jika fixed bukan "variabel", ambil nilai dari amount yang sudah ada
-                $item['stp_jul'] = $item['amount_jul'];
-                $item['stp_aug'] = $item['amount_aug'];
-                $item['stp_sep'] = $item['amount_sep'];
-                $item['stp_okt'] = $item['amount_okt'];
-                $item['stp_nov'] = $item['amount_nov'];
-                $item['stp_dec'] = $item['amount_dec'];
-                $item['stp_jan'] = $item['amount_jan'];
-                $item['stp_feb'] = $item['amount_feb'];
-                $item['stp_mar'] = $item['amount_mar'];
-                $item['stp_apr'] = $item['amount_apr'];
-                $item['stp_may'] = $item['amount_may'];
-                $item['stp_jun'] = $item['amount_jun'];
-            }
+//                 // Tambahkan hasil perhitungan ke dalam array
+//                 $item['amount_jul'] = $newAmount_Jul;
+//                 $item['amount_aug'] = $newAmount_Aug;
+//                 $item['amount_sep'] = $newAmount_Sep;
+//                 $item['amount_okt'] = $newAmount_Okt;
+//                 $item['amount_nov'] = $newAmount_Nov;
+//                 $item['amount_dec'] = $newAmount_Dec;
+//                 $item['amount_jan'] = $newAmount_Jan;
+//                 $item['amount_feb'] = $newAmount_Feb;
+//                 $item['amount_mar'] = $newAmount_Mar;
+//                 $item['amount_apr'] = $newAmount_Apr;
+//                 $item['amount_may'] = $newAmount_May;
+//                 $item['amount_jun'] = $newAmount_Jun;
+//             } else {
+//                 // Jika fixed bukan "variabel", ambil nilai dari amount yang sudah ada
+//                 $item['stp_jul'] = $item['amount_jul'];
+//                 $item['stp_aug'] = $item['amount_aug'];
+//                 $item['stp_sep'] = $item['amount_sep'];
+//                 $item['stp_okt'] = $item['amount_okt'];
+//                 $item['stp_nov'] = $item['amount_nov'];
+//                 $item['stp_dec'] = $item['amount_dec'];
+//                 $item['stp_jan'] = $item['amount_jan'];
+//                 $item['stp_feb'] = $item['amount_feb'];
+//                 $item['stp_mar'] = $item['amount_mar'];
+//                 $item['stp_apr'] = $item['amount_apr'];
+//                 $item['stp_may'] = $item['amount_may'];
+//                 $item['stp_jun'] = $item['amount_jun'];
+//             }
 
-            return [
-                'tahun' => $item['tahun'],
-                'section' => $item['section'],
-                'code' => $item['code'],
-                'nama' => $item['nama'],
-                'kode_budget' => $item['kode_budget'],
-                'cur' => $item['cur'],
-                'fixed' => $item['fixed'],
-                'prep' => $item['prep'],
-                'kode_carline' => $item['kode_carline'],
-                'remark' => $item['remark'],
-                'amount_jul' => $item['amount_jul'],
-                'amount_aug' => $item['amount_aug'],
-                'amount_sep' => $item['amount_sep'],
-                'amount_okt' => $item['amount_okt'],
-                'amount_nov' => $item['amount_nov'],
-                'amount_dec' => $item['amount_dec'],
-                'amount_jan' => $item['amount_jan'],
-                'amount_feb' => $item['amount_feb'],
-                'amount_mar' => $item['amount_mar'],
-                'amount_apr' => $item['amount_apr'],
-                'amount_may' => $item['amount_may'],
-                'amount_jun' => $item['amount_jun'],
-                'stp_jul' => $item['stp_jul'],
-                'stp_aug' => $item['stp_aug'],
-                'stp_sep' => $item['stp_sep'],
-                'stp_okt' => $item['stp_okt'],
-                'stp_nov' => $item['stp_nov'],
-                'stp_dec' => $item['stp_dec'],
-                'stp_jan' => $item['stp_jan'],
-                'stp_feb' => $item['stp_feb'],
-                'stp_mar' => $item['stp_mar'],
-                'stp_apr' => $item['stp_apr'],
-                'stp_may' => $item['stp_may'],
-                'stp_jun' => $item['stp_jun'],
-            ];
-        });
+//             return [
+//                 'tahun' => $item['tahun'],
+//                 'section' => $item['section'],
+//                 'code' => $item['code'],
+//                 'nama' => $item['nama'],
+//                 'kode_budget' => $item['kode_budget'],
+//                 'cur' => $item['cur'],
+//                 'fixed' => $item['fixed'],
+//                 'prep' => $item['prep'],
+//                 'kode_carline' => $item['kode_carline'],
+//                 'remark' => $item['remark'],
+//                 'amount_jul' => $item['amount_jul'],
+//                 'amount_aug' => $item['amount_aug'],
+//                 'amount_sep' => $item['amount_sep'],
+//                 'amount_okt' => $item['amount_okt'],
+//                 'amount_nov' => $item['amount_nov'],
+//                 'amount_dec' => $item['amount_dec'],
+//                 'amount_jan' => $item['amount_jan'],
+//                 'amount_feb' => $item['amount_feb'],
+//                 'amount_mar' => $item['amount_mar'],
+//                 'amount_apr' => $item['amount_apr'],
+//                 'amount_may' => $item['amount_may'],
+//                 'amount_jun' => $item['amount_jun'],
+//                 'stp_jul' => $item['stp_jul'],
+//                 'stp_aug' => $item['stp_aug'],
+//                 'stp_sep' => $item['stp_sep'],
+//                 'stp_okt' => $item['stp_okt'],
+//                 'stp_nov' => $item['stp_nov'],
+//                 'stp_dec' => $item['stp_dec'],
+//                 'stp_jan' => $item['stp_jan'],
+//                 'stp_feb' => $item['stp_feb'],
+//                 'stp_mar' => $item['stp_mar'],
+//                 'stp_apr' => $item['stp_apr'],
+//                 'stp_may' => $item['stp_may'],
+//                 'stp_jun' => $item['stp_jun'],
+//             ];
+//         });
 
-        return $filteredData;
-    }
-    // public function collection()
-    // {
-    //     $filteredData = $this->data->map(function ($item) {
+//         return $filteredData;
+//     }
+//     // public function collection()
+//     // {
+//     //     $filteredData = $this->data->map(function ($item) {
 
-    //         $fixedValue = $item['fixed'];
+//     //         $fixedValue = $item['fixed'];
 
-    //         $months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+//     //         $months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-    //         // Jika fixed adalah "variabel", hitung new_amount sesuai rumus yang Anda berikan
-    //         if (strtolower($fixedValue) === "variabel" && $item['new_umh'] != 0) {
+//     //         // Jika fixed adalah "variabel", hitung new_amount sesuai rumus yang Anda berikan
+//     //         if (strtolower($fixedValue) === "variabel" && $item['new_umh'] != 0) {
 
-    //             // Ambil data UMH dari tabel berdasarkan bulan
-    //             $umhData = UMH::where('month', $item['month'])->first();
-    //             if ($umhData) {
-    //                 // Ambil nilai umh dan new_umh dari tabel UMH
-    //                 $umh = $umhData->umh;
-    //                 $new_umh = $umhData->new_umh;
+//     //             // Ambil data UMH dari tabel berdasarkan bulan
+//     //             $umhData = UMH::where('month', $item['month'])->first();
+//     //             if ($umhData) {
+//     //                 // Ambil nilai umh dan new_umh dari tabel UMH
+//     //                 $umh = $umhData->umh;
+//     //                 $new_umh = $umhData->new_umh;
 
-    //                 // Hitung new_amount untuk setiap bulan
-    //                 $newAmount_Jul = $item['amount_jul'] * $umh / $new_umh;
-    //                 $newAmount_Aug = $item['amount_aug'] * $umh / $new_umh;
-    //                 $newAmount_Sep = $item['amount_sep'] * $umh / $new_umh;
-    //                 $newAmount_Okt = $item['amount_okt'] * $umh / $new_umh;
-    //                 $newAmount_Nov = $item['amount_nov'] * $umh / $new_umh;
-    //                 $newAmount_Dec = $item['amount_dec'] * $umh / $new_umh;
-    //                 $newAmount_Jan = $item['amount_jan'] * $umh / $new_umh;
-    //                 $newAmount_Feb = $item['amount_feb'] * $umh / $new_umh;
-    //                 $newAmount_Mar = $item['amount_mar'] * $umh / $new_umh;
-    //                 $newAmount_Apr = $item['amount_apr'] * $umh / $new_umh;
-    //                 $newAmount_May = $item['amount_may'] * $umh / $new_umh;
-    //                 $newAmount_Jun = $item['amount_jun'] * $umh / $new_umh;
-    //             }
-    //         } else {
-    //             // Jika fixed bukan "variabel", ambil nilai dari amount yang sudah ada
-    //             $newAmount_Jul = $item['amount_jul'];
-    //             $newAmount_Aug = $item['amount_aug'];
-    //             $newAmount_Sep = $item['amount_sep'];
-    //             $newAmount_Okt = $item['amount_okt'];
-    //             $newAmount_Nov = $item['amount_nov'];
-    //             $newAmount_Dec = $item['amount_dec'];
-    //             $newAmount_Jan = $item['amount_jan'];
-    //             $newAmount_Feb = $item['amount_feb'];
-    //             $newAmount_Mar = $item['amount_mar'];
-    //             $newAmount_Apr = $item['amount_apr'];
-    //             $newAmount_May = $item['amount_may'];
-    //             $newAmount_Jun = $item['amount_jun'];
-    //         }
+//     //                 // Hitung new_amount untuk setiap bulan
+//     //                 $newAmount_Jul = $item['amount_jul'] * $umh / $new_umh;
+//     //                 $newAmount_Aug = $item['amount_aug'] * $umh / $new_umh;
+//     //                 $newAmount_Sep = $item['amount_sep'] * $umh / $new_umh;
+//     //                 $newAmount_Okt = $item['amount_okt'] * $umh / $new_umh;
+//     //                 $newAmount_Nov = $item['amount_nov'] * $umh / $new_umh;
+//     //                 $newAmount_Dec = $item['amount_dec'] * $umh / $new_umh;
+//     //                 $newAmount_Jan = $item['amount_jan'] * $umh / $new_umh;
+//     //                 $newAmount_Feb = $item['amount_feb'] * $umh / $new_umh;
+//     //                 $newAmount_Mar = $item['amount_mar'] * $umh / $new_umh;
+//     //                 $newAmount_Apr = $item['amount_apr'] * $umh / $new_umh;
+//     //                 $newAmount_May = $item['amount_may'] * $umh / $new_umh;
+//     //                 $newAmount_Jun = $item['amount_jun'] * $umh / $new_umh;
+//     //             }
+//     //         } else {
+//     //             // Jika fixed bukan "variabel", ambil nilai dari amount yang sudah ada
+//     //             $newAmount_Jul = $item['amount_jul'];
+//     //             $newAmount_Aug = $item['amount_aug'];
+//     //             $newAmount_Sep = $item['amount_sep'];
+//     //             $newAmount_Okt = $item['amount_okt'];
+//     //             $newAmount_Nov = $item['amount_nov'];
+//     //             $newAmount_Dec = $item['amount_dec'];
+//     //             $newAmount_Jan = $item['amount_jan'];
+//     //             $newAmount_Feb = $item['amount_feb'];
+//     //             $newAmount_Mar = $item['amount_mar'];
+//     //             $newAmount_Apr = $item['amount_apr'];
+//     //             $newAmount_May = $item['amount_may'];
+//     //             $newAmount_Jun = $item['amount_jun'];
+//     //         }
 
-    //         return [
-    //             'tahun' => $item['tahun'],
-    //             'section' => $item['section'],
-    //             'code' => $item['code'],
-    //             'nama' => $item['nama'],
-    //             'kode_budget' => $item['kode_budget'],
-    //             'cur' => $item['cur'],
-    //             'fixed' => $item['fixed'],
-    //             'prep' => $item['prep'],
-    //             'kode_carline' => $item['kode_carline'],
-    //             'amount_jul' => $item['amount_jul'],
-    //             'amount_aug' => $item['amount_aug'],
-    //             'amount_sep' => $item['amount_sep'],
-    //             'amount_okt' => $item['amount_okt'],
-    //             'amount_nov' => $item['amount_nov'],
-    //             'amount_dec' => $item['amount_dec'],
-    //             'amount_jan' => $item['amount_jan'],
-    //             'amount_feb' => $item['amount_feb'],
-    //             'amount_mar' => $item['amount_mar'],
-    //             'amount_apr' => $item['amount_apr'],
-    //             'amount_may' => $item['amount_may'],
-    //             'amount_jun' => $item['amount_jun'],
-    //             'new_amount_jul' => $newAmount_Jul,
-    //             'new_amount_aug' => $newAmount_Aug,
-    //             'new_amount_sep' => $newAmount_Sep,
-    //             'new_amount_okt' => $newAmount_Okt,
-    //             'new_amount_nov' => $newAmount_Nov,
-    //             'new_amount_dec' => $newAmount_Dec,
-    //             'new_amount_jan' => $newAmount_Jan,
-    //             'new_amount_feb' => $newAmount_Feb,
-    //             'new_amount_mar' => $newAmount_Mar,
-    //             'new_amount_apr' => $newAmount_Apr,
-    //             'new_amount_may' => $newAmount_May,
-    //             'new_amount_jun' => $newAmount_Jun,
+//     //         return [
+//     //             'tahun' => $item['tahun'],
+//     //             'section' => $item['section'],
+//     //             'code' => $item['code'],
+//     //             'nama' => $item['nama'],
+//     //             'kode_budget' => $item['kode_budget'],
+//     //             'cur' => $item['cur'],
+//     //             'fixed' => $item['fixed'],
+//     //             'prep' => $item['prep'],
+//     //             'kode_carline' => $item['kode_carline'],
+//     //             'amount_jul' => $item['amount_jul'],
+//     //             'amount_aug' => $item['amount_aug'],
+//     //             'amount_sep' => $item['amount_sep'],
+//     //             'amount_okt' => $item['amount_okt'],
+//     //             'amount_nov' => $item['amount_nov'],
+//     //             'amount_dec' => $item['amount_dec'],
+//     //             'amount_jan' => $item['amount_jan'],
+//     //             'amount_feb' => $item['amount_feb'],
+//     //             'amount_mar' => $item['amount_mar'],
+//     //             'amount_apr' => $item['amount_apr'],
+//     //             'amount_may' => $item['amount_may'],
+//     //             'amount_jun' => $item['amount_jun'],
+//     //             'new_amount_jul' => $newAmount_Jul,
+//     //             'new_amount_aug' => $newAmount_Aug,
+//     //             'new_amount_sep' => $newAmount_Sep,
+//     //             'new_amount_okt' => $newAmount_Okt,
+//     //             'new_amount_nov' => $newAmount_Nov,
+//     //             'new_amount_dec' => $newAmount_Dec,
+//     //             'new_amount_jan' => $newAmount_Jan,
+//     //             'new_amount_feb' => $newAmount_Feb,
+//     //             'new_amount_mar' => $newAmount_Mar,
+//     //             'new_amount_apr' => $newAmount_Apr,
+//     //             'new_amount_may' => $newAmount_May,
+//     //             'new_amount_jun' => $newAmount_Jun,
 
-    //         ];
-    //     });
+//     //         ];
+//     //     });
 
-    //     return $filteredData;
-    // }
+//     //     return $filteredData;
+//     // }
 
-    public function headings(): array
-    {
-        return [
-            'tahun',
-            'section',
-            'code',
-            'nama',
-            'kode_budget',
-            'cur',
-            'fixed/variabel',
-            'prep/masspro',
-            'kode_carline',
-            'amount_jul',
-            'amount_aug',
-            'amount_sep',
-            'amount_okt',
-            'amount_nov',
-            'amount_dec',
-            'amount_jan',
-            'amount_feb',
-            'amount_mar',
-            'amount_apr',
-            'amount_may',
-            'amount_jun',
-            'stp_jul',
-            'stp_aug',
-            'stp_sep',
-            'stp_okt',
-            'stp_nov',
-            'stp_dec',
-            'stp_jan',
-            'stp_feb',
-            'stp_mar',
-            'stp_apr',
-            'stp_may',
-            'stp_jun',
-        ];
-    }
+//     public function headings(): array
+//     {
+//         return [
+//             'tahun',
+//             'section',
+//             'code',
+//             'nama',
+//             'kode_budget',
+//             'cur',
+//             'fixed/variabel',
+//             'prep/masspro',
+//             'kode_carline',
+//             'amount_jul',
+//             'amount_aug',
+//             'amount_sep',
+//             'amount_okt',
+//             'amount_nov',
+//             'amount_dec',
+//             'amount_jan',
+//             'amount_feb',
+//             'amount_mar',
+//             'amount_apr',
+//             'amount_may',
+//             'amount_jun',
+//             'stp_jul',
+//             'stp_aug',
+//             'stp_sep',
+//             'stp_okt',
+//             'stp_nov',
+//             'stp_dec',
+//             'stp_jan',
+//             'stp_feb',
+//             'stp_mar',
+//             'stp_apr',
+//             'stp_may',
+//             'stp_jun',
+//         ];
+//     }
 
-    public function styles(Worksheet $sheet)
-    {
-        return [
-            1 => ['font' => ['bold' => true]],
-        ];
-    }
+//     public function styles(Worksheet $sheet)
+//     {
+//         return [
+//             1 => ['font' => ['bold' => true]],
+//         ];
+//     }
 
-    public function title(): string
-    {
-        return 'STP';
-    }
-}
+//     public function title(): string
+//     {
+//         return 'STP';
+//     }
+// }
