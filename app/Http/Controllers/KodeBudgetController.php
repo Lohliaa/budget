@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\KodeBudgetExport;
 use App\Imports\KodeBudgetImport;
 use App\Models\KodeBudget;
 use Illuminate\Http\Request;
@@ -50,7 +51,7 @@ class KodeBudgetController extends Controller
 
     public function export_excel_kb()
     {
-        return Excel::download(new MasterBarangExport, 'master barang.xlsx');
+        return Excel::download(new KodeBudgetExport, 'Master Barang.xlsx');
     }
 
     public function import_excel_kb(Request $request)

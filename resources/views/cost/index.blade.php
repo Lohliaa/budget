@@ -12,10 +12,12 @@ Cost
             <h6 class="m-0 font-weight-bold text-primary">Cost</h6>
         </div>
         <div class="row justify-content-between" style="align-items: center;">
-            <div class="form-group col-md-6" style="margin-left: 12px">
+            <div class="form-group col-md-8" style="margin-left: 12px">
 
                 <a href="{{ url('cost') }}" class="btn btn-success mt-3 ml-2" style="height: 40px;"><i
                         class="bi bi-arrow-clockwise" style="font-size: 20px;"></i></a>
+
+                @if (Auth::user()->role === "Admin")
 
                 <!-- Button modal -->
                 <button style="height: 38px; width: 45px; position: relative;" type="button"
@@ -45,7 +47,8 @@ Cost
                                     </div>
                                     <div class="form-group">
                                         <label for="addDetail">Detail Cost Center</label>
-                                        <input type="text" class="form-control" id="addDetail" name="detail_cost_center">
+                                        <input type="text" class="form-control" id="addDetail"
+                                            name="detail_cost_center">
                                     </div>
                                 </form>
                             </div>
@@ -91,8 +94,8 @@ Cost
                         </div>
                     </div>
                 </div>
-                {{--  <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
-                    aria-hidden="true">
+                {{-- <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog"
+                    aria-labelledby="uploadModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -116,7 +119,7 @@ Cost
                             </div>
                         </div>
                     </div>
-                </div>  --}}
+                </div> --}}
 
                 <button id="reset-cost-button" class="btn btn-danger mt-3">Reset</button>
 
@@ -204,10 +207,12 @@ Cost
                         </div>
                     </div>
                 </div>
+                @endif
+                <a href="{{ url('export_excel_cost') }}" class="btn btn-info mt-3" style="height: 40px;">Downlad</a>
 
             </div>
             <div class="input-group col-md-3 mr-4">
-               
+
                 <input type="text" name="search" style="height: 2.4rem; font-size: 12pt; margin-top: 0.10rem;"
                     id="searchp" class="form-control input-text" placeholder="Cari disini ..."
                     aria-label="Recipient's username" aria-describedby="basic-addon2">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\CostExport;
 use App\Imports\CostImport;
 use App\Models\Cost;
 use Illuminate\Http\Request;
@@ -42,9 +43,9 @@ class CostController extends Controller
         return view('cost.partial.cost', ['cost' => $cost]);
     }
 
-    public function export_excel_carline()
+    public function export_excel_cost()
     {
-        return Excel::download(new MasterBarangExport, 'master barang.xlsx');
+        return Excel::download(new CostExport, 'Cost Center.xlsx');
     }
 
     public function import_excel_cost(Request $request)

@@ -12,8 +12,10 @@ Carline
             <h6 class="m-0 font-weight-bold text-primary">Carline</h6>
         </div>
         <div class="row justify-content-between" style="align-items: center;">
-            <div class="form-group col-md-6" style="margin-left: 12px">
+            <div class="form-group col-md-8" style="margin-left: 12px">
                 <a href="{{ url('carline') }}" class="btn btn-success mt-3 ml-2" style="height: 40px;"><i class="bi bi-arrow-clockwise" style="font-size: 20px;"></i></a>
+
+                @if (Auth::user()->role === "Admin")
 
                 <!-- Button modal -->
                 <button style="height: 38px; width: 45px; position: relative;" type="button"
@@ -217,6 +219,8 @@ Carline
                         </div>
                     </div>
                 </div>
+                @endif
+                <a href="{{ url('export_excel_carline') }}" class="btn btn-info mt-3" style="height: 40px;">Downlad</a>
 
             </div>
             <div class="input-group col-md-3 mr-4">

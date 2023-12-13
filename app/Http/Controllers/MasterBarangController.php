@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\MasterBarangExport;
 use App\Imports\MasterBarangImport;
 use App\Models\MasterBarang;
 use Illuminate\Http\Request;
@@ -53,6 +54,11 @@ class MasterBarangController extends Controller
         $master_barang = $query->paginate(500);
 
         return view('master_barang.partial.master_barang', ['master_barang' => $master_barang]);
+    }
+
+    public function export_excel_mb()
+    {
+        return Excel::download(new MasterBarangExport, 'Master Barang.xlsx');
     }
 
     public function import_excel_mb(Request $request)

@@ -87,6 +87,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::delete('/delete-mb',  [MasterBarangController::class, 'deleteItems'])->name('master_barang.delete');
     Route::get('/search-mb', [MasterBarangController::class, 'searchMB'])->name('search.master_barang');
     Route::post('/add-mb', [MasterBarangController::class, 'addMB']);
+    Route::get('/export_excel_mb', [MasterBarangController::class, 'export_excel_mb']);
 
     // CARLINE
     Route::resource('/carline', CarlineController::class)->middleware('auth');
@@ -97,6 +98,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::delete('/delete-carline',  [CarlineController::class, 'deleteItems'])->name('carline.delete');
     Route::get('/search-carline', [CarlineController::class, 'searchCarline'])->name('search.carline');
     Route::post('/add-carline', [CarlineController::class, 'addCarline']);
+    Route::get('/export_excel_carline', [CarlineController::class, 'export_excel_carline']);
 
     // COST
     Route::resource('/cost', CostController::class)->middleware('auth');
@@ -107,6 +109,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::delete('/delete-cost',  [CostController::class, 'deleteItems'])->name('cost.delete');
     Route::get('/search-cost', [CostController::class, 'searchCost'])->name('search.cost');
     Route::post('/add-cost', [CostController::class, 'addCost']);
+    Route::get('/export_excel_cost', [CostController::class, 'export_excel_cost']);
 
     // KODE BUDGET
     Route::resource('/kode_budget', KodeBudgetController::class)->middleware('auth');
@@ -118,6 +121,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/search-kb', [KodeBudgetController::class, 'searchKb'])->name('search.kode_budget');
     Route::get('/cari', [KodeBudgetController::class, 'cari'])->name('kode_budget.cari');
     Route::post('/add-kb', [KodeBudgetController::class, 'addKb']);
+    Route::get('/export_excel_kb', [KodeBudgetController::class, 'export_excel_kb']);
 
     // UMH
     Route::resource('/umh', UMHController::class)->middleware('auth');
@@ -159,4 +163,5 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get('/unduh/{nama_file}', [HomeController::class, 'unduh'])->name('unduh');
     Route::post('/atur-deadline',  [DeadlineController::class, 'update'])->name('atur.deadline.update');
+    
 });

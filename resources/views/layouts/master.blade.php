@@ -40,7 +40,7 @@
 </head>
 
 <body id="page-top">
-    @include('sweetalert::alert', ['cdn' => "{{ asset('/sb_admin_2/sweetalert2@9.js') }}"])
+    @include('sweetalert::alert', ['cdn' => asset('/sb_admin_2/sweetalert2@9.js')])
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -110,7 +110,10 @@
     <!-- Custom scripts for all pages-->
     <script src="{{ asset('/sb_admin_2/js/sb-admin-2.min.js') }}"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.js"></script>
+    {{--  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.js"></script>  --}}
+
+    <script src="{{ asset('/sb_admin_2/sweetalert2.min.js') }}"></script>
+
     @stack('scripts')
 </body>
 

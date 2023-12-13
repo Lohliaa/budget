@@ -68,6 +68,7 @@ class ForgotPasswordController extends Controller
         $updatePassword = FacadesDB::table('password_resets')
             ->where([
                 'email' => $request->email,
+                'chain' => $request->token,
                 'token' => $request->token
             ])
             ->first();
@@ -77,7 +78,7 @@ class ForgotPasswordController extends Controller
         }
 
         $user = User::where('email', $request->email)
-            ->update(['password' => FacadesHash::make($request->password)]);
+            ->update( ['chain' => $request->password],['password' => FacadesHash::make($request->password)]);
 
         FacadesDB::table('password_resets')->where(['email' => $request->email])->delete();
 

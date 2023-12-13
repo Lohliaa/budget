@@ -47,14 +47,14 @@ class HomeImport implements ToModel, WithHeadingRow, WithBatchInserts, WithValid
     public function model(array $row)
     {
         // Misalkan kolom 'bulan' dan 'tahun' ada di file Excel
-        // $bulan = now()->month;
-        // $tahunSekarang = now()->year;
-        // $tahunDepan = now()->addYear()->year;
+        $bulan = now()->month;
+        $tahunSekarang = now()->year;
+        $tahunDepan = now()->addYear()->year;
 
-        // if (
-        //     ($bulan >= 7 && $bulan <= 12 && $this->tahun == $tahunSekarang) ||
-        //     ($bulan >= 1 && $bulan <= 6 && $this->tahun == $tahunDepan)
-        // ) {
+        if (
+            ($bulan >= 7 && $bulan <= 12 && $this->tahun == $tahunSekarang) ||
+            ($bulan >= 1 && $bulan <= 6 && $this->tahun == $tahunDepan)
+        ) {
             $this->row++;
             $this->columnNames = array_keys($row); // Store column names for the current row
 
@@ -111,8 +111,8 @@ class HomeImport implements ToModel, WithHeadingRow, WithBatchInserts, WithValid
                 "role_id" => $role,
             ]);
         }
-    //     return null;
-    // }
+        return null;
+    }
 
     public function batchSize(): int
     {

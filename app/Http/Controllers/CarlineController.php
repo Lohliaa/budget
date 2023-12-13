@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\CarlineExport;
 use App\Imports\CarlineImport;
 use App\Models\Carline;
 use Illuminate\Http\Request;
@@ -45,11 +46,9 @@ class CarlineController extends Controller
         return view('carline.partial.carline', ['carline' => $carline]);
     }
 
-
     public function export_excel_carline()
     {
-        set_time_limit(0);
-        return Excel::download(new MasterBarangExport, 'master barang.xlsx');
+        return Excel::download(new CarlineExport, 'Carline.xlsx');
     }
 
     public function import_excel_carline(Request $request)

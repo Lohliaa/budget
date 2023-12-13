@@ -273,21 +273,54 @@ class HomeController extends Controller
         // Validasi file
         $request->validate([
             'file' => 'required|mimes:csv,xls,xlsx',
-            // 'tahun' => 'required|regex:/^\d{4}-\d{4}$/',
         ]);
 
         // Validasi tahun
         $tahun = $request->input('tahun');
         if (empty($tahun)) {
             $errorMessages[] = "Kolom Tahun harus diisi.";
+            Alert::html('<medium>Impor Gagal</medium>', '<medium><br>' . implode("<br>", $errorMessages))->width('575px');
+            return redirect()->back();
         }
 
         $file = $request->file('file');
         $nama_file = rand() . $file->getClientOriginalName();
         $path = $file->storeAs('public/excel/', $nama_file);
 
+        // Pemeriksaan apakah tahun diinputkan
+        if (!isset($tahun)) {
+            // Pesan kesalahan jika kondisi tidak terpenuhi
+            $errorMessages[] = "Tidak dapat impor data pada tahun ini.";
+            Alert::html('<medium>Impor Gagal</medium>', '<medium><br>' . implode("<br>", $errorMessages))->width('575px');
+            Storage::delete($path);
+            return redirect()->back();
+        }
+
         // Validasi tahun
-        // $tahun = $request->input('tahun');
+        list($startYear, $endYear) = explode('-', $tahun);
+
+        $currentYear = date('Y');
+
+        // Periksa apakah startYear lebih besar atau sama dengan tahun saat ini dan endYear setidaknya 2 tahun lebih besar dari tahun saat ini
+        if ($startYear == $currentYear && $endYear >= $currentYear + 1) {
+            $user = auth()->user();
+            $import = new HomeImport($tahun, $user);
+
+            try {
+                Excel::import($import, $file);
+            } catch (\Exception $e) {
+                $error = $e instanceof ValidationException ? $this->getValidationErrors($e) : $e->getMessage();
+                Alert::html('<small>Impor Gagal</small>', '<small>Error pada: <br>' . $error)->width('575px');
+                Storage::delete($path);
+                return redirect()->back();
+            }
+
+            Alert::success('Impor Berhasil', $nama_file . ' Berhasil diimpor');
+            return redirect()->back();
+        } else {
+            // Pesan kesalahan jika kondisi tidak terpenuhi
+            $errorMessages[] = "Tidak dapat impor data pada tahun ini.";
+        }
 
         if (isset($errorMessages)) {
             $error = implode("<br>", $errorMessages);
@@ -295,53 +328,25 @@ class HomeController extends Controller
             Storage::delete($path);
             return redirect()->back();
         }
-
-        $user = auth()->user();
-        $import = new HomeImport($tahun, $user);
-
-        try {
-            Excel::import($import, $file);
-        } catch (ValidationException $e) {
-            $validationErrors = $e->failures();
-
-            if (!empty($validationErrors) && is_array($validationErrors)) {
-                $errorMessages = [];
-                $i = 1;
-
-                foreach ($validationErrors as $failure) {
-                    if (is_object($failure) && method_exists($failure, 'row') && method_exists($failure, 'attribute')) {
-                        $row = $failure->row();
-                        $attribute = $failure->attribute();
-
-                        $errorMessages[] = "$i. Kesalahan pada baris $row, kolom: $attribute";
-                    } else {
-                        $errorMessages[] = "Invalid failure object";
-                    }
-
-                    $i++;
-                }
-
-                $error = implode("<br>", $errorMessages);
-                Alert::html('<small>Impor Gagal</small>', '<small>Error pada: <br>' . $error)->width('575px');
-                Storage::delete($path);
-                return redirect()->back();
-            } else {
-                $error = "Invalid data in validation errors";
-                Alert::html('<small>Impor Gagal</small>', '<small>Error pada: <br>' . $error)->width('575px');
-                Storage::delete($path);
-                return redirect()->back();
-            }
-        } catch (\Exception $e) {
-            $error = $e->getMessage();
-            Alert::html('<small>Impor Gagal</small>', '<small>Error pada: <br>' . $error)->width('575px');
-            Storage::delete($path);
-            return redirect()->back();
-        }
-
-        Alert::success('Impor Berhasil', $nama_file . ' Berhasil diimpor');
-        return redirect()->back();
     }
 
+    private function getValidationErrors(ValidationException $e)
+    {
+        $validationErrors = $e->failures();
+        $errorMessages = [];
+
+        foreach ($validationErrors as $i => $failure) {
+            if (is_object($failure) && method_exists($failure, 'row') && method_exists($failure, 'attribute')) {
+                $row = $failure->row();
+                $attribute = $failure->attribute();
+                $errorMessages[] = "$i. Kesalahan pada baris $row, kolom: $attribute";
+            } else {
+                $errorMessages[] = "Invalid failure object";
+            }
+        }
+
+        return implode("<br>", $errorMessages);
+    }
 
     private function getColumnNameFromRules($columnIndex, $rules)
     {

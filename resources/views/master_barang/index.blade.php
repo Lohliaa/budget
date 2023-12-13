@@ -12,10 +12,11 @@ Master Barang
             <h6 class="m-0 font-weight-bold text-primary">Master Barang</h6>
         </div>
         <div class="row justify-content-between" style="align-items: center;">
-            <div class="form-group col-md-6" style="margin-left: 12px">
+            <div class="form-group col-md-8" style="margin-left: 12px">
                 <a href="{{ url('master_barang') }}" class="btn btn-success mt-3 ml-2" style="height: 40px;"><i
                         class="bi bi-arrow-clockwise" style="font-size: 20px;"></i></a>
 
+                @if (Auth::user()->role === "Admin")
                 <!-- Button modal -->
                 <button style="height: 38px; width: 45px; position: relative;" type="button"
                     class="btn btn-secondary p-0 mt-3" data-toggle="modal" data-target="#addModal">
@@ -289,6 +290,9 @@ Master Barang
                         </div>
                     </div>
                 </div>
+                @endif
+                <a href="{{ url('export_excel_mb') }}" class="btn btn-info mt-3" style="height: 40px;">Downlad</a>
+
             </div>
             <div class="input-group col-md-3 mr-4">
                 <input type="text" name="search" style="height: 2.4rem; font-size: 12pt; margin-top: 0.10rem;"
