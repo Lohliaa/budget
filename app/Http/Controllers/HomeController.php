@@ -265,6 +265,199 @@ class HomeController extends Controller
         return Excel::download(new HomeFilterExport($sectionData), 'Detail Section.xlsx');
     }
 
+    // public function import_excel_home(Request $request)
+    // {
+    //     set_time_limit(0);
+    //     $role = Auth::user()->role;
+
+    //     // Validasi file
+    //     $request->validate([
+    //         'file' => $role == 'Admin' ? 'nullable|mimes:csv,xls,xlsx' : 'required|mimes:csv,xls,xlsx',
+    //     ]);
+
+    //     // Validasi tahun
+    //     $tahun = $request->input('tahun');
+
+    //     // Pemeriksaan apakah tahun diinputkan
+    //     if (empty($tahun) && $request->hasFile('file')) {
+    //         // Pesan kesalahan jika kondisi tidak terpenuhi
+    //         $errorMessages[] = "Kolom Tahun harus diisi.";
+    //         Alert::html('<medium>Impor Gagal</medium>', '<medium><br>' . implode("<br>", $errorMessages))->width('575px');
+    //         return redirect()->back();
+    //     }
+
+    //     // Jika yang menginput bukan Admin dan tahun tidak diinputkan, ambil tahun default dari Admin
+    //     if ($role != 'Admin' && empty($tahun)) {
+    //         $tahunDefault = Auth::user()->getAdminDefaultYear();
+    //         $tahun = $tahunDefault;
+    //     }
+
+    //     $file = $request->file('file');
+
+    //     // Jika file diunggah
+    //     if ($file) {
+    //         $nama_file = rand() . $file->getClientOriginalName();
+    //         $path = $file->storeAs('public/excel/', $nama_file);
+    //     }
+
+    //     // Validasi tahun
+    //     list($startYear, $endYear) = explode('-', $tahun);
+
+    //     $currentYear = date('Y');
+
+    //     // Periksa apakah startYear lebih besar atau sama dengan tahun saat ini dan endYear setidaknya 2 tahun lebih besar dari tahun saat ini
+    //     if (empty($tahun) || ($startYear == $currentYear && $endYear >= $currentYear + 1)) {
+    //         $user = auth()->user();
+    //         $import = new HomeImport($tahun, $user);
+
+    //         try {
+    //             if ($file) {
+    //                 Excel::import($import, $file);
+    //             }
+    //         } catch (\Exception $e) {
+    //             $error = $e instanceof ValidationException ? $this->getValidationErrors($e) : $e->getMessage();
+    //             Alert::html('<small>Impor Gagal</small>', '<small>Error pada: <br>' . $error)->width('575px');
+
+    //             if ($file) {
+    //                 Storage::delete($path);
+    //             }
+
+    //             return redirect()->back();
+    //         }
+
+    //         if ($file) {
+    //             Alert::success('Impor Berhasil', $nama_file . ' Berhasil diimpor');
+    //             Storage::delete($path);
+    //         } else {
+    //             // Tampilkan pesan sukses jika admin hanya menginput tahun tanpa file
+    //             Alert::success('Tahun Admin Tersimpan', 'Tahun Admin: ' . $tahun . ' berhasil disimpan.');
+    //         }
+
+    //         return redirect()->back();
+    //     } else {
+    //         // Pesan kesalahan jika kondisi tidak terpenuhi
+    //         $errorMessages[] = "Tidak dapat impor data pada tahun ini.";
+    //     }
+
+    //     if (isset($errorMessages)) {
+    //         $error = implode("<br>", $errorMessages);
+    //         Alert::html('<medium>Impor Gagal</medium>', '<medium><br>' . $error)->width('575px');
+    //         Storage::delete($path);
+    //         return redirect()->back();
+    //     }
+    // }
+
+    // public function import_excel_home(Request $request)
+    // {
+    //     set_time_limit(0);
+    //     $role = Auth::user()->role;
+
+    //     // Validasi file
+    //     $request->validate([
+    //         'file' => $role == 'Admin' ? 'nullable|mimes:csv,xls,xlsx' : 'required|mimes:csv,xls,xlsx',
+    //     ]);
+
+    //     $file = $request->file('file');
+
+    //     // Validasi tahun
+    //     $tahun = $request->input('tahun');
+
+    //     // Jika yang menginput bukan Admin dan tahun tidak diinputkan, ambil tahun default dari Admin
+    //     if ($role != 'Admin' && empty($tahun)) {
+    //         $admin = User::where('role', 'Admin')->first();
+    //         if ($admin) {
+    //             $tahun = $admin->getAdminDefaultYear();
+    //         } else {
+    //             // Tindakan lain jika Admin tidak ditemukan, sesuai dengan logika bisnis Anda
+    //             $tahun = date('Y'); // Contoh: Gunakan tahun saat ini sebagai default
+    //         }
+    //     }
+
+    //     // Jika file diunggah
+    //     if ($file) {
+    //         $nama_file = rand() . $file->getClientOriginalName();
+    //         $path = $file->storeAs('public/excel/', $nama_file);
+    //     }
+
+    //     // Validasi tahun jika yang menginput adalah Admin
+    //     if ($role == 'Admin') {
+    //         list($startYear, $endYear) = explode('-', $tahun);
+
+    //         $currentYear = date('Y');
+
+    //         // Periksa apakah startYear lebih besar atau sama dengan tahun saat ini dan endYear setidaknya 2 tahun lebih besar dari tahun saat ini
+    //         if (empty($tahun) || ($startYear == $currentYear && $endYear >= $currentYear + 1)) {
+    //             // Proses impor
+    //             $user = auth()->user();
+    //             $import = new HomeImport($tahun, $user);
+
+    //             try {
+    //                 if ($file) {
+    //                     Excel::import($import, $file);
+    //                 }
+    //             } catch (\Exception $e) {
+    //                 $error = $e instanceof ValidationException ? $this->getValidationErrors($e) : $e->getMessage();
+    //                 Alert::html('<small>Impor Gagal</small>', '<small>Error pada: <br>' . $error)->width('575px');
+
+    //                 if ($file) {
+    //                     Storage::delete($path);
+    //                 }
+
+    //                 return redirect()->back();
+    //             }
+
+    //             if ($file) {
+    //                 Alert::success('Impor Berhasil', $nama_file . ' Berhasil diimpor');
+    //                 Storage::delete($path);
+    //             } else {
+    //                 // Tampilkan pesan sukses jika admin hanya menginput tahun tanpa file
+    //                 Alert::success('Tahun Admin Tersimpan', 'Tahun Admin: ' . $tahun . ' berhasil disimpan.');
+    //             }
+
+    //             return redirect()->back();
+    //         } else {
+    //             // Pesan kesalahan jika kondisi tidak terpenuhi
+    //             $errorMessages[] = "Tidak dapat impor data pada tahun ini.";
+    //         }
+    //     } else {
+    //         // Jika yang menginput bukan Admin, lewati validasi tahun dan proses impor
+    //         $user = auth()->user();
+    //         $import = new HomeImport($tahun, $user);
+
+    //         try {
+    //             if ($file) {
+    //                 Excel::import($import, $file);
+    //             }
+    //         } catch (\Exception $e) {
+    //             $error = $e instanceof ValidationException ? $this->getValidationErrors($e) : $e->getMessage();
+    //             Alert::html('<small>Impor Gagal</small>', '<small>Error pada: <br>' . $error)->width('575px');
+
+    //             if ($file) {
+    //                 Storage::delete($path);
+    //             }
+
+    //             return redirect()->back();
+    //         }
+
+    //         if ($file) {
+    //             Alert::success('Impor Berhasil', $nama_file . ' Berhasil diimpor');
+    //             Storage::delete($path);
+    //         } else {
+    //             // Tampilkan pesan sukses jika yang menginput bukan Admin dan berhasil mengimpor file
+    //             Alert::success('Impor Berhasil', 'File berhasil diimpor.');
+    //         }
+
+    //         return redirect()->back();
+    //     }
+
+    //     if (isset($errorMessages)) {
+    //         $error = implode("<br>", $errorMessages);
+    //         Alert::html('<medium>Impor Gagal</medium>', '<medium><br>' . $error)->width('575px');
+    //         Storage::delete($path);
+    //         return redirect()->back();
+    //     }
+    // }
+
     public function import_excel_home(Request $request)
     {
         set_time_limit(0);
@@ -272,63 +465,59 @@ class HomeController extends Controller
 
         // Validasi file
         $request->validate([
-            'file' => 'required|mimes:csv,xls,xlsx',
+            'file' => $role == 'Admin' ? 'nullable|mimes:csv,xls,xlsx' : 'required|mimes:csv,xls,xlsx',
         ]);
+
+        $file = $request->file('file');
 
         // Validasi tahun
         $tahun = $request->input('tahun');
-        if (empty($tahun)) {
-            $errorMessages[] = "Kolom Tahun harus diisi.";
-            Alert::html('<medium>Impor Gagal</medium>', '<medium><br>' . implode("<br>", $errorMessages))->width('575px');
-            return redirect()->back();
+
+        if ($role != 'Admin' && empty($tahun)) {
+            $admin = User::where('role','Admin')->first();
+            if (!$admin) {
+                $tahun = $admin->getAdminDefaultYear();
+            } else {
+                $tahun = date('Y');
+            }
         }
 
-        $file = $request->file('file');
-        $nama_file = rand() . $file->getClientOriginalName();
-        $path = $file->storeAs('public/excel/', $nama_file);
-
-        // Pemeriksaan apakah tahun diinputkan
-        if (!isset($tahun)) {
-            // Pesan kesalahan jika kondisi tidak terpenuhi
-            $errorMessages[] = "Tidak dapat impor data pada tahun ini.";
-            Alert::html('<medium>Impor Gagal</medium>', '<medium><br>' . implode("<br>", $errorMessages))->width('575px');
-            Storage::delete($path);
-            return redirect()->back();
+        // Jika file diunggah
+        if ($file) {
+            $nama_file = rand() . $file->getClientOriginalName();
+            $path = $file->storeAs('public/excel/', $nama_file);
         }
 
-        // Validasi tahun
-        list($startYear, $endYear) = explode('-', $tahun);
+        // Jika yang menginput bukan Admin, lewati validasi tahun dan langsung proses impor
+        $user = auth()->user();
+        $import = new HomeImport($tahun, $user);
 
-        $currentYear = date('Y');
-
-        // Periksa apakah startYear lebih besar atau sama dengan tahun saat ini dan endYear setidaknya 2 tahun lebih besar dari tahun saat ini
-        if ($startYear == $currentYear && $endYear >= $currentYear + 1) {
-            $user = auth()->user();
-            $import = new HomeImport($tahun, $user);
-
-            try {
+        try {
+            if ($file) {
                 Excel::import($import, $file);
-            } catch (\Exception $e) {
-                $error = $e instanceof ValidationException ? $this->getValidationErrors($e) : $e->getMessage();
-                Alert::html('<small>Impor Gagal</small>', '<small>Error pada: <br>' . $error)->width('575px');
+            }
+        } catch (\Exception $e) {
+            $error = $e instanceof ValidationException ? $this->getValidationErrors($e) : $e->getMessage();
+            Alert::html('<small>Impor Gagal</small>', '<small>Error pada: <br>' . $error)->width('575px');
+
+            if ($file) {
                 Storage::delete($path);
-                return redirect()->back();
             }
 
-            Alert::success('Impor Berhasil', $nama_file . ' Berhasil diimpor');
             return redirect()->back();
-        } else {
-            // Pesan kesalahan jika kondisi tidak terpenuhi
-            $errorMessages[] = "Tidak dapat impor data pada tahun ini.";
         }
 
-        if (isset($errorMessages)) {
-            $error = implode("<br>", $errorMessages);
-            Alert::html('<medium>Impor Gagal</medium>', '<medium><br>' . $error)->width('575px');
+        if ($file) {
+            Alert::success('Impor Berhasil', $nama_file . ' Berhasil diimpor');
             Storage::delete($path);
-            return redirect()->back();
+        } else {
+            // Tampilkan pesan sukses jika yang menginput bukan Admin dan berhasil mengimpor file
+            Alert::success('Impor Berhasil', 'File berhasil diimpor.');
         }
+
+        return redirect()->back();
     }
+
 
     private function getValidationErrors(ValidationException $e)
     {

@@ -27,6 +27,18 @@ class User extends Authenticatable
         'role',
     ];
 
+    // Dalam model User
+    public function isAdminYearSet()
+    {
+        return !is_null($this->tahun);
+    }
+
+    // Di dalam model User
+    public function getAdminDefaultYear()
+    {
+        return $this->tahun; // Sesuaikan dengan nama kolom yang sesuai pada tabel database
+    }
+
     public function isAdmin()
     {
         return $this->role == 'Admin'; // Sesuaikan dengan struktur peran Anda
@@ -37,10 +49,12 @@ class User extends Authenticatable
         return $this->belongsTo(Cost::class, 'cost_center', 'cost_center');
     }
 
+    // Di dalam model User
     public function home()
     {
-        return $this->hasMany(Home::class, 'user_id', 'id');
+        return $this->hasOne(Home::class);
     }
+
 
     /**
      * The attributes that should be hidden for serialization.

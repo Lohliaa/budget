@@ -62,7 +62,12 @@ class Home extends Model
   ];
   public function user()
   {
-      return $this->belongsTo(User::class, 'user_id', 'id');
+    return $this->belongsTo(User::class);
+  }
+  // Di dalam model Home
+  public function getAdminDefaultYear()
+  {
+    return $this->tahun; // Sesuaikan dengan nama kolom yang sesuai pada tabel database
   }
   
 }

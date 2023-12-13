@@ -9,7 +9,7 @@ Profile
 <body>
     <div class="card shadow mb-4">
         <div class="card-header py-3" style="display: flex; justify-content: space-between; align-items: center;">
-            <h6 class="m-0 font-weight-bold text-primary">Kode Budget</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Profile</h6>
         </div>
         <div class="row justify-content-between" style="align-items: center;">
             <div class="form-group col-md-6 ml-4" style="margin-left: 12px">
