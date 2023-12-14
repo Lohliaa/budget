@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('judul')
-Sobat Gula
+Budget System
 @endsection
 @section('judul_sub')
 Form Daftar Akun

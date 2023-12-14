@@ -79,9 +79,8 @@
             <div class="row">
                 <div class="col-lg-4 col-xl-5">
                     <div class="text-container">
-                        <div class="section-title">SOBAT GULA</div>
+                        <div class="section-title">BUDGET SYSTEM</div>
                         <h1 class="h1-large">PT. Surabaya Autocomp Indonesia</h1>
-                        {{--  <p class="p-large">Ngoro Indusrial Park Kav T-1, Jarang Sari, Lolawang, Kec. Ngoro, Kabupaten Mojokerto, Jawa Timur 61385</p>  --}}
                         @if (Route::has('login'))
                         {{--  <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
                             @auth

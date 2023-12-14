@@ -3,7 +3,7 @@
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url('home') }}">
-        <div class="sidebar-brand-text mx-3"><i class="bi bi-journal-bookmark-fill"></i> SOBAT <span>GULA</span></div>
+        <div class="sidebar-brand-text mx-6"><i class="bi bi-journal-bookmark-fill"></i> BUGDET <span>SYSTEM</span></div>
     </a>
 
     <!-- Divider -->

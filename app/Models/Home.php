@@ -62,7 +62,7 @@ class Home extends Model
   ];
   public function user()
   {
-    return $this->belongsTo(User::class);
+    return $this->belongsTo(User::class,);
   }
   // Di dalam model Home
   public function getAdminDefaultYear()

@@ -33,10 +33,19 @@ class User extends Authenticatable
         return !is_null($this->tahun);
     }
 
-    // Di dalam model User
     public function getAdminDefaultYear()
     {
         return $this->tahun; // Sesuaikan dengan nama kolom yang sesuai pada tabel database
+    }
+
+    // Di dalam model User
+    public function getAdminYear()
+    {
+        return $this->role === 'Admin' ? $this->getAdminDefaultYear() : null;
+    }
+    public function hasRole($role)
+    {
+        return $this->role === $role;
     }
 
     public function isAdmin()
