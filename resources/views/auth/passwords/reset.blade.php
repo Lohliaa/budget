@@ -23,7 +23,7 @@ Form Reset
                                 <div class="col-lg-12">
                                     <div class="p-5">
                                         <div class="text-center">
-                                            <h1 class="h4 text-gray-900 mb-4">Reset Password</h1>
+                                            <h1 class="h4 text-gray-900 mb-4">Change Password</h1>
                                         </div>
                                         <form class="user" method="POST" action="{{ route('reset.password.post') }}">
                                             @csrf

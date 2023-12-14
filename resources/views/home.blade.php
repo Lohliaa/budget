@@ -290,7 +290,8 @@ Halaman Utama
                 <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog" role="document">
-                        {{--  <div class="modal-content">
+
+                        <div class="modal-content">
                             <form id="fileUploadForm" enctype="multipart/form-data"
                                 action="{{ route('import-excel-home') }}" method="POST">
                                 <div class="modal-header">
@@ -301,10 +302,14 @@ Halaman Utama
                                 </div>
                                 <div class="modal-body">
                                     @csrf
+
+                                    {{-- Hapus input tahun untuk pengguna non-admin --}}
+                                    @if(Auth::user()->role == 'Admin')
                                     <div class="form-group">
                                         <label for="tahun">Tahun</label>
                                         <input type="text" class="form-control" id="tahun" name="tahun">
                                     </div>
+                                    @endif
 
                                     <input type="file" id="fileInput" name="file"
                                         accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
@@ -314,36 +319,8 @@ Halaman Utama
                                     <button type="submit" class="btn btn-primary">Unggah</button>
                                 </div>
                             </form>
-                        </div>  --}}
-
-                        <div class="modal-content">
-                            <form id="fileUploadForm" enctype="multipart/form-data" action="{{ route('import-excel-home') }}" method="POST">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="uploadModalLabel">Unggah Data</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    @csrf
-                        
-                                    {{-- Hapus input tahun untuk pengguna non-admin --}}
-                                    @if(Auth::user()->role == 'Admin')
-                                        <div class="form-group">
-                                            <label for="tahun">Tahun</label>
-                                            <input type="text" class="form-control" id="tahun" name="tahun">
-                                        </div>
-                                    @endif
-                        
-                                    <input type="file" id="fileInput" name="file" accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                                    <button type="submit" class="btn btn-primary">Unggah</button>
-                                </div>
-                            </form>
                         </div>
-                        
+
                     </div>
                 </div>
 

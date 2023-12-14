@@ -75,7 +75,17 @@ Form Login
 
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    </html>
+    @if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Registrasi Berhasil',
+            text: '{{ session('success') }}',
+        });
+    </script>
+@endif
+
 </body>
 @endsection
