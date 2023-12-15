@@ -21,6 +21,7 @@
     <script src="{{ asset('/sb_admin_2/bootstrap.min.js') }}"></script>
     <script src="{{ asset('/sb_admin_2/sweetalert2@11.js') }}"></script>
     <script src="{{ asset('/sb_admin_2/js/bootstrap.bundle.min.js') }}"></script>
+    {{--  <script src="{{ asset('/sb_admin_2/sweetalert2@9.js') }}"></script>  --}}
 
     <link href="{{ asset('/sb_admin_2/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link
@@ -41,7 +42,8 @@
 
 <body id="page-top">
     @include('sweetalert::alert', ['cdn' => asset('/sb_admin_2/sweetalert2@9.js')])
-
+    {{--  @include('sweetalert::alert', ['cdn' => "{{ asset('/sb_admin_2/sweetalert2@9.js') }}"])  --}}
+    
     <!-- Page Wrapper -->
     <div id="wrapper">
 

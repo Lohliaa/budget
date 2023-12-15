@@ -42,6 +42,7 @@
             <i class="fas fa-fw fa-users"></i>
             <span>Kode Budget</span></a>
     </li>
+    
     <hr class="sidebar-divider">
     @if (Auth::user()->role === "Admin")
     <li class="nav-item">
@@ -51,26 +52,30 @@
     </li>
     @endif
 
-    <li class="nav-item">
+    {{--  <li class="nav-item">
         <a class="nav-link" href="{{ url('proses_nariyuki') }}">
             <i class="fas fa-fw fa-users"></i>
             <span>Summary</span></a>
-    </li>
+    </li>  --}}
 
-
-    <!-- Divider -->
+    @auth
+    <!-- Pemisah -->
     <hr class="sidebar-divider d-none d-md-block">
-    @if (Auth::user()->role === "Admin")
-    <div class="sidebar-heading">
-        Pengguna
-    </div>
 
-    <li class="nav-item">
-        <a class="nav-link" href="{{ url('profile') }}">
-            <i class="fas fa-fw fa-users"></i>
-            <span>Profile</span></a>
-    </li>
+    @if (Auth::user()->role === "Admin")
+        <div class="sidebar-heading">
+            Pengguna
+        </div>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('profile') }}">
+                <i class="fas fa-fw fa-users"></i>
+                <span>Profil</span>
+            </a>
+        </li>
     @endif
+@endauth
+
 
     <li class="nav-item">
         <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();

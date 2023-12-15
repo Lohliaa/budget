@@ -59,7 +59,7 @@ Form Reset
                                             </div>
                                             @enderror
                                             <button type="submit" class="btn btn-primary btn-user btn-block">
-                                                Login
+                                                Simpan
                                             </button>
                                         </form>
                                         <hr>

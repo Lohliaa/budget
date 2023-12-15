@@ -56,7 +56,6 @@ Route::group(['middleware' => ['web']], function () {
     Route::resource('/user', UserController::class)->middleware('checkRole:Admin');
     Route::resource('/dashboard', DashboardController::class)->only(['index'])->middleware('checkRole:Admin');
     Route::resource('/profile', ProfileController::class)->only(['index', 'update', 'show'])->middleware('auth');
-    Route::resource('/detail', DetailController::class)->middleware('auth');
 
     // HOME
     Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('auth');

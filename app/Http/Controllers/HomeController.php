@@ -740,21 +740,27 @@ class HomeController extends Controller
         //
     }
 
-
     public function deleteItems(Request $request)
     {
-        $selectedIds = $request->input('ids');
-        $role = Auth::id();
-
-        Home::whereIn('id', $selectedIds)->where('role_id', $role)->delete();
-
+        // Mendapatkan peran (role) pengguna saat ini
+        $userRole = Auth::user()->role;
+    
+        // Jika pengguna memiliki peran "Admin", hapus semua data tanpa memperhatikan peran
+        if ($userRole === 'Admin') {
+            Home::whereIn('id', $request->input('ids'))->delete();
+        } else {
+            // Jika pengguna memiliki peran selain "Admin", hapus hanya data yang sesuai dengan peran mereka
+            Home::where('section', $userRole)->whereIn('id', $request->input('ids'))->delete();
+        }
+    
         return response()->json(['message' => 'Data berhasil dihapus.']);
     }
+    
 
     public function reset_home()
     {
         $userRole = Auth::user()->role;
-
+        
         if ($userRole === 'Admin') {
             Home::truncate();
             return response()->json(['success' => 'Data truncated successfully.']);

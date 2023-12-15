@@ -274,6 +274,7 @@ document.getElementById('searchp').addEventListener('input', function() {
 
       if (selectedCheckboxes.length === 1) {
         editButton.removeAttribute('disabled');
+        deleteButton.removeAttribute('disabled');
       } else if (selectedCheckboxes.length > 0){
           deleteButton.removeAttribute('disabled'); // Aktifkan tombol Hapus jika satu checkbox terpilih
       }else if (selectedCheckboxes.length === 0) {
