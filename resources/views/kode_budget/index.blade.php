@@ -168,7 +168,7 @@ Kode Budget
                     </div>
                 </div>
                 @endif
-                <a href="{{ url('export_excel_kb') }}" class="btn btn-info mt-3" style="height: 40px;">Downlad</a>
+                <a href="{{ url('export_excel_kb') }}" class="btn btn-info mt-3" style="height: 40px;">Download</a>
 
             </div>
             <div class="input-group col-md-3 mr-4">
