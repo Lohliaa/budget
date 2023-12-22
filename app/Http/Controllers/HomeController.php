@@ -301,11 +301,8 @@ class HomeController extends Controller
             $path = $file->storeAs('public/excel/', $nama_file);
         }
 
-        $user = Auth::user()->role;
-        // $user = User::all();
-
         // Jika yang menginput bukan Admin, lewati validasi tahun dan langsung proses impor
-        // $user = auth()->user();
+        $user = auth()->user();
         $import = new HomeImport($tahun, $user);
 
         try {
