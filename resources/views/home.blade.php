@@ -638,64 +638,6 @@ Halaman Utama
 
             <div class="input-group col-md-4 mr-4 mt-1">
 
-                {{--
-                <!-- ATUR DEADLINE -->
-                @if(auth()->user()->role === 'Admin')
-                <button type="button" class="btn btn-primary mr-1" data-toggle="modal"
-                    data-target="#deadlineModal">Deadline</button>
-
-                <!-- Tambahkan modal ini di bagian bawah file -->
-                <div class="modal fade" id="deadlineModal" tabindex="-1" role="dialog"
-                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Atur Deadline</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <!-- Form input untuk tanggal dan waktu deadline -->
-                                <form action="{{ route('atur.deadline.update') }}" method="post">
-                                    @csrf
-                                    <label for="deadline_date">Tanggal Deadline:</label>
-                                    <input type="date" id="deadline_date" name="deadline_date" required>
-                                    <br>
-                                    <label for="deadline_time">Waktu Deadline:</label>
-                                    <input type="time" id="deadline_time" name="deadline_time" required>
-                                    <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary">Simpan</button>
-                                    </div>
-                                </form>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @if(session('success'))
-                <script>
-                    Swal.fire({
-            icon: 'success',
-            title: 'Success!',
-            text: '{{ session('success') }}',
-        });
-                </script>
-                @endif
-
-                @if(session('error'))
-                <script>
-                    Swal.fire({
-            icon: 'error',
-            title: 'Error!',
-            text: '{{ session('error') }}',
-        });
-                </script>
-                @endif
-
-                @endif --}}
-
-
                 @if(auth()->user()->role === 'Admin')
                 <form method="post" action="{{ route('filterBySection') }}" id="filterForm">
                     @csrf
