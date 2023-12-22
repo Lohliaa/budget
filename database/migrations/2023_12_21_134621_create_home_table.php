@@ -62,6 +62,18 @@ class CreateHomeTable extends Migration
             $table->double('price_jun')->nullable();
             $table->double('amount_jun')->nullable();
             $table->string('tahun');
+            $table->double('stp_amount_jul')->nullable();
+            $table->double('stp_amount_aug')->nullable();
+            $table->double('stp_amount_sep')->nullable();
+            $table->double('stp_amount_okt')->nullable();
+            $table->double('stp_amount_nov')->nullable();
+            $table->double('stp_amount_dec')->nullable();
+            $table->double('stp_amount_jan')->nullable();
+            $table->double('stp_amount_feb')->nullable();
+            $table->double('stp_amount_mar')->nullable();
+            $table->double('stp_amount_apr')->nullable();
+            $table->double('stp_amount_may')->nullable();
+            $table->double('stp_amount_jun')->nullable();
             $table->string('role_id');
             $table->timestamps();
         });

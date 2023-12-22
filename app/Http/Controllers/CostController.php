@@ -45,6 +45,7 @@ class CostController extends Controller
 
     public function export_excel_cost()
     {
+        set_time_limit(0);
         return Excel::download(new CostExport, 'Cost Center.xlsx');
     }
 

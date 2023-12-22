@@ -284,7 +284,7 @@ class HomeController extends Controller
             $tahun = $request->input('tahun');
         
             // Menyimpan tahun dan waktu terakhir kali diubah oleh Admin
-            cache()->put('tahun_terakhir_admin', ['tahun' => $tahun, 'last_updated' => now()], now()->addMinutes(60));
+            cache()->put('tahun_terakhir_admin', ['tahun' => $tahun, 'last_updated' => now()], now()->addDays(30));
         } else {
             // Jika user tidak memiliki role Admin, user non-Admin mengambil tahun yang disimpan
             $tahunInfo = cache('tahun_terakhir_admin');

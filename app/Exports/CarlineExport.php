@@ -10,8 +10,9 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB as FacadesDB;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class CarlineExport implements FromCollection, WithHeadings, ShouldAutoSize, WithStyles
+class CarlineExport implements FromCollection, WithHeadings, ShouldAutoSize, WithStyles, WithChunkReading
 {
     public function collection()
     {
@@ -40,5 +41,10 @@ class CarlineExport implements FromCollection, WithHeadings, ShouldAutoSize, Wit
             // Style the first row as bold text.
             1    => ['font' => ['bold' => true]],
         ];
+    }
+
+    public function chunkSize(): int
+    {
+        return 2000;
     }
 }

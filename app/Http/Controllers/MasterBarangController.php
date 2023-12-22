@@ -58,6 +58,7 @@ class MasterBarangController extends Controller
 
     public function export_excel_mb()
     {
+        set_time_limit(0);
         return Excel::download(new MasterBarangExport, 'Master Barang.xlsx');
     }
 

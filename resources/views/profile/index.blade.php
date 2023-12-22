@@ -253,7 +253,7 @@ document.getElementById('searchp').addEventListener('input', function() {
             }
           });
         }
-      }
+    }
 
     // JavaScript to open the modal and populate data for editing
     function handleEditClick() {
@@ -276,6 +276,7 @@ document.getElementById('searchp').addEventListener('input', function() {
         $(editModal).modal('show');
       }
     }
+    
     function saveChanges() {
         const name = document.querySelector('#editName').value;
         const email = document.querySelector('#editEmail').value;

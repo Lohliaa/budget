@@ -58,6 +58,19 @@ class Home extends Model
     'price_jun',
     'amount_jun',
     'tahun',
+    'stp_amount_jul',
+    'stp_amount_aug',
+    'stp_amount_sep',
+    'stp_amount_okt',
+    'stp_amount_nov',
+    'stp_amount_dec',
+    'stp_amount_jan',
+    'stp_amount_feb',
+    'stp_amount_mar',
+    'stp_amount_apr',
+    'stp_amount_may',
+    'stp_amount_jun',
+
     'role_id'
   ];
   public function user()

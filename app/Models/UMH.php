@@ -11,10 +11,31 @@ class UMH extends Model
     protected $table = "umh";
     protected $primaryKey = 'id';
     protected $fillable = [
-        'month',
-        'umh',
-        'amount',
-        'new_umh',
-        'new_amount'
+        'ltp_jul',
+        'ltp_aug',
+        'ltp_sep',
+        'ltp_okt',
+        'ltp_nov',
+        'ltp_dec',
+        'ltp_jan',
+        'ltp_feb',
+        'ltp_mar',
+        'ltp_apr',
+        'ltp_may',
+        'ltp_jun',
+
+        'stp_jul',
+        'stp_aug',
+        'stp_sep',
+        'stp_okt',
+        'stp_nov',
+        'stp_dec',
+        'stp_jan',
+        'stp_feb',
+        'stp_mar',
+        'stp_apr',
+        'stp_may',
+        'stp_jun',
+
     ];
 }
