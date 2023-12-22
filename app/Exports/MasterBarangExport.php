@@ -10,9 +10,10 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB as FacadesDB;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class MasterBarangExport implements FromCollection, WithHeadings, ShouldAutoSize, WithStyles, WithChunkReading
+class MasterBarangExport implements FromCollection, WithHeadings, ShouldAutoSize, WithStyles, WithChunkReading, WithBatchInserts
 {
     public function collection()
     {
@@ -63,6 +64,12 @@ class MasterBarangExport implements FromCollection, WithHeadings, ShouldAutoSize
 
     public function chunkSize(): int
     {
-        return 2000;
+        return 500;
+    }
+
+    
+    public function batchSize(): int
+    {
+        return 500;
     }
 }
