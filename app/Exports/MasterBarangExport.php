@@ -15,25 +15,16 @@ use Maatwebsite\Excel\Concerns\WithChunkReading;
 
 class MasterBarangExport implements FromCollection, WithHeadings, ShouldAutoSize, WithStyles, WithChunkReading, WithBatchInserts
 {
+    protected $data;
+
+    public function __construct($data = null)
+    {
+        $this->data = $data;
+    }
+
     public function collection()
     {
-        $type = FacadesDB::table('master_barang')->select(
-            'code',
-            'name',
-            'satuan',
-            'account_1',
-            'account_2',
-            'account_3',
-            'account_4',
-            'account_5',
-            'account_6',
-            'account_7',
-            'account_8',
-            'account_9',
-            'account_10',
-        )
-        ->get();
-        return $type;
+        return collect($this->data);
     }
     public function headings(): array
     {

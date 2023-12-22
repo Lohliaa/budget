@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Exports\MasterBarangExport;
 use App\Imports\MasterBarangImport;
+use App\Jobs\ExportMasterBarang;
+use App\Jobs\ExportMasterBarangJob;
 use App\Models\MasterBarang;
+use ExportMasterBarang as GlobalExportMasterBarang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -55,11 +59,30 @@ class MasterBarangController extends Controller
 
         return view('master_barang.partial.master_barang', ['master_barang' => $master_barang]);
     }
-
+    
     public function export_excel_mb()
     {
+        $data = DB::table('master_barang')->select(
+            'code',
+            'name',
+            'satuan',
+            'account_1',
+            'account_2',
+            'account_3',
+            'account_4',
+            'account_5',
+            'account_6',
+            'account_7',
+            'account_8',
+            'account_9',
+            'account_10',
+        )->get();
+    
         set_time_limit(0);
-        return Excel::download(new MasterBarangExport, 'Master Barang.xlsx');
+    
+        $filename = 'Master_Barang.xlsx';
+    
+        return Excel::download(new MasterBarangExport($data), $filename);
     }
 
     public function import_excel_mb(Request $request)
