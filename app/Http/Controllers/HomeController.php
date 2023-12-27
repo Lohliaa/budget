@@ -298,12 +298,10 @@ class HomeController extends Controller
 
         try {
             if ($file) {
-
                 $user = auth()->user();
                 $import = new HomeImport($tahun, $user);
                 Excel::import($import, $file);
                 $processedRowCount = $import->getProcessedRowCount();
-                dd($import);
             }
 
             if ($file) {
