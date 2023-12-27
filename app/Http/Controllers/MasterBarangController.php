@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
-use ZipArchive;
 
 class MasterBarangController extends Controller
 {
@@ -63,49 +62,10 @@ class MasterBarangController extends Controller
     
     public function export_excel_mb()
     {
-        $data = DB::table('master_barang')->select(
-            'code',
-            'name',
-            'satuan',
-            'account_1',
-            'account_2',
-            'account_3',
-            'account_4',
-            'account_5',
-            'account_6',
-            'account_7',
-            'account_8',
-            'account_9',
-            'account_10',
-        )->get();
-    
         set_time_limit(0);
-    
-        $xlsxFileName = 'Master_Barang.xlsx';
-        $zipFileName = 'Master_Barang.zip';
-    
-        $xlsxFilePath = storage_path('app/' . $xlsxFileName);
-        $zipFilePath = storage_path('app/' . $zipFileName);
-    
-        Excel::store(new MasterBarangExport($data), $xlsxFileName);
-    
-        // Create a new ZipArchive instance
-        $zip = new ZipArchive();
-        if ($zip->open($zipFilePath, ZipArchive::CREATE) === true) {
-            // Add the XLSX file to the ZIP archive
-            $zip->addFile($xlsxFilePath, $xlsxFileName);
-            $zip->close();
-    
-            // Delete the original XLSX file
-            Storage::delete($xlsxFileName);
-    
-            // Set the appropriate headers for ZIP download
-            return response()->download($zipFilePath)->deleteFileAfterSend(true);
-        } else {
-            // Handle ZIP creation failure
-            return response()->json(['error' => 'Failed to create ZIP file'], 500);
-        }
+        return Excel::download(new MasterBarangExport(), 'Master Barang.xlsx');
     }
+
     public function import_excel_mb(Request $request)
     {
         set_time_limit(0);

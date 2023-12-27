@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Models\MasterBarang;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -15,17 +16,26 @@ use Maatwebsite\Excel\Concerns\WithChunkReading;
 
 class MasterBarangExport implements FromCollection, WithHeadings, ShouldAutoSize, WithStyles, WithChunkReading, WithBatchInserts
 {
-    protected $data;
-
-    public function __construct($data = null)
-    {
-        $this->data = $data;
-    }
 
     public function collection()
     {
-        return collect($this->data);
+        return MasterBarang::select(
+            'code',
+            'name',
+            'satuan',
+            'account_1',
+            'account_2',
+            'account_3',
+            'account_4',
+            'account_5',
+            'account_6',
+            'account_7',
+            'account_8',
+            'account_9',
+            'account_10'
+        )->cursor();    
     }
+
     public function headings(): array
     {
         return [
