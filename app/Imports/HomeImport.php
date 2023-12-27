@@ -136,4 +136,8 @@ class HomeImport implements ToModel, WithHeadingRow, WithBatchInserts, WithValid
             }
         });
     }
+    public function getProcessedRowCount(): int
+    {
+        return $this->row;
+    }
 }

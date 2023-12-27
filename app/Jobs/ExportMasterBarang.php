@@ -7,7 +7,7 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class MasterBarangExport implements FromCollection, WithHeadings, ShouldAutoSize, WithStyles
+class ExportMasterBarang implements FromCollection, WithHeadings, ShouldAutoSize, WithStyles
 {
     protected $data;
 

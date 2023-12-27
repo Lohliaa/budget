@@ -276,34 +276,31 @@ class HomeController extends Controller
         ]);
 
         $file = $request->file('file');
-        
+
         $tahun = null;
 
-        // Memeriksa apakah user memiliki role Admin
         if (auth()->user()->hasRole('Admin')) {
             $tahun = $request->input('tahun');
-        
-            // Menyimpan tahun dan waktu terakhir kali diubah oleh Admin
-            cache()->put('tahun_terakhir_admin', ['tahun' => $tahun, 'last_updated' => now()], now()->addDays(30));
+
+            cache()->put('tahun_terakhir_admin', ['tahun' => $tahun, 'last_updated' => now()], now()->addDays(365));
         } else {
-            // Jika user tidak memiliki role Admin, user non-Admin mengambil tahun yang disimpan
             $tahunInfo = cache('tahun_terakhir_admin');
-        
+
             if ($tahunInfo) {
-                // Jika ada informasi tahun yang disimpan, ambil tahun
                 $tahun = $tahunInfo['tahun'];
             }
-        }       
+        }
 
-        // Jika file diunggah
         if ($file) {
             $nama_file = rand() . $file->getClientOriginalName();
             $path = $file->storeAs('public/excel/', $nama_file);
         }
 
-        // Jika yang menginput bukan Admin, lewati validasi tahun dan langsung proses impor
         $user = auth()->user();
         $import = new HomeImport($tahun, $user);
+        Excel::import($import, $file);
+
+        $processedRowCount = $import->getProcessedRowCount();
 
         try {
             if ($file) {
@@ -324,7 +321,6 @@ class HomeController extends Controller
             Alert::success('Impor Berhasil', $nama_file . ' Berhasil diimpor');
             Storage::delete($path);
         } else {
-            // Tampilkan pesan sukses jika yang menginput bukan Admin dan berhasil mengimpor file
             Alert::success('Impor Berhasil', 'Tahun berhasil disimpan.');
         }
 
@@ -741,7 +737,7 @@ class HomeController extends Controller
     {
         // Mendapatkan peran (role) pengguna saat ini
         $userRole = Auth::user()->role;
-    
+
         // Jika pengguna memiliki peran "Admin", hapus semua data tanpa memperhatikan peran
         if ($userRole === 'Admin') {
             Home::whereIn('id', $request->input('ids'))->delete();
@@ -749,15 +745,15 @@ class HomeController extends Controller
             // Jika pengguna memiliki peran selain "Admin", hapus hanya data yang sesuai dengan peran mereka
             Home::where('section', $userRole)->whereIn('id', $request->input('ids'))->delete();
         }
-    
+
         return response()->json(['message' => 'Data berhasil dihapus.']);
     }
-    
+
 
     public function reset_home()
     {
         $userRole = Auth::user()->role;
-        
+
         if ($userRole === 'Admin') {
             Home::truncate();
             return response()->json(['success' => 'Data truncated successfully.']);

@@ -3,7 +3,8 @@
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url('home') }}">
-        <div class="sidebar-brand-text mx-6"><i class="bi bi-journal-bookmark-fill"></i> BUGDET <span>SYSTEM</span></div>
+        <div class="sidebar-brand-text mx-6"><i class="bi bi-journal-bookmark-fill"></i> BUGDET <span>SYSTEM</span>
+        </div>
     </a>
 
     <!-- Divider -->
@@ -42,9 +43,9 @@
             <i class="fas fa-fw fa-users"></i>
             <span>Kode Budget</span></a>
     </li>
-    
+
     <hr class="sidebar-divider">
-    @if (Auth::user()->role === "Admin")
+    @if(Auth::check() && Auth::user()->role == 'Admin')
     <li class="nav-item">
         <a class="nav-link" href="{{ url('umh') }}">
             <i class="fas fa-fw fa-users"></i>
@@ -52,29 +53,29 @@
     </li>
     @endif
 
-    {{--  <li class="nav-item">
+    {{-- <li class="nav-item">
         <a class="nav-link" href="{{ url('proses_nariyuki') }}">
             <i class="fas fa-fw fa-users"></i>
             <span>Summary</span></a>
-    </li>  --}}
+    </li> --}}
 
     @auth
     <!-- Pemisah -->
     <hr class="sidebar-divider d-none d-md-block">
 
-    @if (Auth::user()->role === "Admin")
-        <div class="sidebar-heading">
-            Pengguna
-        </div>
+    @if(Auth::check() && Auth::user()->role == 'Admin')
+    <div class="sidebar-heading">
+        Pengguna
+    </div>
 
-        <li class="nav-item">
-            <a class="nav-link" href="{{ url('profile') }}">
-                <i class="fas fa-fw fa-users"></i>
-                <span>Profil</span>
-            </a>
-        </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url('profile') }}">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Profil</span>
+        </a>
+    </li>
     @endif
-@endauth
+    @endauth
 
 
     <li class="nav-item">

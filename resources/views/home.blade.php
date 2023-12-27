@@ -304,14 +304,15 @@ Halaman Utama
                                     @csrf
 
                                     {{-- Hapus input tahun untuk pengguna non-admin --}}
-                                    @if(Auth::user()->role == 'Admin')
+                                    @if(Auth::check() && Auth::user()->role == 'Admin')
                                     <div class="form-group">
                                         <label for="tahun">Tahun</label>
                                         <input type="text" class="form-control" id="tahun" name="tahun">
                                     </div>
                                     @endif
 
-                                    <input type="file" id="fileInput" name="file"
+
+                                    <input type="file" id="file" name="file"
                                         accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
                                 </div>
                                 <div class="modal-footer">
@@ -815,7 +816,7 @@ Halaman Utama
     </div>
 </body>
 
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="/sb_admin_2/jquery-3.6.4.min.js"></script>
 <script>
     $(document).ready(function() {
         // Handle checkbox change event
@@ -927,7 +928,7 @@ Halaman Utama
       
 </script>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{{ asset('/sb_admin_2/jquery-3.6.0.min.js') }}"></script>
 <script>
     $(document).ready(function () {
         // Event change untuk #addCode
