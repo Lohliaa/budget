@@ -296,16 +296,24 @@ class HomeController extends Controller
             $path = $file->storeAs('public/excel/', $nama_file);
         }
 
-        $user = auth()->user();
-        $import = new HomeImport($tahun, $user);
-        Excel::import($import, $file);
-
-        $processedRowCount = $import->getProcessedRowCount();
-
         try {
             if ($file) {
+
+                $user = auth()->user();
+                $import = new HomeImport($tahun, $user);
                 Excel::import($import, $file);
+                $processedRowCount = $import->getProcessedRowCount();
+                dd($import);
             }
+
+            if ($file) {
+                Alert::success('Impor Berhasil', $nama_file . ' Berhasil diimpor');
+                Storage::delete($path);
+            } else {
+                Alert::success('Impor Berhasil', 'Tahun berhasil disimpan.');
+            }
+
+            return redirect()->back();
         } catch (\Exception $e) {
             $error = $e instanceof ValidationException ? $this->getValidationErrors($e) : $e->getMessage();
             Alert::html('<small>Impor Gagal</small>', '<small>Error pada: <br>' . $error)->width('575px');
@@ -316,15 +324,6 @@ class HomeController extends Controller
 
             return redirect()->back();
         }
-
-        if ($file) {
-            Alert::success('Impor Berhasil', $nama_file . ' Berhasil diimpor');
-            Storage::delete($path);
-        } else {
-            Alert::success('Impor Berhasil', 'Tahun berhasil disimpan.');
-        }
-
-        return redirect()->back();
     }
 
     private function getValidationErrors(ValidationException $e)

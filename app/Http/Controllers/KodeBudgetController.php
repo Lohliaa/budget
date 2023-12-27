@@ -52,7 +52,7 @@ class KodeBudgetController extends Controller
     public function export_excel_kb()
     {
         set_time_limit(0);
-        return Excel::download(new KodeBudgetExport, 'Master Barang.xlsx');
+        return Excel::download(new KodeBudgetExport, 'Kode Budget.xlsx');
     }
 
     public function import_excel_kb(Request $request)
