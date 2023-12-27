@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
+use ZipArchive;
 
 class MasterBarangController extends Controller
 {
@@ -80,11 +81,31 @@ class MasterBarangController extends Controller
     
         set_time_limit(0);
     
-        $filename = 'Master_Barang.xlsx';
+        $xlsxFileName = 'Master_Barang.xlsx';
+        $zipFileName = 'Master_Barang.zip';
     
-        return Excel::download(new MasterBarangExport($data), $filename);
+        $xlsxFilePath = storage_path('app/' . $xlsxFileName);
+        $zipFilePath = storage_path('app/' . $zipFileName);
+    
+        Excel::store(new MasterBarangExport($data), $xlsxFileName);
+    
+        // Create a new ZipArchive instance
+        $zip = new ZipArchive();
+        if ($zip->open($zipFilePath, ZipArchive::CREATE) === true) {
+            // Add the XLSX file to the ZIP archive
+            $zip->addFile($xlsxFilePath, $xlsxFileName);
+            $zip->close();
+    
+            // Delete the original XLSX file
+            Storage::delete($xlsxFileName);
+    
+            // Set the appropriate headers for ZIP download
+            return response()->download($zipFilePath)->deleteFileAfterSend(true);
+        } else {
+            // Handle ZIP creation failure
+            return response()->json(['error' => 'Failed to create ZIP file'], 500);
+        }
     }
-
     public function import_excel_mb(Request $request)
     {
         set_time_limit(0);
