@@ -3,6 +3,7 @@
 namespace App\Exports;
 // app/Exports/YourExportClass.php
 
+use App\Models\Carline;
 use App\Models\Home;
 use App\Models\UMH;
 use Illuminate\Support\Facades\Auth;
@@ -182,6 +183,7 @@ class HomeFilterExport implements FromCollection, WithHeadings, WithStyles, Shou
         // Add SheetEnam only for admin users
         if ($userRole === 'Admin') {
             $sheets['Sheet 6'] = new SheetEnam($this->data);
+            $sheets['Sheet 7'] = new SheetTujuh($this->data);
         }
 
         return $sheets;
@@ -851,47 +853,48 @@ class SheetEnam implements FromCollection, WithHeadings, WithStyles, WithTitle, 
                         ->where('kode_budget', $item->kode_budget)
                         ->sum('amount_jun');
 
-                    $carry['sumTotalAmountJul'] = $sumTotalAmountJul;
-                    $carry['sumTotalAmountAug'] = $sumTotalAmountAug;
-                    $carry['sumTotalAmountSep'] = $sumTotalAmountSep;
-                    $carry['sumTotalAmountOkt'] = $sumTotalAmountOkt;
-                    $carry['sumTotalAmountNov'] = $sumTotalAmountNov;
-                    $carry['sumTotalAmountDec'] = $sumTotalAmountDec;
-                    $carry['sumTotalAmountJan'] = $sumTotalAmountJan;
-                    $carry['sumTotalAmountFeb'] = $sumTotalAmountFeb;
-                    $carry['sumTotalAmountMar'] = $sumTotalAmountMar;
-                    $carry['sumTotalAmountApr'] = $sumTotalAmountApr;
-                    $carry['sumTotalAmountMay'] = $sumTotalAmountMay;
-                    $carry['sumTotalAmountJun'] = $sumTotalAmountJun;
+                    $carry['sumTotalAmountJul'] = number_format($sumTotalAmountJul, 2);
+                    $carry['sumTotalAmountAug'] = number_format($sumTotalAmountAug, 2);
+                    $carry['sumTotalAmountSep'] = number_format($sumTotalAmountSep, 2);
+                    $carry['sumTotalAmountOkt'] = number_format($sumTotalAmountOkt, 2);
+                    $carry['sumTotalAmountNov'] = number_format($sumTotalAmountNov, 2);
+                    $carry['sumTotalAmountDec'] = number_format($sumTotalAmountDec, 2);
+                    $carry['sumTotalAmountJan'] = number_format($sumTotalAmountJan, 2);
+                    $carry['sumTotalAmountFeb'] = number_format($sumTotalAmountFeb, 2);
+                    $carry['sumTotalAmountMar'] = number_format($sumTotalAmountMar, 2);
+                    $carry['sumTotalAmountApr'] = number_format($sumTotalAmountApr, 2);
+                    $carry['sumTotalAmountMay'] = number_format($sumTotalAmountMay, 2);
+                    $carry['sumTotalAmountJun'] = number_format($sumTotalAmountJun, 2);
+
 
                     $umhData = UMH::first(); // Mengambil data pertama dari tabel Umh
 
                     // Menambahkan nilai kolom ke dalam array $carry
-                    $carry['ltp_jul'] = $umhData->ltp_jul ?? 0;
-                    $carry['ltp_aug'] = $umhData->ltp_aug ?? 0;
-                    $carry['ltp_sep'] = $umhData->ltp_sep ?? 0;
-                    $carry['ltp_okt'] = $umhData->ltp_okt ?? 0;
-                    $carry['ltp_nov'] = $umhData->ltp_nov ?? 0;
-                    $carry['ltp_dec'] = $umhData->ltp_dec ?? 0;
-                    $carry['ltp_jan'] = $umhData->ltp_jan ?? 0;
-                    $carry['ltp_feb'] = $umhData->ltp_feb ?? 0;
-                    $carry['ltp_mar'] = $umhData->ltp_mar ?? 0;
-                    $carry['ltp_apr'] = $umhData->ltp_apr ?? 0;
-                    $carry['ltp_may'] = $umhData->ltp_may ?? 0;
-                    $carry['ltp_jun'] = $umhData->ltp_jun ?? 0;
+                    $carry['ltp_jul'] = number_format($umhData->ltp_jul ?? 0, 2);
+                    $carry['ltp_aug'] = number_format($umhData->ltp_aug ?? 0, 2);
+                    $carry['ltp_sep'] = number_format($umhData->ltp_sep ?? 0, 2);
+                    $carry['ltp_okt'] = number_format($umhData->ltp_okt ?? 0, 2);
+                    $carry['ltp_nov'] = number_format($umhData->ltp_nov ?? 0, 2);
+                    $carry['ltp_dec'] = number_format($umhData->ltp_dec ?? 0, 2);
+                    $carry['ltp_jan'] = number_format($umhData->ltp_jan ?? 0, 2);
+                    $carry['ltp_feb'] = number_format($umhData->ltp_feb ?? 0, 2);
+                    $carry['ltp_mar'] = number_format($umhData->ltp_mar ?? 0, 2);
+                    $carry['ltp_apr'] = number_format($umhData->ltp_apr ?? 0, 2);
+                    $carry['ltp_may'] = number_format($umhData->ltp_may ?? 0, 2);
+                    $carry['ltp_jun'] = number_format($umhData->ltp_jun ?? 0, 2);
 
-                    $carry['stp_jul'] = $umhData->stp_jul ?? 0;
-                    $carry['stp_aug'] = $umhData->stp_aug ?? 0;
-                    $carry['stp_sep'] = $umhData->stp_sep ?? 0;
-                    $carry['stp_okt'] = $umhData->stp_okt ?? 0;
-                    $carry['stp_nov'] = $umhData->stp_nov ?? 0;
-                    $carry['stp_dec'] = $umhData->stp_dec ?? 0;
-                    $carry['stp_jan'] = $umhData->stp_jan ?? 0;
-                    $carry['stp_feb'] = $umhData->stp_feb ?? 0;
-                    $carry['stp_mar'] = $umhData->stp_mar ?? 0;
-                    $carry['stp_apr'] = $umhData->stp_apr ?? 0;
-                    $carry['stp_may'] = $umhData->stp_may ?? 0;
-                    $carry['stp_jun'] = $umhData->stp_jun ?? 0;
+                    $carry['stp_jul'] = number_format($umhData->stp_jul ?? 0, 2);
+                    $carry['stp_aug'] = number_format($umhData->stp_aug ?? 0, 2);
+                    $carry['stp_sep'] = number_format($umhData->stp_sep ?? 0, 2);
+                    $carry['stp_okt'] = number_format($umhData->stp_okt ?? 0, 2);
+                    $carry['stp_nov'] = number_format($umhData->stp_nov ?? 0, 2);
+                    $carry['stp_dec'] = number_format($umhData->stp_dec ?? 0, 2);
+                    $carry['stp_jan'] = number_format($umhData->stp_jan ?? 0, 2);
+                    $carry['stp_feb'] = number_format($umhData->stp_feb ?? 0, 2);
+                    $carry['stp_mar'] = number_format($umhData->stp_mar ?? 0, 2);
+                    $carry['stp_apr'] = number_format($umhData->stp_apr ?? 0, 2);
+                    $carry['stp_may'] = number_format($umhData->stp_may ?? 0, 2);
+                    $carry['stp_jun'] = number_format($umhData->stp_jun ?? 0, 2);
 
                     $fixedValue = $item->fixed;
 
@@ -937,18 +940,19 @@ class SheetEnam implements FromCollection, WithHeadings, WithStyles, WithTitle, 
                         $stp_amount_jun = ($umhData->stp_jun / $umhData->ltp_jun) * $carry['total_amount_jun'];
                     }
 
-                    $carry['stp_amount_jul'] = $stp_amount_jul;
-                    $carry['stp_amount_aug'] = $stp_amount_aug;
-                    $carry['stp_amount_sep'] = $stp_amount_sep;
-                    $carry['stp_amount_okt'] = $stp_amount_okt;
-                    $carry['stp_amount_nov'] = $stp_amount_nov;
-                    $carry['stp_amount_dec'] = $stp_amount_dec;
-                    $carry['stp_amount_jan'] = $stp_amount_jan;
-                    $carry['stp_amount_feb'] = $stp_amount_feb;
-                    $carry['stp_amount_mar'] = $stp_amount_mar;
-                    $carry['stp_amount_apr'] = $stp_amount_apr;
-                    $carry['stp_amount_may'] = $stp_amount_may;
-                    $carry['stp_amount_jun'] = $stp_amount_jun;
+                    $carry['stp_amount_jul'] = round($stp_amount_jul, 2);
+                    $carry['stp_amount_aug'] = round($stp_amount_aug, 2);
+                    $carry['stp_amount_sep'] = round($stp_amount_sep, 2);
+                    $carry['stp_amount_okt'] = round($stp_amount_okt, 2);
+                    $carry['stp_amount_nov'] = round($stp_amount_nov, 2);
+                    $carry['stp_amount_dec'] = round($stp_amount_dec, 2);
+                    $carry['stp_amount_jan'] = round($stp_amount_jan, 2);
+                    $carry['stp_amount_feb'] = round($stp_amount_feb, 2);
+                    $carry['stp_amount_mar'] = round($stp_amount_mar, 2);
+                    $carry['stp_amount_apr'] = round($stp_amount_apr, 2);
+                    $carry['stp_amount_may'] = round($stp_amount_may, 2);
+                    $carry['stp_amount_jun'] = round($stp_amount_jun, 2);
+                    
 
                     // Menyimpan data ke dalam tabel Home
                     $homeData = Home::updateOrCreate(
@@ -1235,5 +1239,124 @@ class SheetEnam implements FromCollection, WithHeadings, WithStyles, WithTitle, 
     public function title(): string
     {
         return 'STP';
+    }
+}
+
+class SheetTujuh implements FromCollection, WithHeadings, WithStyles, WithTitle, ShouldAutoSize
+{
+    protected $data;
+
+    public function __construct($data)
+    {
+        $this->data = $data;
+    }
+
+    public function collection()
+    {
+        $userRole = Auth::user()->role;
+
+        $result = $this->data
+            ->groupBy(function ($item) {
+                return $item->tahun . '-' . $item->section . '-' . $item->kode_budget . '-' . $item->prep . '-' . $item->kode_carline;
+            })
+            ->map(function ($groupedItems) use ($userRole) {
+                return $groupedItems->reduce(function ($carry, $item) use ($userRole) {
+                    $carry['tahun'] = $item->tahun;
+                    $carry['section'] = $item->section;
+                    $carry['kode_budget'] = $item->kode_budget;
+                    $carry['prep'] = $item->prep;
+                    $carry['kode_carline'] = $item->kode_carline;
+
+                    $carlineData = Carline::where('kode', $item->kode_carline)->first();
+
+                    // Jika data ditemukan di tabel 'carline', tambahkan kolom-kolom tertentu ke dalam $carry
+                    if ($carlineData) {
+                        $carry['destination'] = $carlineData->destination_ppc;
+                        $carry['model_year'] = $carlineData->model_year;
+                    }
+
+                    $carry['sum_amount_jul'] += round($item->amount_jul, 2);
+                    $carry['sum_amount_aug'] += round($item->amount_aug, 2);
+                    $carry['sum_amount_sep'] += round($item->amount_sep, 2);
+                    $carry['sum_amount_okt'] += round($item->amount_okt, 2);
+                    $carry['sum_amount_nov'] += round($item->amount_nov, 2);
+                    $carry['sum_amount_dec'] += round($item->amount_dec, 2);
+                    $carry['sum_amount_jan'] += round($item->amount_jan, 2);
+                    $carry['sum_amount_feb'] += round($item->amount_feb, 2);
+                    $carry['sum_amount_mar'] += round($item->amount_mar, 2);
+                    $carry['sum_amount_apr'] += round($item->amount_apr, 2);
+                    $carry['sum_amount_may'] += round($item->amount_may, 2);
+                    $carry['sum_amount_jun'] += round($item->amount_jun, 2);
+
+                    if ($userRole !== 'Admin' && $item->section !== $userRole) {
+                        // If not admin and section doesn't match, set values to 0
+                        $carry = array_map(function () {
+                            return 0;
+                        }, $carry);
+                    }
+
+                    return $carry;
+                }, [
+                    'tahun' => 0,
+                    'section' => 0,
+                    'kode_budget' => 0,
+                    'destination' => 0,
+                    'kode_carline' => 0,
+                    'model_year' => 0,
+                    'prep' => 0,
+                    'sum_amount_jul' => 0,
+                    'sum_amount_aug' => 0,
+                    'sum_amount_sep' => 0,
+                    'sum_amount_okt' => 0,
+                    'sum_amount_nov' => 0,
+                    'sum_amount_dec' => 0,
+                    'sum_amount_jan' => 0,
+                    'sum_amount_feb' => 0,
+                    'sum_amount_mar' => 0,
+                    'sum_amount_apr' => 0,
+                    'sum_amount_may' => 0,
+                    'sum_amount_jun' => 0,
+                ]);
+            });
+
+        return $result;
+    }
+
+    public function headings(): array
+    {
+        return [
+            'tahun',
+            'section',
+            'kode budget',
+            'destination',
+            'carline',
+            'model year',
+            'prep/maspro',
+            'jul',
+            'aug',
+            'sep',
+            'okt',
+            'nov',
+            'dec',
+            'jan',
+            'feb',
+            'mar',
+            'apr',
+            'may',
+            'jun'
+
+        ];
+    }
+
+    public function styles(Worksheet $sheet)
+    {
+        return [
+            1 => ['font' => ['bold' => true]],
+        ];
+    }
+
+    public function title(): string
+    {
+        return 'Destination';
     }
 }

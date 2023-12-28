@@ -449,31 +449,31 @@ Nariyuki
                             <td><input type="checkbox" class="sub_chk" data-id="{{$u->id}}"
                                     onclick="handleCheckboxChange({{ $u->id }})"></td>
                             <td>{{$no++}}</td>
-                            <td>{{ $u->ltp_jul }}</td>
-                            <td>{{ $u->ltp_aug }}</td>
-                            <td>{{ $u->ltp_sep }}</td>
-                            <td>{{ $u->ltp_okt }}</td>
-                            <td>{{ $u->ltp_nov }}</td>
-                            <td>{{ $u->ltp_dec }}</td>
-                            <td>{{ $u->ltp_jan }}</td>
-                            <td>{{ $u->ltp_feb }}</td>
-                            <td>{{ $u->ltp_mar }}</td>
-                            <td>{{ $u->ltp_apr }}</td>
-                            <td>{{ $u->ltp_may }}</td>
-                            <td>{{ $u->ltp_jun }}</td>
+                            <td>{{ number_format($u->ltp_jul, 2) }}</td>
+                            <td>{{ number_format($u->ltp_aug, 2) }}</td>
+                            <td>{{ number_format($u->ltp_sep, 2) }}</td>
+                            <td>{{ number_format($u->ltp_okt, 2) }}</td>
+                            <td>{{ number_format($u->ltp_nov, 2) }}</td>
+                            <td>{{ number_format($u->ltp_dec, 2) }}</td>
+                            <td>{{ number_format($u->ltp_jan, 2) }}</td>
+                            <td>{{ number_format($u->ltp_feb, 2) }}</td>
+                            <td>{{ number_format($u->ltp_mar, 2) }}</td>
+                            <td>{{ number_format($u->ltp_apr, 2) }}</td>
+                            <td>{{ number_format($u->ltp_may, 2) }}</td>
+                            <td>{{ number_format($u->ltp_jun, 2) }}</td>
 
-                            <td>{{ $u->stp_jul }}</td>
-                            <td>{{ $u->stp_aug }}</td>
-                            <td>{{ $u->stp_sep }}</td>
-                            <td>{{ $u->stp_okt }}</td>
-                            <td>{{ $u->stp_nov }}</td>
-                            <td>{{ $u->stp_dec }}</td>
-                            <td>{{ $u->stp_jan }}</td>
-                            <td>{{ $u->stp_feb }}</td>
-                            <td>{{ $u->stp_mar }}</td>
-                            <td>{{ $u->stp_apr }}</td>
-                            <td>{{ $u->stp_may }}</td>
-                            <td>{{ $u->stp_jun }}</td>
+                            <td>{{ number_format($u->stp_jul, 2) }}</td>
+                            <td>{{ number_format($u->stp_aug, 2) }}</td>
+                            <td>{{ number_format($u->stp_sep, 2) }}</td>
+                            <td>{{ number_format($u->stp_okt, 2) }}</td>
+                            <td>{{ number_format($u->stp_nov, 2) }}</td>
+                            <td>{{ number_format($u->stp_dec, 2) }}</td>
+                            <td>{{ number_format($u->stp_jan, 2) }}</td>
+                            <td>{{ number_format($u->stp_feb, 2) }}</td>
+                            <td>{{ number_format($u->stp_mar, 2) }}</td>
+                            <td>{{ number_format($u->stp_apr, 2) }}</td>
+                            <td>{{ number_format($u->stp_may, 2) }}</td>
+                            <td>{{ number_format($u->stp_jun, 2) }}</td>
                         </tr>
                         @endforeach
                     </tbody>

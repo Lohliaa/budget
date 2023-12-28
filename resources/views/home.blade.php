@@ -772,40 +772,40 @@ Halaman Utama
                                 <td>{{ $h->remark }}</td>
                                 <td>{{ $h->qty_jul }}</td>
                                 <td>{{ $h->price_jul }}</td>
-                                <td>{{ $h->amount_jul }}</td>
+                                <td>{{ number_format($h->amount_jul, 2) }}</td>
                                 <td>{{ $h->qty_aug }}</td>
                                 <td>{{ $h->price_aug }}</td>
-                                <td>{{ $h->amount_aug }}</td>
+                                <td>{{ number_format($h->amount_aug, 2) }}</td>
                                 <td>{{ $h->qty_sep }}</td>
                                 <td>{{ $h->price_sep }}</td>
-                                <td>{{ $h->amount_sep }}</td>
+                                <td>{{ number_format($h->amount_sep, 2) }}</td>
                                 <td>{{ $h->qty_okt }}</td>
                                 <td>{{ $h->price_okt }}</td>
-                                <td>{{ $h->amount_okt }}</td>
+                                <td>{{ number_format($h->amount_okt, 2) }}</td>
                                 <td>{{ $h->qty_nov }}</td>
                                 <td>{{ $h->price_nov }}</td>
-                                <td>{{ $h->amount_nov }}</td>
+                                <td>{{ number_format($h->amount_nov, 2) }}</td>
                                 <td>{{ $h->qty_dec }}</td>
                                 <td>{{ $h->price_dec }}</td>
-                                <td>{{ $h->amount_dec }}</td>
+                                <td>{{ number_format($h->amount_dec, 2) }}</td>
                                 <td>{{ $h->qty_jan }}</td>
                                 <td>{{ $h->price_jan }}</td>
-                                <td>{{ $h->amount_jan }}</td>
+                                <td>{{ number_format($h->amount_jan, 2) }}</td>
                                 <td>{{ $h->qty_feb }}</td>
                                 <td>{{ $h->price_feb }}</td>
-                                <td>{{ $h->amount_feb }}</td>
+                                <td>{{ number_format($h->amount_feb, 2) }}</td>
                                 <td>{{ $h->qty_mar }}</td>
                                 <td>{{ $h->price_mar }}</td>
-                                <td>{{ $h->amount_mar }}</td>
+                                <td>{{ number_format($h->amount_mar, 2) }}</td>
                                 <td>{{ $h->qty_apr }}</td>
                                 <td>{{ $h->price_apr }}</td>
-                                <td>{{ $h->amount_apr }}</td>
+                                <td>{{ number_format($h->amount_apr, 2) }}</td>
                                 <td>{{ $h->qty_may }}</td>
                                 <td>{{ $h->price_may }}</td>
-                                <td>{{ $h->amount_may }}</td>
+                                <td>{{ number_format($h->amount_may, 2) }}</td>
                                 <td>{{ $h->qty_jun }}</td>
                                 <td>{{ $h->price_jun }}</td>
-                                <td>{{ $h->amount_jun }}</td>
+                                <td>{{ number_format($h->amount_jun, 2) }}</td>
                             </tr>
                             @endforeach
                         </tbody>
