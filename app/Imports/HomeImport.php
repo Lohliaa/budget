@@ -30,8 +30,8 @@ class HomeImport implements ToModel, WithHeadingRow, WithBatchInserts, WithValid
     public function rules(): array
     {
         return [
-            'code' => ['required', Rule::exists('master_barang', 'code')],
-            'name' => ['required', Rule::exists('master_barang', 'name')],
+            'code' => ['required'],
+            'name' => ['required'],
             'kode_budget' => ['required', Rule::exists('kode_budget', 'kode_budget')],
             'kode_carline' => ['required', Rule::exists('carline', 'kode')],
             // Add more rules as needed

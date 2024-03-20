@@ -71,7 +71,7 @@
     <li class="nav-item">
         <a class="nav-link" href="{{ url('profile') }}">
             <i class="fas fa-fw fa-users"></i>
-            <span>Profil</span>
+            <span>Manage Account</span>
         </a>
     </li>
     @endif
