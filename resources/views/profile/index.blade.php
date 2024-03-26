@@ -71,9 +71,9 @@ Profile
                                     <div class="form-group">
                                         <label for="editChain">Password</label>
                                         <input type="password" class="form-control" id="editChain" name="chain">
-                                        
+
                                     </div>
-                                    
+
                                     <div class="form-group">
                                         <label for="editRole">Status</label>
                                         <select class="form-control" id="editRole" name="role">
@@ -95,7 +95,35 @@ Profile
                         </div>
                     </div>
                 </div>
+
+                {{--  <label class="switch">
+                    <input type="checkbox" id="buttonSwitch" onchange="disableButtons()">
+                    <span class="slider round"></span>
+                </label>  --}}
+
+                <!-- Modal konfirmasi -->
+                <div class="modal fade" id="disableFeatureModal" tabindex="-1"
+                    aria-labelledby="disableFeatureModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="disableFeatureModalLabel">Nonaktifkan Fitur</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Apakah Anda yakin ingin menonaktifkan fitur ini?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                <button type="button" class="btn btn-primary" id="confirmDisableButton">Ya, Nonaktifkan</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            
             <div class="input-group col-md-3 mr-4">
                 <input type="text" name="search" style="height: 2.4rem; font-size: 12pt; margin-top: 0.10rem;"
                     id="searchp" class="form-control input-text" placeholder="Cari disini ..."
@@ -108,7 +136,8 @@ Profile
                 <table class="table table-striped" id="pTableBody">
                     <thead style="background-color: #263a74; color:white; position: sticky; top: 0;">
                         <tr>
-                            <td colspan="0" rowspan="3" style="vertical-align: middle;"></td>
+                            <td colspan="0" rowspan="3" style="vertical-align: middle;"><input type="checkbox"
+                                    class="sub_chk" id="master"></td>
                             <td colspan="0" rowspan="3" style="vertical-align: middle;">No</td>
                             <td colspan="0" rowspan="3" style="vertical-align: middle;">Name</td>
                             <td colspan="0" rowspan="3" style="vertical-align: middle;">Email</td>
@@ -141,6 +170,15 @@ Profile
         </div>
     </div>
 </body>
+
+<script>
+    document.getElementById("addDetailCostCenter").addEventListener("click", function() {
+      var container = document.getElementById("container");
+      var newDiv = container.firstElementChild.cloneNode(true);
+      container.appendChild(newDiv);
+    });
+</script>
+
 <script>
     function togglePasswordVisibility(icon) {
         var passwordInput = icon.previousElementSibling;
@@ -157,6 +195,7 @@ Profile
         }
     }
 </script>
+
 <script>
     // Fungsi untuk mengirim permintaan pencarian ke server dan mengganti konten tabel
     function searchProfile() {
@@ -170,9 +209,9 @@ Profile
     }
 
     // Menambahkan event listener untuk input pencarian
-document.getElementById('searchp').addEventListener('input', function() {
+    document.getElementById('searchp').addEventListener('input', function() {
     searchProfile();
-});
+    });
 
     // Fungsi yang akan dipanggil ketika checkbox berubah
     function handleCheckboxChange(id) {
@@ -182,6 +221,30 @@ document.getElementById('searchp').addEventListener('input', function() {
 </script>
 
 <script>
+
+    function disableButtons() {
+        const buttonSwitch = document.getElementById('buttonSwitch');
+        const buttons = document.querySelectorAll('.home-button');
+      
+        buttons.forEach(button => {
+          if (buttonSwitch.checked) {
+            button.disabled = true;
+          } else {
+            button.disabled = false;
+          }
+        });
+    }
+    document.getElementById("master").addEventListener("click", function() {
+        var checkboxes = document.querySelectorAll('.sub_chk');
+        checkboxes.forEach(function(checkbox) {
+            var row = checkbox.closest('tr');
+            var role = row.querySelector('td:last-child').textContent;
+            if (role.trim() !== 'Admin') {
+                checkbox.checked = document.getElementById("master").checked;
+            }
+        });
+    });      
+
     // JavaScript to handle checkbox change
     function handleCheckboxChange() {
       const selectedCheckboxes = document.querySelectorAll('.sub_chk:checked');

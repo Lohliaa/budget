@@ -88,55 +88,6 @@ Nariyuki
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="addLTP_JUL">LTP JUL</label>
-                                        <input type="text" class="form-control" id="addLTP_JUL" name="ltp_jul">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addLTP_AUG">LTP AUG</label>
-                                        <input type="text" class="form-control" id="addLTP_AUG" name="ltp_aug">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addLTP_SEP">LTP SEP</label>
-                                        <input type="text" class="form-control" id="addLTP_SEP" name="ltp_sep">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addLTP_OKT">LTP OKT</label>
-                                        <input type="text" class="form-control" id="addLTP_OKT" name="ltp_okt">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addLTP_NOV">LTP NOV</label>
-                                        <input type="text" class="form-control" id="addLTP_NOV" name="ltp_nov">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addLTP_DEC">LTP DEC</label>
-                                        <input type="text" class="form-control" id="addLTP_DEC" name="ltp_dec">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addLTP_JAN">LTP JAN</label>
-                                        <input type="text" class="form-control" id="addLTP_JAN" name="ltp_jan">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addLTP_FEB">LTP FEB</label>
-                                        <input type="text" class="form-control" id="addLTP_FEB" name="ltp_feb">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addLTP_MAR">LTP MAR</label>
-                                        <input type="text" class="form-control" id="addLTP_MAR" name="ltp_mar">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addLTP_APR">LTP APR</label>
-                                        <input type="text" class="form-control" id="addLTP_APR" name="ltp_apr">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addLTP_MAY">LTP MAY</label>
-                                        <input type="text" class="form-control" id="addLTP_MAY" name="ltp_may">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addLTP_JUN">LTP JUN</label>
-                                        <input type="text" class="form-control" id="addLTP_JUN" name="ltp_jun">
-                                    </div>
-
-                                    <div class="form-group">
                                         <label for="addSTP_JUL">STP JUL</label>
                                         <input type="text" class="form-control" id="addSTP_JUL" name="stp_jul">
                                     </div>
