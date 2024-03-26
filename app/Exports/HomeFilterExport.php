@@ -182,7 +182,7 @@ class HomeFilterExport implements FromCollection, WithHeadings, WithStyles, Shou
 
         // Add SheetEnam only for admin users
         if ($userRole === 'Admin') {
-            $sheets['Sheet 6'] = new SheetEnam($this->data);
+            // $sheets['Sheet 6'] = new SheetEnam($this->data);
             $sheets['Sheet 7'] = new SheetTujuh($this->data);
         }
 
@@ -755,492 +755,492 @@ class SheetLima implements FromCollection, WithHeadings, WithStyles, WithTitle, 
     }
 }
 
-class SheetEnam implements FromCollection, WithHeadings, WithStyles, WithTitle, ShouldAutoSize
-{
-    protected $data;
+// class SheetEnam implements FromCollection, WithHeadings, WithStyles, WithTitle, ShouldAutoSize
+// {
+//     protected $data;
 
-    public function __construct($data)
-    {
-        $this->data = $data;
-    }
+//     public function __construct($data)
+//     {
+//         $this->data = $data;
+//     }
 
-    public function collection()
-    {
-        $userRole = Auth::user()->role;
+//     public function collection()
+//     {
+//         $userRole = Auth::user()->role;
 
-        $result = $this->data
-            ->groupBy(function ($item) {
-                return $item->tahun . '-' . $item->section . '-' . $item->kode_budget . '-' . $item->fixed;
-            })
-            ->map(function ($groupedItems) use ($userRole) {
-                return $groupedItems->reduce(function ($carry, $item) use ($userRole) {
-                    $carry['tahun'] = $item->tahun;
-                    $carry['section'] = $item->section;
-                    $carry['kode_budget'] = $item->kode_budget;
-                    $carry['fixed'] = $item->fixed;
+//         $result = $this->data
+//             ->groupBy(function ($item) {
+//                 return $item->tahun . '-' . $item->section . '-' . $item->kode_budget . '-' . $item->fixed;
+//             })
+//             ->map(function ($groupedItems) use ($userRole) {
+//                 return $groupedItems->reduce(function ($carry, $item) use ($userRole) {
+//                     $carry['tahun'] = $item->tahun;
+//                     $carry['section'] = $item->section;
+//                     $carry['kode_budget'] = $item->kode_budget;
+//                     $carry['fixed'] = $item->fixed;
 
-                    // Sum quantities and total amounts for each month
-                    $carry['total_amount_jul'] += round($item->amount_jul, 2);
-                    $carry['total_amount_aug'] += round($item->amount_aug, 2);
-                    $carry['total_amount_sep'] += round($item->amount_sep, 2);
-                    $carry['total_amount_okt'] += round($item->amount_okt, 2);
-                    $carry['total_amount_nov'] += round($item->amount_nov, 2);
-                    $carry['total_amount_dec'] += round($item->amount_dec, 2);
-                    $carry['total_amount_jan'] += round($item->amount_jan, 2);
-                    $carry['total_amount_feb'] += round($item->amount_feb, 2);
-                    $carry['total_amount_mar'] += round($item->amount_mar, 2);
-                    $carry['total_amount_apr'] += round($item->amount_apr, 2);
-                    $carry['total_amount_may'] += round($item->amount_may, 2);
-                    $carry['total_amount_jun'] += round($item->amount_jun, 2);
+//                     // Sum quantities and total amounts for each month
+//                     $carry['total_amount_jul'] += round($item->amount_jul, 2);
+//                     $carry['total_amount_aug'] += round($item->amount_aug, 2);
+//                     $carry['total_amount_sep'] += round($item->amount_sep, 2);
+//                     $carry['total_amount_okt'] += round($item->amount_okt, 2);
+//                     $carry['total_amount_nov'] += round($item->amount_nov, 2);
+//                     $carry['total_amount_dec'] += round($item->amount_dec, 2);
+//                     $carry['total_amount_jan'] += round($item->amount_jan, 2);
+//                     $carry['total_amount_feb'] += round($item->amount_feb, 2);
+//                     $carry['total_amount_mar'] += round($item->amount_mar, 2);
+//                     $carry['total_amount_apr'] += round($item->amount_apr, 2);
+//                     $carry['total_amount_may'] += round($item->amount_may, 2);
+//                     $carry['total_amount_jun'] += round($item->amount_jun, 2);
 
-                    $sumTotalAmountJul = Home::where('tahun', $item->tahun)
-                        ->where('section', $item->section)
-                        ->where('kode_budget', $item->kode_budget)
-                        ->sum('amount_jul');
+//                     $sumTotalAmountJul = Home::where('tahun', $item->tahun)
+//                         ->where('section', $item->section)
+//                         ->where('kode_budget', $item->kode_budget)
+//                         ->sum('amount_jul');
 
-                    $sumTotalAmountAug = Home::where('tahun', $item->tahun)
-                        ->where('section', $item->section)
-                        ->where('kode_budget', $item->kode_budget)
-                        ->sum('amount_aug');
+//                     $sumTotalAmountAug = Home::where('tahun', $item->tahun)
+//                         ->where('section', $item->section)
+//                         ->where('kode_budget', $item->kode_budget)
+//                         ->sum('amount_aug');
 
-                    $sumTotalAmountSep = Home::where('tahun', $item->tahun)
-                        ->where('section', $item->section)
-                        ->where('kode_budget', $item->kode_budget)
-                        ->sum('amount_sep');
+//                     $sumTotalAmountSep = Home::where('tahun', $item->tahun)
+//                         ->where('section', $item->section)
+//                         ->where('kode_budget', $item->kode_budget)
+//                         ->sum('amount_sep');
 
-                    $sumTotalAmountOkt = Home::where('tahun', $item->tahun)
-                        ->where('section', $item->section)
-                        ->where('kode_budget', $item->kode_budget)
-                        ->sum('amount_okt');
+//                     $sumTotalAmountOkt = Home::where('tahun', $item->tahun)
+//                         ->where('section', $item->section)
+//                         ->where('kode_budget', $item->kode_budget)
+//                         ->sum('amount_okt');
 
-                    $sumTotalAmountNov = Home::where('tahun', $item->tahun)
-                        ->where('section', $item->section)
-                        ->where('kode_budget', $item->kode_budget)
-                        ->sum('amount_nov');
+//                     $sumTotalAmountNov = Home::where('tahun', $item->tahun)
+//                         ->where('section', $item->section)
+//                         ->where('kode_budget', $item->kode_budget)
+//                         ->sum('amount_nov');
 
-                    $sumTotalAmountDec = Home::where('tahun', $item->tahun)
-                        ->where('section', $item->section)
-                        ->where('kode_budget', $item->kode_budget)
-                        ->sum('amount_dec');
+//                     $sumTotalAmountDec = Home::where('tahun', $item->tahun)
+//                         ->where('section', $item->section)
+//                         ->where('kode_budget', $item->kode_budget)
+//                         ->sum('amount_dec');
 
-                    $sumTotalAmountJan = Home::where('tahun', $item->tahun)
-                        ->where('section', $item->section)
-                        ->where('kode_budget', $item->kode_budget)
-                        ->sum('amount_jan');
+//                     $sumTotalAmountJan = Home::where('tahun', $item->tahun)
+//                         ->where('section', $item->section)
+//                         ->where('kode_budget', $item->kode_budget)
+//                         ->sum('amount_jan');
 
-                    $sumTotalAmountFeb = Home::where('tahun', $item->tahun)
-                        ->where('section', $item->section)
-                        ->where('kode_budget', $item->kode_budget)
-                        ->sum('amount_feb');
+//                     $sumTotalAmountFeb = Home::where('tahun', $item->tahun)
+//                         ->where('section', $item->section)
+//                         ->where('kode_budget', $item->kode_budget)
+//                         ->sum('amount_feb');
 
-                    $sumTotalAmountMar = Home::where('tahun', $item->tahun)
-                        ->where('section', $item->section)
-                        ->where('kode_budget', $item->kode_budget)
-                        ->sum('amount_mar');
+//                     $sumTotalAmountMar = Home::where('tahun', $item->tahun)
+//                         ->where('section', $item->section)
+//                         ->where('kode_budget', $item->kode_budget)
+//                         ->sum('amount_mar');
 
-                    $sumTotalAmountApr = Home::where('tahun', $item->tahun)
-                        ->where('section', $item->section)
-                        ->where('kode_budget', $item->kode_budget)
-                        ->sum('amount_apr');
+//                     $sumTotalAmountApr = Home::where('tahun', $item->tahun)
+//                         ->where('section', $item->section)
+//                         ->where('kode_budget', $item->kode_budget)
+//                         ->sum('amount_apr');
 
-                    $sumTotalAmountMay = Home::where('tahun', $item->tahun)
-                        ->where('section', $item->section)
-                        ->where('kode_budget', $item->kode_budget)
-                        ->sum('amount_may');
+//                     $sumTotalAmountMay = Home::where('tahun', $item->tahun)
+//                         ->where('section', $item->section)
+//                         ->where('kode_budget', $item->kode_budget)
+//                         ->sum('amount_may');
 
-                    $sumTotalAmountJun = Home::where('tahun', $item->tahun)
-                        ->where('section', $item->section)
-                        ->where('kode_budget', $item->kode_budget)
-                        ->sum('amount_jun');
+//                     $sumTotalAmountJun = Home::where('tahun', $item->tahun)
+//                         ->where('section', $item->section)
+//                         ->where('kode_budget', $item->kode_budget)
+//                         ->sum('amount_jun');
 
-                    $carry['sumTotalAmountJul'] = number_format($sumTotalAmountJul, 2);
-                    $carry['sumTotalAmountAug'] = number_format($sumTotalAmountAug, 2);
-                    $carry['sumTotalAmountSep'] = number_format($sumTotalAmountSep, 2);
-                    $carry['sumTotalAmountOkt'] = number_format($sumTotalAmountOkt, 2);
-                    $carry['sumTotalAmountNov'] = number_format($sumTotalAmountNov, 2);
-                    $carry['sumTotalAmountDec'] = number_format($sumTotalAmountDec, 2);
-                    $carry['sumTotalAmountJan'] = number_format($sumTotalAmountJan, 2);
-                    $carry['sumTotalAmountFeb'] = number_format($sumTotalAmountFeb, 2);
-                    $carry['sumTotalAmountMar'] = number_format($sumTotalAmountMar, 2);
-                    $carry['sumTotalAmountApr'] = number_format($sumTotalAmountApr, 2);
-                    $carry['sumTotalAmountMay'] = number_format($sumTotalAmountMay, 2);
-                    $carry['sumTotalAmountJun'] = number_format($sumTotalAmountJun, 2);
+//                     $carry['sumTotalAmountJul'] = number_format($sumTotalAmountJul, 2);
+//                     $carry['sumTotalAmountAug'] = number_format($sumTotalAmountAug, 2);
+//                     $carry['sumTotalAmountSep'] = number_format($sumTotalAmountSep, 2);
+//                     $carry['sumTotalAmountOkt'] = number_format($sumTotalAmountOkt, 2);
+//                     $carry['sumTotalAmountNov'] = number_format($sumTotalAmountNov, 2);
+//                     $carry['sumTotalAmountDec'] = number_format($sumTotalAmountDec, 2);
+//                     $carry['sumTotalAmountJan'] = number_format($sumTotalAmountJan, 2);
+//                     $carry['sumTotalAmountFeb'] = number_format($sumTotalAmountFeb, 2);
+//                     $carry['sumTotalAmountMar'] = number_format($sumTotalAmountMar, 2);
+//                     $carry['sumTotalAmountApr'] = number_format($sumTotalAmountApr, 2);
+//                     $carry['sumTotalAmountMay'] = number_format($sumTotalAmountMay, 2);
+//                     $carry['sumTotalAmountJun'] = number_format($sumTotalAmountJun, 2);
 
 
-                    $umhData = UMH::first(); // Mengambil data pertama dari tabel Umh
+//                     $umhData = UMH::first(); // Mengambil data pertama dari tabel Umh
 
-                    // Menambahkan nilai kolom ke dalam array $carry
-                    $carry['ltp_jul'] = number_format($umhData->ltp_jul ?? 0, 2);
-                    $carry['ltp_aug'] = number_format($umhData->ltp_aug ?? 0, 2);
-                    $carry['ltp_sep'] = number_format($umhData->ltp_sep ?? 0, 2);
-                    $carry['ltp_okt'] = number_format($umhData->ltp_okt ?? 0, 2);
-                    $carry['ltp_nov'] = number_format($umhData->ltp_nov ?? 0, 2);
-                    $carry['ltp_dec'] = number_format($umhData->ltp_dec ?? 0, 2);
-                    $carry['ltp_jan'] = number_format($umhData->ltp_jan ?? 0, 2);
-                    $carry['ltp_feb'] = number_format($umhData->ltp_feb ?? 0, 2);
-                    $carry['ltp_mar'] = number_format($umhData->ltp_mar ?? 0, 2);
-                    $carry['ltp_apr'] = number_format($umhData->ltp_apr ?? 0, 2);
-                    $carry['ltp_may'] = number_format($umhData->ltp_may ?? 0, 2);
-                    $carry['ltp_jun'] = number_format($umhData->ltp_jun ?? 0, 2);
+//                     // Menambahkan nilai kolom ke dalam array $carry
+//                     $carry['ltp_jul'] = number_format($umhData->ltp_jul ?? 0, 2);
+//                     $carry['ltp_aug'] = number_format($umhData->ltp_aug ?? 0, 2);
+//                     $carry['ltp_sep'] = number_format($umhData->ltp_sep ?? 0, 2);
+//                     $carry['ltp_okt'] = number_format($umhData->ltp_okt ?? 0, 2);
+//                     $carry['ltp_nov'] = number_format($umhData->ltp_nov ?? 0, 2);
+//                     $carry['ltp_dec'] = number_format($umhData->ltp_dec ?? 0, 2);
+//                     $carry['ltp_jan'] = number_format($umhData->ltp_jan ?? 0, 2);
+//                     $carry['ltp_feb'] = number_format($umhData->ltp_feb ?? 0, 2);
+//                     $carry['ltp_mar'] = number_format($umhData->ltp_mar ?? 0, 2);
+//                     $carry['ltp_apr'] = number_format($umhData->ltp_apr ?? 0, 2);
+//                     $carry['ltp_may'] = number_format($umhData->ltp_may ?? 0, 2);
+//                     $carry['ltp_jun'] = number_format($umhData->ltp_jun ?? 0, 2);
 
-                    $carry['stp_jul'] = number_format($umhData->stp_jul ?? 0, 2);
-                    $carry['stp_aug'] = number_format($umhData->stp_aug ?? 0, 2);
-                    $carry['stp_sep'] = number_format($umhData->stp_sep ?? 0, 2);
-                    $carry['stp_okt'] = number_format($umhData->stp_okt ?? 0, 2);
-                    $carry['stp_nov'] = number_format($umhData->stp_nov ?? 0, 2);
-                    $carry['stp_dec'] = number_format($umhData->stp_dec ?? 0, 2);
-                    $carry['stp_jan'] = number_format($umhData->stp_jan ?? 0, 2);
-                    $carry['stp_feb'] = number_format($umhData->stp_feb ?? 0, 2);
-                    $carry['stp_mar'] = number_format($umhData->stp_mar ?? 0, 2);
-                    $carry['stp_apr'] = number_format($umhData->stp_apr ?? 0, 2);
-                    $carry['stp_may'] = number_format($umhData->stp_may ?? 0, 2);
-                    $carry['stp_jun'] = number_format($umhData->stp_jun ?? 0, 2);
+//                     $carry['stp_jul'] = number_format($umhData->stp_jul ?? 0, 2);
+//                     $carry['stp_aug'] = number_format($umhData->stp_aug ?? 0, 2);
+//                     $carry['stp_sep'] = number_format($umhData->stp_sep ?? 0, 2);
+//                     $carry['stp_okt'] = number_format($umhData->stp_okt ?? 0, 2);
+//                     $carry['stp_nov'] = number_format($umhData->stp_nov ?? 0, 2);
+//                     $carry['stp_dec'] = number_format($umhData->stp_dec ?? 0, 2);
+//                     $carry['stp_jan'] = number_format($umhData->stp_jan ?? 0, 2);
+//                     $carry['stp_feb'] = number_format($umhData->stp_feb ?? 0, 2);
+//                     $carry['stp_mar'] = number_format($umhData->stp_mar ?? 0, 2);
+//                     $carry['stp_apr'] = number_format($umhData->stp_apr ?? 0, 2);
+//                     $carry['stp_may'] = number_format($umhData->stp_may ?? 0, 2);
+//                     $carry['stp_jun'] = number_format($umhData->stp_jun ?? 0, 2);
 
-                    $fixedValue = $item->fixed;
+//                     $fixedValue = $item->fixed;
 
-                    $stp_amount_jul = 0;
-                    $stp_amount_aug = 0;
-                    $stp_amount_sep = 0;
-                    $stp_amount_okt = 0;
-                    $stp_amount_nov = 0;
-                    $stp_amount_dec = 0;
-                    $stp_amount_jan = 0;
-                    $stp_amount_feb = 0;
-                    $stp_amount_mar = 0;
-                    $stp_amount_apr = 0;
-                    $stp_amount_may = 0;
-                    $stp_amount_jun = 0;
+//                     $stp_amount_jul = 0;
+//                     $stp_amount_aug = 0;
+//                     $stp_amount_sep = 0;
+//                     $stp_amount_okt = 0;
+//                     $stp_amount_nov = 0;
+//                     $stp_amount_dec = 0;
+//                     $stp_amount_jan = 0;
+//                     $stp_amount_feb = 0;
+//                     $stp_amount_mar = 0;
+//                     $stp_amount_apr = 0;
+//                     $stp_amount_may = 0;
+//                     $stp_amount_jun = 0;
 
-                    if (strtolower($fixedValue) == 'fixed') {
-                        $stp_amount_jul = $carry['total_amount_jul'];
-                        $stp_amount_aug = $carry['total_amount_aug'];
-                        $stp_amount_sep = $carry['total_amount_sep'];
-                        $stp_amount_okt = $carry['total_amount_okt'];
-                        $stp_amount_nov = $carry['total_amount_nov'];
-                        $stp_amount_dec = $carry['total_amount_dec'];
-                        $stp_amount_jan = $carry['total_amount_jan'];
-                        $stp_amount_feb = $carry['total_amount_feb'];
-                        $stp_amount_mar = $carry['total_amount_mar'];
-                        $stp_amount_apr = $carry['total_amount_apr'];
-                        $stp_amount_may = $carry['total_amount_may'];
-                        $stp_amount_jun = $carry['total_amount_jun'];
-                    }
-                    if (strtolower($fixedValue) == 'variabel') {
-                        $stp_amount_jul = ($umhData->stp_jul / $umhData->ltp_jul) * $carry['total_amount_jul'];
-                        $stp_amount_aug = ($umhData->stp_aug / $umhData->ltp_aug) * $carry['total_amount_aug'];
-                        $stp_amount_sep = ($umhData->stp_sep / $umhData->ltp_sep) * $carry['total_amount_sep'];
-                        $stp_amount_okt = ($umhData->stp_okt / $umhData->ltp_okt) * $carry['total_amount_okt'];
-                        $stp_amount_nov = ($umhData->stp_nov / $umhData->ltp_nov) * $carry['total_amount_nov'];
-                        $stp_amount_dec = ($umhData->stp_dec / $umhData->ltp_dec) * $carry['total_amount_dec'];
-                        $stp_amount_jan = ($umhData->stp_jan / $umhData->ltp_jan) * $carry['total_amount_jan'];
-                        $stp_amount_feb = ($umhData->stp_feb / $umhData->ltp_feb) * $carry['total_amount_feb'];
-                        $stp_amount_mar = ($umhData->stp_mar / $umhData->ltp_mar) * $carry['total_amount_mar'];
-                        $stp_amount_apr = ($umhData->stp_apr / $umhData->ltp_apr) * $carry['total_amount_apr'];
-                        $stp_amount_may = ($umhData->stp_may / $umhData->ltp_may) * $carry['total_amount_may'];
-                        $stp_amount_jun = ($umhData->stp_jun / $umhData->ltp_jun) * $carry['total_amount_jun'];
-                    }
+//                     if (strtolower($fixedValue) == 'fixed') {
+//                         $stp_amount_jul = $carry['total_amount_jul'];
+//                         $stp_amount_aug = $carry['total_amount_aug'];
+//                         $stp_amount_sep = $carry['total_amount_sep'];
+//                         $stp_amount_okt = $carry['total_amount_okt'];
+//                         $stp_amount_nov = $carry['total_amount_nov'];
+//                         $stp_amount_dec = $carry['total_amount_dec'];
+//                         $stp_amount_jan = $carry['total_amount_jan'];
+//                         $stp_amount_feb = $carry['total_amount_feb'];
+//                         $stp_amount_mar = $carry['total_amount_mar'];
+//                         $stp_amount_apr = $carry['total_amount_apr'];
+//                         $stp_amount_may = $carry['total_amount_may'];
+//                         $stp_amount_jun = $carry['total_amount_jun'];
+//                     }
+//                     if (strtolower($fixedValue) == 'variabel') {
+//                         $stp_amount_jul = ($umhData->stp_jul / $umhData->ltp_jul) * $carry['total_amount_jul'];
+//                         $stp_amount_aug = ($umhData->stp_aug / $umhData->ltp_aug) * $carry['total_amount_aug'];
+//                         $stp_amount_sep = ($umhData->stp_sep / $umhData->ltp_sep) * $carry['total_amount_sep'];
+//                         $stp_amount_okt = ($umhData->stp_okt / $umhData->ltp_okt) * $carry['total_amount_okt'];
+//                         $stp_amount_nov = ($umhData->stp_nov / $umhData->ltp_nov) * $carry['total_amount_nov'];
+//                         $stp_amount_dec = ($umhData->stp_dec / $umhData->ltp_dec) * $carry['total_amount_dec'];
+//                         $stp_amount_jan = ($umhData->stp_jan / $umhData->ltp_jan) * $carry['total_amount_jan'];
+//                         $stp_amount_feb = ($umhData->stp_feb / $umhData->ltp_feb) * $carry['total_amount_feb'];
+//                         $stp_amount_mar = ($umhData->stp_mar / $umhData->ltp_mar) * $carry['total_amount_mar'];
+//                         $stp_amount_apr = ($umhData->stp_apr / $umhData->ltp_apr) * $carry['total_amount_apr'];
+//                         $stp_amount_may = ($umhData->stp_may / $umhData->ltp_may) * $carry['total_amount_may'];
+//                         $stp_amount_jun = ($umhData->stp_jun / $umhData->ltp_jun) * $carry['total_amount_jun'];
+//                     }
 
-                    $carry['stp_amount_jul'] = round($stp_amount_jul, 2);
-                    $carry['stp_amount_aug'] = round($stp_amount_aug, 2);
-                    $carry['stp_amount_sep'] = round($stp_amount_sep, 2);
-                    $carry['stp_amount_okt'] = round($stp_amount_okt, 2);
-                    $carry['stp_amount_nov'] = round($stp_amount_nov, 2);
-                    $carry['stp_amount_dec'] = round($stp_amount_dec, 2);
-                    $carry['stp_amount_jan'] = round($stp_amount_jan, 2);
-                    $carry['stp_amount_feb'] = round($stp_amount_feb, 2);
-                    $carry['stp_amount_mar'] = round($stp_amount_mar, 2);
-                    $carry['stp_amount_apr'] = round($stp_amount_apr, 2);
-                    $carry['stp_amount_may'] = round($stp_amount_may, 2);
-                    $carry['stp_amount_jun'] = round($stp_amount_jun, 2);
+//                     $carry['stp_amount_jul'] = round($stp_amount_jul, 2);
+//                     $carry['stp_amount_aug'] = round($stp_amount_aug, 2);
+//                     $carry['stp_amount_sep'] = round($stp_amount_sep, 2);
+//                     $carry['stp_amount_okt'] = round($stp_amount_okt, 2);
+//                     $carry['stp_amount_nov'] = round($stp_amount_nov, 2);
+//                     $carry['stp_amount_dec'] = round($stp_amount_dec, 2);
+//                     $carry['stp_amount_jan'] = round($stp_amount_jan, 2);
+//                     $carry['stp_amount_feb'] = round($stp_amount_feb, 2);
+//                     $carry['stp_amount_mar'] = round($stp_amount_mar, 2);
+//                     $carry['stp_amount_apr'] = round($stp_amount_apr, 2);
+//                     $carry['stp_amount_may'] = round($stp_amount_may, 2);
+//                     $carry['stp_amount_jun'] = round($stp_amount_jun, 2);
                     
 
-                    // Menyimpan data ke dalam tabel Home
-                    $homeData = Home::updateOrCreate(
-                        [
-                            'tahun' => $carry['tahun'],
-                            'section' => $carry['section'],
-                            'kode_budget' => $carry['kode_budget'],
-                            'fixed' => $carry['fixed'],
-                        ],
-                        [
-                            'stp_amount_jul' => $carry['stp_amount_jul'],
-                            'stp_amount_aug' => $carry['stp_amount_aug'],
-                            'stp_amount_sep' => $carry['stp_amount_sep'],
-                            'stp_amount_okt' => $carry['stp_amount_okt'],
-                            'stp_amount_nov' => $carry['stp_amount_nov'],
-                            'stp_amount_dec' => $carry['stp_amount_dec'],
-                            'stp_amount_jan' => $carry['stp_amount_jan'],
-                            'stp_amount_feb' => $carry['stp_amount_feb'],
-                            'stp_amount_mar' => $carry['stp_amount_mar'],
-                            'stp_amount_apr' => $carry['stp_amount_apr'],
-                            'stp_amount_may' => $carry['stp_amount_may'],
-                            'stp_amount_jun' => $carry['stp_amount_jun'],
-                        ]
+//                     // Menyimpan data ke dalam tabel Home
+//                     $homeData = Home::updateOrCreate(
+//                         [
+//                             'tahun' => $carry['tahun'],
+//                             'section' => $carry['section'],
+//                             'kode_budget' => $carry['kode_budget'],
+//                             'fixed' => $carry['fixed'],
+//                         ],
+//                         [
+//                             'stp_amount_jul' => $carry['stp_amount_jul'],
+//                             'stp_amount_aug' => $carry['stp_amount_aug'],
+//                             'stp_amount_sep' => $carry['stp_amount_sep'],
+//                             'stp_amount_okt' => $carry['stp_amount_okt'],
+//                             'stp_amount_nov' => $carry['stp_amount_nov'],
+//                             'stp_amount_dec' => $carry['stp_amount_dec'],
+//                             'stp_amount_jan' => $carry['stp_amount_jan'],
+//                             'stp_amount_feb' => $carry['stp_amount_feb'],
+//                             'stp_amount_mar' => $carry['stp_amount_mar'],
+//                             'stp_amount_apr' => $carry['stp_amount_apr'],
+//                             'stp_amount_may' => $carry['stp_amount_may'],
+//                             'stp_amount_jun' => $carry['stp_amount_jun'],
+//                         ]
 
-                    );
+//                     );
 
-                    $homeData->save();
+//                     $homeData->save();
 
-                    $sumSTPAmountJul = Home::where('tahun', $item->tahun)
-                        ->where('section', $item->section)
-                        ->where('kode_budget', $item->kode_budget)
-                        ->sum('stp_amount_jul');
+//                     $sumSTPAmountJul = Home::where('tahun', $item->tahun)
+//                         ->where('section', $item->section)
+//                         ->where('kode_budget', $item->kode_budget)
+//                         ->sum('stp_amount_jul');
 
-                    $sumSTPAmountAug = Home::where('tahun', $item->tahun)
-                        ->where('section', $item->section)
-                        ->where('kode_budget', $item->kode_budget)
-                        ->sum('stp_amount_aug');
+//                     $sumSTPAmountAug = Home::where('tahun', $item->tahun)
+//                         ->where('section', $item->section)
+//                         ->where('kode_budget', $item->kode_budget)
+//                         ->sum('stp_amount_aug');
 
-                    $sumSTPAmountSep = Home::where('tahun', $item->tahun)
-                        ->where('section', $item->section)
-                        ->where('kode_budget', $item->kode_budget)
-                        ->sum('stp_amount_sep');
+//                     $sumSTPAmountSep = Home::where('tahun', $item->tahun)
+//                         ->where('section', $item->section)
+//                         ->where('kode_budget', $item->kode_budget)
+//                         ->sum('stp_amount_sep');
 
-                    $sumSTPAmountOkt = Home::where('tahun', $item->tahun)
-                        ->where('section', $item->section)
-                        ->where('kode_budget', $item->kode_budget)
-                        ->sum('stp_amount_okt');
+//                     $sumSTPAmountOkt = Home::where('tahun', $item->tahun)
+//                         ->where('section', $item->section)
+//                         ->where('kode_budget', $item->kode_budget)
+//                         ->sum('stp_amount_okt');
 
-                    $sumSTPAmountNov = Home::where('tahun', $item->tahun)
-                        ->where('section', $item->section)
-                        ->where('kode_budget', $item->kode_budget)
-                        ->sum('stp_amount_nov');
+//                     $sumSTPAmountNov = Home::where('tahun', $item->tahun)
+//                         ->where('section', $item->section)
+//                         ->where('kode_budget', $item->kode_budget)
+//                         ->sum('stp_amount_nov');
 
-                    $sumSTPAmountDec = Home::where('tahun', $item->tahun)
-                        ->where('section', $item->section)
-                        ->where('kode_budget', $item->kode_budget)
-                        ->sum('stp_amount_dec');
+//                     $sumSTPAmountDec = Home::where('tahun', $item->tahun)
+//                         ->where('section', $item->section)
+//                         ->where('kode_budget', $item->kode_budget)
+//                         ->sum('stp_amount_dec');
 
-                    $sumSTPAmountJan = Home::where('tahun', $item->tahun)
-                        ->where('section', $item->section)
-                        ->where('kode_budget', $item->kode_budget)
-                        ->sum('stp_amount_jan');
+//                     $sumSTPAmountJan = Home::where('tahun', $item->tahun)
+//                         ->where('section', $item->section)
+//                         ->where('kode_budget', $item->kode_budget)
+//                         ->sum('stp_amount_jan');
 
-                    $sumSTPAmountFeb = Home::where('tahun', $item->tahun)
-                        ->where('section', $item->section)
-                        ->where('kode_budget', $item->kode_budget)
-                        ->sum('stp_amount_feb');
+//                     $sumSTPAmountFeb = Home::where('tahun', $item->tahun)
+//                         ->where('section', $item->section)
+//                         ->where('kode_budget', $item->kode_budget)
+//                         ->sum('stp_amount_feb');
 
-                    $sumSTPAmountMar = Home::where('tahun', $item->tahun)
-                        ->where('section', $item->section)
-                        ->where('kode_budget', $item->kode_budget)
-                        ->sum('stp_amount_mar');
+//                     $sumSTPAmountMar = Home::where('tahun', $item->tahun)
+//                         ->where('section', $item->section)
+//                         ->where('kode_budget', $item->kode_budget)
+//                         ->sum('stp_amount_mar');
 
-                    $sumSTPAmountApr = Home::where('tahun', $item->tahun)
-                        ->where('section', $item->section)
-                        ->where('kode_budget', $item->kode_budget)
-                        ->sum('stp_amount_apr');
+//                     $sumSTPAmountApr = Home::where('tahun', $item->tahun)
+//                         ->where('section', $item->section)
+//                         ->where('kode_budget', $item->kode_budget)
+//                         ->sum('stp_amount_apr');
 
-                    $sumSTPAmountMay = Home::where('tahun', $item->tahun)
-                        ->where('section', $item->section)
-                        ->where('kode_budget', $item->kode_budget)
-                        ->sum('stp_amount_may');
+//                     $sumSTPAmountMay = Home::where('tahun', $item->tahun)
+//                         ->where('section', $item->section)
+//                         ->where('kode_budget', $item->kode_budget)
+//                         ->sum('stp_amount_may');
 
-                    $sumSTPAmountJun = Home::where('tahun', $item->tahun)
-                        ->where('section', $item->section)
-                        ->where('kode_budget', $item->kode_budget)
-                        ->sum('stp_amount_jun');
+//                     $sumSTPAmountJun = Home::where('tahun', $item->tahun)
+//                         ->where('section', $item->section)
+//                         ->where('kode_budget', $item->kode_budget)
+//                         ->sum('stp_amount_jun');
 
-                    $carry['sumSTPAmountJul'] = $sumSTPAmountJul;
-                    $carry['sumSTPAmountAug'] = $sumSTPAmountAug;
-                    $carry['sumSTPAmountSep'] = $sumSTPAmountSep;
-                    $carry['sumSTPAmountOkt'] = $sumSTPAmountOkt;
-                    $carry['sumSTPAmountNov'] = $sumSTPAmountNov;
-                    $carry['sumSTPAmountDec'] = $sumSTPAmountDec;
-                    $carry['sumSTPAmountJan'] = $sumSTPAmountJan;
-                    $carry['sumSTPAmountFeb'] = $sumSTPAmountFeb;
-                    $carry['sumSTPAmountMar'] = $sumSTPAmountMar;
-                    $carry['sumSTPAmountApr'] = $sumSTPAmountApr;
-                    $carry['sumSTPAmountMay'] = $sumSTPAmountMay;
-                    $carry['sumSTPAmountJun'] = $sumSTPAmountJun;
+//                     $carry['sumSTPAmountJul'] = $sumSTPAmountJul;
+//                     $carry['sumSTPAmountAug'] = $sumSTPAmountAug;
+//                     $carry['sumSTPAmountSep'] = $sumSTPAmountSep;
+//                     $carry['sumSTPAmountOkt'] = $sumSTPAmountOkt;
+//                     $carry['sumSTPAmountNov'] = $sumSTPAmountNov;
+//                     $carry['sumSTPAmountDec'] = $sumSTPAmountDec;
+//                     $carry['sumSTPAmountJan'] = $sumSTPAmountJan;
+//                     $carry['sumSTPAmountFeb'] = $sumSTPAmountFeb;
+//                     $carry['sumSTPAmountMar'] = $sumSTPAmountMar;
+//                     $carry['sumSTPAmountApr'] = $sumSTPAmountApr;
+//                     $carry['sumSTPAmountMay'] = $sumSTPAmountMay;
+//                     $carry['sumSTPAmountJun'] = $sumSTPAmountJun;
 
-                    if ($userRole !== 'Admin' && $item->section !== $userRole) {
-                        // If not admin and section doesn't match, set values to 0
-                        $carry = array_map(function () {
-                            return 0;
-                        }, $carry);
-                    }
+//                     if ($userRole !== 'Admin' && $item->section !== $userRole) {
+//                         // If not admin and section doesn't match, set values to 0
+//                         $carry = array_map(function () {
+//                             return 0;
+//                         }, $carry);
+//                     }
 
-                    return $carry;
-                }, [
-                    'tahun' => 0,
-                    'section' => 0,
-                    'kode_budget' => 0,
-                    'fixed' => 0,
-                    'total_amount_jul' => 0,
-                    'sumTotalAmountJul' => 0,
-                    'ltp_jul' => 0,
-                    'total_amount_aug' => 0,
-                    'sumTotalAmountAug' => 0,
-                    'ltp_aug' => 0,
-                    'total_amount_sep' => 0,
-                    'sumTotalAmountSep' => 0,
-                    'ltp_sep' => 0,
-                    'total_amount_okt' => 0,
-                    'sumTotalAmountOkt' => 0,
-                    'ltp_okt' => 0,
-                    'total_amount_nov' => 0,
-                    'sumTotalAmountNov' => 0,
-                    'ltp_nov' => 0,
-                    'total_amount_dec' => 0,
-                    'sumTotalAmountDec' => 0,
-                    'ltp_dec' => 0,
-                    'total_amount_jan' => 0,
-                    'sumTotalAmountJan' => 0,
-                    'ltp_jan' => 0,
-                    'total_amount_feb' => 0,
-                    'sumTotalAmountFeb' => 0,
-                    'ltp_feb' => 0,
-                    'total_amount_mar' => 0,
-                    'sumTotalAmountMar' => 0,
-                    'ltp_mar' => 0,
-                    'total_amount_apr' => 0,
-                    'sumTotalAmountApr' => 0,
-                    'ltp_apr' => 0,
-                    'total_amount_may' => 0,
-                    'sumTotalAmountMay' => 0,
-                    'ltp_may' => 0,
-                    'total_amount_jun' => 0,
-                    'sumTotalAmountJun' => 0,
-                    'ltp_jun' => 0,
-                    'stp_amount_jul' => 0,
-                    'sumSTPAmountJul' => 0,
-                    'stp_jul' => 0,
-                    'stp_amount_aug' => 0,
-                    'sumSTPAmountAug' => 0,
-                    'stp_aug' => 0,
-                    'stp_amount_sep' => 0,
-                    'sumSTPAmountSep' => 0,
-                    'stp_sep' => 0,
-                    'stp_amount_okt' => 0,
-                    'sumSTPAmountOkt' => 0,
-                    'stp_okt' => 0,
-                    'stp_amount_nov' => 0,
-                    'sumSTPAmountNov' => 0,
-                    'stp_nov' => 0,
-                    'stp_amount_dec' => 0,
-                    'sumSTPAmountDec' => 0,
-                    'stp_dec' => 0,
-                    'stp_amount_jan' => 0,
-                    'sumSTPAmountJan' => 0,
-                    'stp_jan' => 0,
-                    'stp_amount_feb' => 0,
-                    'sumSTPAmountFeb' => 0,
-                    'stp_feb' => 0,
-                    'stp_amount_mar' => 0,
-                    'sumSTPAmountMar' => 0,
-                    'stp_mar' => 0,
-                    'stp_amount_apr' => 0,
-                    'sumSTPAmountApr' => 0,
-                    'stp_apr' => 0,
-                    'stp_amount_may' => 0,
-                    'sumSTPAmountMay' => 0,
-                    'stp_may' => 0,
-                    'stp_amount_jun' => 0,
-                    'sumSTPAmountJun' => 0,
-                    'stp_jun' => 0,
-                ]);
-            });
-        // dd($result);
-        return $result;
-    }
+//                     return $carry;
+//                 }, [
+//                     'tahun' => 0,
+//                     'section' => 0,
+//                     'kode_budget' => 0,
+//                     'fixed' => 0,
+//                     'total_amount_jul' => 0,
+//                     'sumTotalAmountJul' => 0,
+//                     'ltp_jul' => 0,
+//                     'total_amount_aug' => 0,
+//                     'sumTotalAmountAug' => 0,
+//                     'ltp_aug' => 0,
+//                     'total_amount_sep' => 0,
+//                     'sumTotalAmountSep' => 0,
+//                     'ltp_sep' => 0,
+//                     'total_amount_okt' => 0,
+//                     'sumTotalAmountOkt' => 0,
+//                     'ltp_okt' => 0,
+//                     'total_amount_nov' => 0,
+//                     'sumTotalAmountNov' => 0,
+//                     'ltp_nov' => 0,
+//                     'total_amount_dec' => 0,
+//                     'sumTotalAmountDec' => 0,
+//                     'ltp_dec' => 0,
+//                     'total_amount_jan' => 0,
+//                     'sumTotalAmountJan' => 0,
+//                     'ltp_jan' => 0,
+//                     'total_amount_feb' => 0,
+//                     'sumTotalAmountFeb' => 0,
+//                     'ltp_feb' => 0,
+//                     'total_amount_mar' => 0,
+//                     'sumTotalAmountMar' => 0,
+//                     'ltp_mar' => 0,
+//                     'total_amount_apr' => 0,
+//                     'sumTotalAmountApr' => 0,
+//                     'ltp_apr' => 0,
+//                     'total_amount_may' => 0,
+//                     'sumTotalAmountMay' => 0,
+//                     'ltp_may' => 0,
+//                     'total_amount_jun' => 0,
+//                     'sumTotalAmountJun' => 0,
+//                     'ltp_jun' => 0,
+//                     'stp_amount_jul' => 0,
+//                     'sumSTPAmountJul' => 0,
+//                     'stp_jul' => 0,
+//                     'stp_amount_aug' => 0,
+//                     'sumSTPAmountAug' => 0,
+//                     'stp_aug' => 0,
+//                     'stp_amount_sep' => 0,
+//                     'sumSTPAmountSep' => 0,
+//                     'stp_sep' => 0,
+//                     'stp_amount_okt' => 0,
+//                     'sumSTPAmountOkt' => 0,
+//                     'stp_okt' => 0,
+//                     'stp_amount_nov' => 0,
+//                     'sumSTPAmountNov' => 0,
+//                     'stp_nov' => 0,
+//                     'stp_amount_dec' => 0,
+//                     'sumSTPAmountDec' => 0,
+//                     'stp_dec' => 0,
+//                     'stp_amount_jan' => 0,
+//                     'sumSTPAmountJan' => 0,
+//                     'stp_jan' => 0,
+//                     'stp_amount_feb' => 0,
+//                     'sumSTPAmountFeb' => 0,
+//                     'stp_feb' => 0,
+//                     'stp_amount_mar' => 0,
+//                     'sumSTPAmountMar' => 0,
+//                     'stp_mar' => 0,
+//                     'stp_amount_apr' => 0,
+//                     'sumSTPAmountApr' => 0,
+//                     'stp_apr' => 0,
+//                     'stp_amount_may' => 0,
+//                     'sumSTPAmountMay' => 0,
+//                     'stp_may' => 0,
+//                     'stp_amount_jun' => 0,
+//                     'sumSTPAmountJun' => 0,
+//                     'stp_jun' => 0,
+//                 ]);
+//             });
+//         // dd($result);
+//         return $result;
+//     }
 
-    public function headings(): array
-    {
-        return [
-            'Tahun',
-            'Section',
-            'Kode Budget',
-            'fixed/variabel',
-            'Amount Jul',
-            'Total Jul',
-            'UMH LTP JUL',
-            'Amount Aug',
-            'Total Aug',
-            'UMH LTP AUG',
-            'Amount Sep',
-            'Total Sep',
-            'UMH LTP SEP',
-            'Amount Okt',
-            'Total Okt',
-            'UMH LTP OKT',
-            'Amount Nov',
-            'Total Nov',
-            'UMH LTP NOV',
-            'Amount Dec',
-            'Total Dec',
-            'UMH LTP DEC',
-            'Amount Jan',
-            'Total Jan',
-            'UMH LTP JAN',
-            'Amount Feb',
-            'Total Feb',
-            'UMH LTP FEB',
-            'Amount Mar',
-            'Total Mar',
-            'UMH LTP MAR',
-            'Amount Apr',
-            'Total Apr',
-            'UMH LTP APR',
-            'Amount May',
-            'Total May',
-            'UMH LTP MAY',
-            'Amount Jun',
-            'Total Jun',
-            'UMH LTP JUN',
-            'AMOUNT STP JUL',
-            'TOTAL AMOUNT JUL',
-            'UMH STP JUL',
-            'AMOUNT STP AUG',
-            'TOTAL AMOUNT AUG',
-            'UMH STP AUG',
-            'AMOUNT STP SEP',
-            'TOTAL AMOUNT SEP',
-            'UMH STP SEP',
-            'AMOUNT STP OKT',
-            'TOTAL AMOUNT OKT',
-            'UMH STP OKT',
-            'AMOUNT STP NOV',
-            'TOTAL AMOUNT NOV',
-            'UMH STP NOV',
-            'AMOUNT STP DEC',
-            'TOTAL AMOUNT DEC',
-            'UMH STP DEC',
-            'AMOUNT STP JAN',
-            'TOTAL AMOUNT JAN',
-            'UMH STP JAN',
-            'AMOUNT STP FEB',
-            'TOTAL AMOUNT FEB',
-            'UMH STP FEB',
-            'AMOUNT STP MAR',
-            'TOTAL AMOUNT MAR',
-            'UMH STP MAR',
-            'AMOUNT STP APR',
-            'TOTAL AMOUNT APR',
-            'UMH STP APR',
-            'AMOUNT STP MAY',
-            'TOTAL AMOUNT MAY',
-            'UMH STP MAY',
-            'AMOUNT STP JUN',
-            'TOTAL AMOUNT JUN',
-            'UMH STP JUN',
-        ];
-    }
+//     public function headings(): array
+//     {
+//         return [
+//             'Tahun',
+//             'Section',
+//             'Kode Budget',
+//             'fixed/variabel',
+//             'Amount Jul',
+//             'Total Jul',
+//             'UMH LTP JUL',
+//             'Amount Aug',
+//             'Total Aug',
+//             'UMH LTP AUG',
+//             'Amount Sep',
+//             'Total Sep',
+//             'UMH LTP SEP',
+//             'Amount Okt',
+//             'Total Okt',
+//             'UMH LTP OKT',
+//             'Amount Nov',
+//             'Total Nov',
+//             'UMH LTP NOV',
+//             'Amount Dec',
+//             'Total Dec',
+//             'UMH LTP DEC',
+//             'Amount Jan',
+//             'Total Jan',
+//             'UMH LTP JAN',
+//             'Amount Feb',
+//             'Total Feb',
+//             'UMH LTP FEB',
+//             'Amount Mar',
+//             'Total Mar',
+//             'UMH LTP MAR',
+//             'Amount Apr',
+//             'Total Apr',
+//             'UMH LTP APR',
+//             'Amount May',
+//             'Total May',
+//             'UMH LTP MAY',
+//             'Amount Jun',
+//             'Total Jun',
+//             'UMH LTP JUN',
+//             'AMOUNT STP JUL',
+//             'TOTAL AMOUNT JUL',
+//             'UMH STP JUL',
+//             'AMOUNT STP AUG',
+//             'TOTAL AMOUNT AUG',
+//             'UMH STP AUG',
+//             'AMOUNT STP SEP',
+//             'TOTAL AMOUNT SEP',
+//             'UMH STP SEP',
+//             'AMOUNT STP OKT',
+//             'TOTAL AMOUNT OKT',
+//             'UMH STP OKT',
+//             'AMOUNT STP NOV',
+//             'TOTAL AMOUNT NOV',
+//             'UMH STP NOV',
+//             'AMOUNT STP DEC',
+//             'TOTAL AMOUNT DEC',
+//             'UMH STP DEC',
+//             'AMOUNT STP JAN',
+//             'TOTAL AMOUNT JAN',
+//             'UMH STP JAN',
+//             'AMOUNT STP FEB',
+//             'TOTAL AMOUNT FEB',
+//             'UMH STP FEB',
+//             'AMOUNT STP MAR',
+//             'TOTAL AMOUNT MAR',
+//             'UMH STP MAR',
+//             'AMOUNT STP APR',
+//             'TOTAL AMOUNT APR',
+//             'UMH STP APR',
+//             'AMOUNT STP MAY',
+//             'TOTAL AMOUNT MAY',
+//             'UMH STP MAY',
+//             'AMOUNT STP JUN',
+//             'TOTAL AMOUNT JUN',
+//             'UMH STP JUN',
+//         ];
+//     }
 
-    public function styles(Worksheet $sheet)
-    {
-        return [
-            1 => ['font' => ['bold' => true]],
-            'E1:AN1' => ['fill' => ['fillType' => 'solid', 'startColor' => ['rgb' => 'FFFF00']]],
-            'AO1:BX1' => ['fill' => ['fillType' => 'solid', 'startColor' => ['rgb' => '00E4FF']]],
-        ];
-    }
+//     public function styles(Worksheet $sheet)
+//     {
+//         return [
+//             1 => ['font' => ['bold' => true]],
+//             'E1:AN1' => ['fill' => ['fillType' => 'solid', 'startColor' => ['rgb' => 'FFFF00']]],
+//             'AO1:BX1' => ['fill' => ['fillType' => 'solid', 'startColor' => ['rgb' => '00E4FF']]],
+//         ];
+//     }
 
-    public function title(): string
-    {
-        return 'STP';
-    }
-}
+//     public function title(): string
+//     {
+//         return 'STP';
+//     }
+// }
 
 class SheetTujuh implements FromCollection, WithHeadings, WithStyles, WithTitle, ShouldAutoSize
 {
