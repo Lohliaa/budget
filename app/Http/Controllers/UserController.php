@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Imports\KodeBudgetImport;
-use App\Models\Cost;
-use App\Models\KodeBudget;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -24,8 +21,7 @@ class UserController extends Controller
         $profile = User::orderBy('id', 'asc')->paginate(10000);
         $count = $profile->count();
         $data = $profile->all();
-        $cost = Cost::all();
-        return view('profile.index', compact('profile', 'count', 'data', 'cost'));
+        return view('profile.index', compact('profile', 'count', 'data'));
     }
 
     public function cari(Request $request)

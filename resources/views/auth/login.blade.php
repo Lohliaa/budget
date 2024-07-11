@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('judul')
-Budget System
+Karangduren Archive
 @endsection
 @section('judul_sub')
 Form Login

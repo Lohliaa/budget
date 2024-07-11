@@ -43,8 +43,8 @@ Profile
                     disabled><i class="bi bi-trash3"></i></button>
 
                 <!-- Tombol Edit -->
-                <button type="button" class="btn btn-warning mt-3" id="editButton" onclick="handleEditClick()"
-                    disabled>Edit</button>
+                {{--  <button type="button" class="btn btn-warning mt-3" id="editButton" onclick="handleEditClick()"
+                    disabled>Edit</button>  --}}
 
                 <!-- Modal Edit-->
                 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
@@ -74,17 +74,6 @@ Profile
 
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="editRole">Status</label>
-                                        <select class="form-control" id="editRole" name="role">
-                                            <!-- Opsi untuk Admin -->
-                                            <option value="Admin">Admin</option>
-                                            @foreach($cost as $detail_cost_center)
-                                            <option value="{{ $detail_cost_center->detail_cost_center }}">{{
-                                                $detail_cost_center->detail_cost_center }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
                                 </form>
                             </div>
                             <div class="modal-footer">
@@ -95,11 +84,6 @@ Profile
                         </div>
                     </div>
                 </div>
-
-                {{--  <label class="switch">
-                    <input type="checkbox" id="buttonSwitch" onchange="disableButtons()">
-                    <span class="slider round"></span>
-                </label>  --}}
 
                 <!-- Modal konfirmasi -->
                 <div class="modal fade" id="disableFeatureModal" tabindex="-1"
@@ -170,14 +154,6 @@ Profile
         </div>
     </div>
 </body>
-
-<script>
-    document.getElementById("addDetailCostCenter").addEventListener("click", function() {
-      var container = document.getElementById("container");
-      var newDiv = container.firstElementChild.cloneNode(true);
-      container.appendChild(newDiv);
-    });
-</script>
 
 <script>
     function togglePasswordVisibility(icon) {

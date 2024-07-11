@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('judul')
-Sobat Gula
+Karangduren Archive
 @endsection
 @section('judul_sub')
 Form Reset

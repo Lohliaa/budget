@@ -10,692 +10,139 @@ Halaman Utama
 <body>
     <div class="card shadow mb-4">
         <div class="card-header py-3" style="display: flex; justify-content: space-between; align-items: center;">
-            <h6 class="m-0 font-weight-bold text-primary">Halaman Utama</h6>
+            <ul>
+                <h4 class="ml-0 font-weight-bold text-primary">Arsip Surat</h4>
+                <li>Berikut ini adalah surat-surat yang telah diterbitkan dan diarsipkan.</li>
+                <li>Klik "Lihat" pada kolom aksi untuk menampilkan surat.</li>
+            </ul>
         </div>
-        <div class="row justify-content-between" style="align-items: center;">
-            <div class="form-group col-md-7" style="margin-left: 12px">
-                <a href="{{ url('home') }}" class="btn btn-success ml-2 mt-3" style="height: 40px;"><i
-                        class="bi bi-arrow-clockwise" style="font-size: 20px;"></i></a>
-
-                <!-- Button modal -->
-                <button style="height: 38px; width: 45px; position: relative;" type="button"
-                    class="btn btn-secondary p-0 mt-3" data-toggle="modal" data-target="#addModal">
-                    <i class="bi bi-plus"
-                        style="margin-top:3px; font-size: 2rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></i>
-                </button>
-
-                <!-- Tombol Hapus -->
-                <button type="button" class="btn btn-danger mt-3" id="deleteButton" onclick="handleDeleteClick()"
-                    disabled><i class="bi bi-trash3"></i></button>
-
-                <!-- Modal adding data -->
-                <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="addModalLabel">Tambah Data</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <!-- Form for adding data -->
-                                <form id="addForm">
-                                    @csrf
-
-                                    <div class="form-group">
-                                        <label for="addSection">Section</label>
-                                        <select class="form-control" id="addSection" name="section">
-                                            <option value=""></option>
-                                            @foreach($cost as $cost_center)
-                                            <option value="{{ $cost_center->detail_cost_center }}">{{
-                                                $cost_center->detail_cost_center
-                                                }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="addCode">Code</label>
-                                        <select class="form-control" id="addCode" name="code">
-                                            <option value=""></option>
-                                            @foreach($master_barang as $code)
-                                            <option value="{{ $code->code }}">{{ $code->code }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="addName">Name</label>
-                                        <input type="text" class="form-control" id="addName" name="name" disabled>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="addKodeBudget">Kode Budget</label>
-                                        <select class="form-control" id="addKodeBudget" name="kode_budget">
-                                            <option value=""></option>
-                                            @foreach($kode_budget as $kb)
-                                            <option value="{{ $kb->kode_budget }}">{{ $kb->kode_budget }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="addCur">CUR</label>
-                                        <select class="form-control" id="addCur" name="cur">
-                                            <option value="USD" selected>USD</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addFixed">Fixed/Variable</label>
-                                        <select class="form-control" id="addFixed" name="fixed">
-                                            <option value="Fixed">Fixed</option>
-                                            <option value="Variabel">Variabel</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addPrep">Prep/Maspro</label>
-                                        <select class="form-control" id="addPrep" name="prep">
-                                            <option value="Prep">Prep</option>
-                                            <option value="Maspro">Maspro</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addKodeCarline">Kode Carline</label>
-                                        <select class="form-control" id="addKodeCarline" name="kode_carline">
-                                            @foreach($carline->unique('kode') as $kode)
-                                            <option value="{{ $kode->kode }}">{{ $kode->kode}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addRemark">Remark</label>
-                                        <input type="text" class="form-control" id="addRemark" name="remark">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addQTY_jul">QTY Jul</label>
-                                        <input type="text" class="form-control" id="addQTY_jul" name="qty_jul">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addPrice_jul">Price Jul</label>
-                                        <input type="text" class="form-control" id="addPrice_jul" name="price_jul">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addAmount_jul">Amount Jul</label>
-                                        <input type="text" class="form-control" id="addAmount_jul" name="amount_jul"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addQTY_aug">QTY Aug</label>
-                                        <input type="text" class="form-control" id="addQTY_aug" name="qty_aug">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addPrice_aug">Price Aug</label>
-                                        <input type="text" class="form-control" id="addPrice_aug" name="price_aug">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addAmount_aug">Amount Aug</label>
-                                        <input type="text" class="form-control" id="addAmount_aug" name="amount_aug"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addQTY_sep">QTY sep</label>
-                                        <input type="text" class="form-control" id="addQTY_sep" name="qty_sep">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addPrice_sep">Price sep</label>
-                                        <input type="text" class="form-control" id="addPrice_sep" name="price_sep">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addAmount_sep">Amount sep</label>
-                                        <input type="text" class="form-control" id="addAmount_sep" name="amount_sep"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addQTY_okt">QTY okt</label>
-                                        <input type="text" class="form-control" id="addQTY_okt" name="qty_okt">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addPrice_okt">Price okt</label>
-                                        <input type="text" class="form-control" id="addPrice_okt" name="price_okt">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addAmount_okt">Amount okt</label>
-                                        <input type="text" class="form-control" id="addAmount_okt" name="amount_okt"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addQTY_nov">QTY nov</label>
-                                        <input type="text" class="form-control" id="addQTY_nov" name="qty_nov">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addPrice_nov">Price nov</label>
-                                        <input type="text" class="form-control" id="addPrice_nov" name="price_nov">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addAmount_nov">Amount nov</label>
-                                        <input type="text" class="form-control" id="addAmount_nov" name="amount_nov"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addQTY_dec">QTY dec</label>
-                                        <input type="text" class="form-control" id="addQTY_dec" name="qty_dec">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addPrice_dec">Price dec</label>
-                                        <input type="text" class="form-control" id="addPrice_dec" name="price_dec">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addAmount_dec">Amount dec</label>
-                                        <input type="text" class="form-control" id="addAmount_dec" name="amount_dec"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addQTY_jan">QTY jan</label>
-                                        <input type="text" class="form-control" id="addQTY_jan" name="qty_jan">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addPrice_jan">Price jan</label>
-                                        <input type="text" class="form-control" id="addPrice_jan" name="price_jan">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addAmount_jan">Amount jan</label>
-                                        <input type="text" class="form-control" id="addAmount_jan" name="amount_jan"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addQTY_feb">QTY feb</label>
-                                        <input type="text" class="form-control" id="addQTY_feb" name="qty_feb">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addPrice_feb">Price feb</label>
-                                        <input type="text" class="form-control" id="addPrice_feb" name="price_feb">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addAmount_feb">Amount feb</label>
-                                        <input type="text" class="form-control" id="addAmount_feb" name="amount_feb"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addQTY_mar">QTY mar</label>
-                                        <input type="text" class="form-control" id="addQTY_mar" name="qty_mar">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addPrice_mar">Price mar</label>
-                                        <input type="text" class="form-control" id="addPrice_mar" name="price_mar">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addAmount_mar">Amount mar</label>
-                                        <input type="text" class="form-control" id="addAmount_mar" name="amount_mar"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addQTY_apr">QTY apr</label>
-                                        <input type="text" class="form-control" id="addQTY_apr" name="qty_apr">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addPrice_apr">Price apr</label>
-                                        <input type="text" class="form-control" id="addPrice_apr" name="price_apr">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addAmount_apr">Amount apr</label>
-                                        <input type="text" class="form-control" id="addAmount_apr" name="amount_apr"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addQTY_may">QTY may</label>
-                                        <input type="text" class="form-control" id="addQTY_may" name="qty_may">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addPrice_may">Price may</label>
-                                        <input type="text" class="form-control" id="addPrice_may" name="price_may">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addAmount_may">Amount may</label>
-                                        <input type="text" class="form-control" id="addAmount_may" name="amount_may"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addQTY_jun">QTY jun</label>
-                                        <input type="text" class="form-control" id="addQTY_jun" name="qty_jun">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addPrice_jun">Price jun</label>
-                                        <input type="text" class="form-control" id="addPrice_jun" name="price_jun">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addAmount_jun">Amount jun</label>
-                                        <input type="text" class="form-control" id="addAmount_jun" name="amount_jun"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="addTahun">Tahun</label>
-                                        <input type="text" class="form-control" id="addTahun" name="tahun">
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                                <button type="button" class="btn btn-primary" id="addSaveButton">Simpan</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <button type="button" class="btn btn-primary mb-0 mt-3" data-toggle="modal"
-                    data-target="#uploadModal">Upload File</button>
-
-                <!-- Modal untuk mengunggah data -->
-                <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-
-                        <div class="modal-content">
-                            <form id="fileUploadForm" enctype="multipart/form-data"
-                                action="{{ route('import-excel-home') }}" method="POST">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="uploadModalLabel">Unggah Data</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    @csrf
-
-                                    {{-- Hapus input tahun untuk pengguna non-admin --}}
-                                    @if(Auth::check() && Auth::user()->role == 'Admin')
-                                    <div class="form-group">
-                                        <label for="tahun">Tahun</label>
-                                        <input type="text" class="form-control" id="tahun" name="tahun">
-                                    </div>
-                                    @endif
-
-
-                                    <input type="file" id="file" name="file"
-                                        accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                                    <button type="submit" class="btn btn-primary">Unggah</button>
-                                </div>
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- Export Excel -->
-                <button onclick="exportData()" type="button" class="btn btn-info mt-3">
-                    <span>Download</span>
-                </button>
-                <form id="exportForm" action="{{ route('downloadFilteredData') }}" method="GET" style="display: none;">
-                    @csrf
-                    <input type="hidden" id="sectionExport" name="section">
-                </form>
-
-                <button id="reset-home-button" class="btn btn-danger mt-3">Reset</button>
-
-                <!-- Modal konfirmasi reset -->
-                <div class="modal fade" id="confirmResetModal" tabindex="-1" role="dialog"
-                    aria-labelledby="confirmResetModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="confirmResetModalLabel">Reset Data</h5>
-                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <p>Apakah Anda yakin ingin reset seluruh data?</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                                <button id="confirmResetButton" type="button" class="btn btn-danger">Reset</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Modal pesan sukses -->
-                <div class="modal fade" id="successModal" tabindex="-1" role="dialog"
-                    aria-labelledby="successModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="successModalLabel">Pesan Sukses</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <p>Data berhasil direset.</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tombol Edit -->
-                <button type="button" class="btn btn-warning mt-3" id="editButton" onclick="handleEditClick()"
-                    disabled>Edit</button>
-                <a href="{{ route('unduh', ['nama_file' => 'template_upload.xlsx']) }}"
-                    class="btn unduh btn-outline-success mt-3 ms-1 px-2" style="height:38px">
-                    <i class='bi bi-cloud-download me-1'></i> <span>Template</span> </a>
-                <!-- Modal Edit-->
-                <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="editModalLabel">Edit</h5>
-                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <!-- Form for editing data -->
-                                <form id="editForm">
-
-                                    <div class="form-group">
-                                        <label for="editSection">Section</label>
-                                        <select class="form-control" id="editSection" name="section">
-                                            <option value="">Pilih Section</option>
-                                            @foreach($cost as $detail_cost_center)
-                                            <option value="{{ $detail_cost_center->detail_cost_center }}">{{
-                                                $detail_cost_center->detail_cost_center
-                                                }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editCode">Code</label>
-                                        <select class="form-control" id="editCode" name="code">
-                                            <option value="">Pilih Code</option>
-                                            @foreach($master_barang as $code)
-                                            <option value="{{ $code->code }}">{{ $code->code }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editNama">Nama</label>
-                                        <select class="form-control" id="editNama" name="nama">
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editKodeBudget">Kode Budget</label>
-                                        <select class="form-control" id="editKodeBudget" name="kode_budget">
-                                            <option value="">Pilih Kode Budget</option>
-                                            @foreach($kode_budget->unique('kode_budget') as $kode_budget)
-                                            <option value="{{ $kode_budget->kode_budget }}">{{
-                                                $kode_budget->kode_budget
-                                                }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editCur">CUR</label>
-                                        <select class="form-control" id="editCur" name="cur">
-                                            <option value="USD" selected>USD</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editFixed">Fixed/Variable</label>
-                                        <select class="form-control" id="editFixed" name="fixed">
-                                            <option value="Fixed">Fixed</option>
-                                            <option value="Variabel">Variabel</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editPrep">Prep/Maspro</label>
-                                        <select class="form-control" id="editPrep" name="prep">
-                                            <option value="Prep">Prep</option>
-                                            <option value="Maspro">Maspro</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editKodeCarline">Kode Carline</label>
-                                        <select class="form-control" id="editKodeCarline" name="kode_carline">
-                                            @foreach($carline->unique('kode') as $kode)
-                                            <option value="{{ $kode->kode }}">{{ $kode->kode}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editRemark">Remark</label>
-                                        <input type="text" class="form-control" id="editRemark" name="remark">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editQTY_jul">QTY Jul</label>
-                                        <input type="text" class="form-control" id="editQTY_jul" name="qty_jul">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editPrice_jul">Price Jul</label>
-                                        <input type="text" class="form-control" id="editPrice_jul" name="price_jul">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editAmount_jul">Amount Jul</label>
-                                        <input type="text" class="form-control" id="editAmount_jul" name="amount_jul"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editQTY_aug">QTY Aug</label>
-                                        <input type="text" class="form-control" id="editQTY_aug" name="qty_aug">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editPrice_aug">Price Aug</label>
-                                        <input type="text" class="form-control" id="editPrice_aug" name="price_aug">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editAmount_aug">Amount Aug</label>
-                                        <input type="text" class="form-control" id="editAmount_aug" name="amount_aug"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editQTY_sep">QTY Sep</label>
-                                        <input type="text" class="form-control" id="editQTY_sep" name="qty_sep">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editPrice_sep">Price Sep</label>
-                                        <input type="text" class="form-control" id="editPrice_sep" name="price_sep">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editAmount_sep">Amount Sep</label>
-                                        <input type="text" class="form-control" id="editAmount_sep" name="amount_sep"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editQTY_okt">QTY Okt</label>
-                                        <input type="text" class="form-control" id="editQTY_okt" name="qty_okt">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editPrice_okt">Price Okt</label>
-                                        <input type="text" class="form-control" id="editPrice_okt" name="price_okt">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editAmount_okt">Amount Okt</label>
-                                        <input type="text" class="form-control" id="editAmount_okt" name="amount_okt"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editQTY_nov">QTY Nov</label>
-                                        <input type="text" class="form-control" id="editQTY_nov" name="qty_nov">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editPrice_nov">Price Nov</label>
-                                        <input type="text" class="form-control" id="editPrice_nov" name="price_nov">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editAmount_nov">Amount Nov</label>
-                                        <input type="text" class="form-control" id="editAmount_nov" name="amount_nov"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editQTY_dec">QTY Dec</label>
-                                        <input type="text" class="form-control" id="editQTY_dec" name="qty_dec">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editPrice_dec">Price Dec</label>
-                                        <input type="text" class="form-control" id="editPrice_dec" name="price_dec">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editAmount_dec">Amount Dec</label>
-                                        <input type="text" class="form-control" id="editAmount_dec" name="amount_dec"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editQTY_jan">QTY Jan</label>
-                                        <input type="text" class="form-control" id="editQTY_jan" name="qty_jan">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editPrice_jan">Price Jan</label>
-                                        <input type="text" class="form-control" id="editPrice_jan" name="price_jan">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editAmount_jan">Amount Jan</label>
-                                        <input type="text" class="form-control" id="editAmount_jan" name="amount_jan"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editQTY_feb">QTY Feb</label>
-                                        <input type="text" class="form-control" id="editQTY_feb" name="qty_feb">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editPrice_feb">Price Feb</label>
-                                        <input type="text" class="form-control" id="editPrice_feb" name="price_feb">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editAmount_feb">Amount Feb</label>
-                                        <input type="text" class="form-control" id="editAmount_feb" name="amount_feb"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editQTY_mar">QTY Mar</label>
-                                        <input type="text" class="form-control" id="editQTY_mar" name="qty_mar">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editPrice_mar">Price Mar</label>
-                                        <input type="text" class="form-control" id="editPrice_mar" name="price_mar">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editAmount_mar">Amount Mar</label>
-                                        <input type="text" class="form-control" id="editAmount_mar" name="amount_mar"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editQTY_apr">QTY Apr</label>
-                                        <input type="text" class="form-control" id="editQTY_apr" name="qty_apr">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editPrice_apr">Price Apr</label>
-                                        <input type="text" class="form-control" id="editPrice_apr" name="price_apr">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editAmount_apr">Amount Apr</label>
-                                        <input type="text" class="form-control" id="editAmount_apr" name="amount_apr"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editQTY_may">QTY May</label>
-                                        <input type="text" class="form-control" id="editQTY_may" name="qty_may">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editPrice_may">Price May</label>
-                                        <input type="text" class="form-control" id="editPrice_may" name="price_may">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editAmount_may">Amount May</label>
-                                        <input type="text" class="form-control" id="editAmount_may" name="amount_may"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editQTY_jun">QTY Jun</label>
-                                        <input type="text" class="form-control" id="editQTY_jun" name="qty_jun">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editPrice_jun">Price Jun</label>
-                                        <input type="text" class="form-control" id="editPrice_jun" name="price_jun">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editAmount_jun">Amount Jun</label>
-                                        <input type="text" class="form-control" id="editAmount_jun" name="amount_jun"
-                                            disabled>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" onclick="saveChanges()">Save
-                                    Changes</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="input-group col-md-4 mr-4 mt-1">
-
-                @if(auth()->user()->role === 'Admin')
-                <form method="post" action="{{ route('filterBySection') }}" id="filterForm">
-                    @csrf
-                    <div class="dropdown mr-1 custom-dropdown-width">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Report
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                            @foreach($section as $sectionItem)
-                            @if(auth()->user()->role === 'Admin' || auth()->user()->role === $sectionItem->section)
-                            <li>
-                                <div class="form-check" style="width:250px;">
-                                    <input class="form-check-input" type="checkbox" style="width:20px;"
-                                        value="{{ $sectionItem->section }}" id="sectionCheckbox{{ $loop->index }}"
-                                        name="sections[]">
-                                    <label class="form-check-label" for="sectionCheckbox{{ $loop->index }}">
-                                        {{ $sectionItem->section }}
-                                    </label>
-                                </div>
-                            </li>
-                            @endif
-                            @endforeach
-                        </ul>
-                    </div>
-                </form>
-
-                @endif
-
-                <!-- Dropdown untuk memilih tahun -->
-                <form method="post" action="{{ route('filterByTahun') }}" id="filterForm">
-                    @csrf
-                    <div class="dropdown mr-2 custom-dropdown-width">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Tahun
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                            @foreach($tahun as $tahunItem)
-                            <li>
-                                <div class="form-check" style="width:250px;">
-                                    <input class="form-check-input" type="checkbox" style="width:20px;"
-                                        value="{{ $tahunItem->tahun }}" id="tahunCheckbox{{ $loop->index }}"
-                                        name="tahun[]">
-                                    <label class="form-check-label" for="tahunCheckbox{{ $loop->index }}">
-                                        {{ $tahunItem->tahun }}
-                                    </label>
-                                </div>
-                            </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </form>
-
-                <input type="text" name="search" style="height: 2.4rem; font-size: 12pt; margin-top: 0.10rem;"
-                    id="searchp" class="form-control input-text" placeholder="Cari disini ..."
+        <div class="row justify-content-end">
+            <div class="input-group col-md-4 mt-2 mb-2">
+                <label for="searchp" class="ml-2 mr-3 mt-2" style="font-size: 12pt;">Cari surat:</label>
+                <input type="text" name="search" id="searchp" class="form-control input-text" placeholder="Search"
                     aria-label="Recipient's username" aria-describedby="basic-addon2">
+            </div>
+            <a href="{{ url('arsip_surat') }}" class="btn btn-success mr-5 mt-2" style="height: 40px;">Arsipkan
+                Surat</a>
+        </div>
+
+        <!-- Modal Gagal -->
+        <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="errorModalLabel">Error</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Gagal menyimpan data! Silakan coba lagi.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Delete-->
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
+                    </div>
+                    <div class="modal-body">
+                        Apakah anda yakin ingin menghapus arsip surat ini?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-danger" id="confirmDelete">Ya!</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Lihat -->
+        <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewModalLabel">Detail Arsip Surat</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i
+                                class="bi bi-x-lg"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <strong>Nomor Surat:</strong> <span id="viewNomor"></span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Kategori:</strong> <span id="viewKategori"></span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Judul:</strong> <span id="viewJudul"></span>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Waktu Pengarsipan:</strong> <span id="viewWaktu"></span>
+                        </div>
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe id="viewFile" class="embed-responsive-item" src="" frameborder="0"
+                                style="width: 100%; height: 500px;"></iframe>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <!-- Unduh Button -->
+                        <a id="downloadButton" href="" class="btn btn-info" download>
+                            <i class="bi bi-download"></i> Unduh Data
+                        </a>                        
+
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Edit Arsip -->
+        <div class="modal fade" id="editArsipModal" tabindex="-1" aria-labelledby="editArsipModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editArsipModalLabel">Edit Arsip Surat</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editArsipForm" method="POST" action="{{ route('arsip_surat.update') }}"
+                            enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+                            <input type="hidden" id="edit_id" name="id">
+                            <div class="mb-3">
+                                <label for="edit_nomor_surat" class="form-label">Nomor Surat</label>
+                                <input type="text" class="form-control" id="edit_nomor_surat" name="nomor_surat"
+                                    required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit_kategori" class="form-label">Kategori</label>
+                                <select class="form-control" id="edit_kategori" name="kategori">
+                                    @foreach($kategori_surat as $kategori)
+                                    <option value="{{ $kategori->nama_kategori }}">{{ $kategori->nama_kategori }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit_judul" class="form-label">Judul</label>
+                                <input type="text" class="form-control" id="edit_judul" name="judul" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit_file_path" class="form-label">File Path</label>
+                                <input type="file" class="form-control" id="edit_file_path" name="file_path"
+                                    accept=".pdf">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary" form="editArsipForm">Simpan</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -705,107 +152,52 @@ Halaman Utama
                     <table class="table table-striped" id="homeTableBody">
                         <thead style="background-color: #263a74; color:white; position: sticky; top: 0;">
                             <tr>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;"></td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">No</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Section</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Code</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Name</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Kode Budget</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">CUR</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Fixed/Variabel</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Prep/Masspro</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Kode Carline</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Remark</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Jul</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Jul</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Jul</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Aug</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Aug</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Aug</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Sep</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Sep</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Sep</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Okt</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Okt</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Okt</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Nov</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Nov</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Nov</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Dec</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Dec</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Dec</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Jan</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Jan</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Jan</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Feb</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Feb</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Feb</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Mar</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Mar</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Mar</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Apr</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Apr</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Apr</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty May</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price May</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount May</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Qty Jun</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Price Jun</td>
-                                <td colspan="0" rowspan="3" style="vertical-align: middle;">Amount Jun</td>
+                                <td style="vertical-align: middle;">No</td>
+                                <td style="vertical-align: middle;">Nomor Surat</td>
+                                <td style="vertical-align: middle;">Kategori</td>
+                                <td style="vertical-align: middle;">Judul</td>
+                                <td style="vertical-align: middle;">Waktu Pengarsipan</td>
+                                <td style="vertical-align: middle;">Aksi</td>
                             </tr>
                         </thead>
                         <tbody>
                             <?php $no=1 ?>
-                            @foreach ($home as $h)
+                            @foreach ($arsip_surat as $h)
                             <tr id="tr_{{ $h->id }}">
-                                <td><input type="checkbox" class="sub_chk" data-id="{{$h->id}}"
-                                        onclick="handleCheckboxChange({{ $h->id }})"></td>
-                                <td>{{$no++}}</td>
-                                <td>{{ $h->section }}</td>
-                                <td>{{ $h->code }}</td>
-                                <td>{{ $h->nama }}</td>
-                                <td>{{ $h->kode_budget }}</td>
-                                <td>{{ $h->cur }}</td>
-                                <td>{{ $h->fixed }}</td>
-                                <td>{{ $h->prep }}</td>
-                                <td>{{ $h->kode_carline }}</td>
-                                <td>{{ $h->remark }}</td>
-                                <td>{{ $h->qty_jul }}</td>
-                                <td>{{ $h->price_jul }}</td>
-                                <td>{{ number_format($h->amount_jul, 2) }}</td>
-                                <td>{{ $h->qty_aug }}</td>
-                                <td>{{ $h->price_aug }}</td>
-                                <td>{{ number_format($h->amount_aug, 2) }}</td>
-                                <td>{{ $h->qty_sep }}</td>
-                                <td>{{ $h->price_sep }}</td>
-                                <td>{{ number_format($h->amount_sep, 2) }}</td>
-                                <td>{{ $h->qty_okt }}</td>
-                                <td>{{ $h->price_okt }}</td>
-                                <td>{{ number_format($h->amount_okt, 2) }}</td>
-                                <td>{{ $h->qty_nov }}</td>
-                                <td>{{ $h->price_nov }}</td>
-                                <td>{{ number_format($h->amount_nov, 2) }}</td>
-                                <td>{{ $h->qty_dec }}</td>
-                                <td>{{ $h->price_dec }}</td>
-                                <td>{{ number_format($h->amount_dec, 2) }}</td>
-                                <td>{{ $h->qty_jan }}</td>
-                                <td>{{ $h->price_jan }}</td>
-                                <td>{{ number_format($h->amount_jan, 2) }}</td>
-                                <td>{{ $h->qty_feb }}</td>
-                                <td>{{ $h->price_feb }}</td>
-                                <td>{{ number_format($h->amount_feb, 2) }}</td>
-                                <td>{{ $h->qty_mar }}</td>
-                                <td>{{ $h->price_mar }}</td>
-                                <td>{{ number_format($h->amount_mar, 2) }}</td>
-                                <td>{{ $h->qty_apr }}</td>
-                                <td>{{ $h->price_apr }}</td>
-                                <td>{{ number_format($h->amount_apr, 2) }}</td>
-                                <td>{{ $h->qty_may }}</td>
-                                <td>{{ $h->price_may }}</td>
-                                <td>{{ number_format($h->amount_may, 2) }}</td>
-                                <td>{{ $h->qty_jun }}</td>
-                                <td>{{ $h->price_jun }}</td>
-                                <td>{{ number_format($h->amount_jun, 2) }}</td>
+                                <td>{{ $no++ }}</td>
+                                <td>{{ $h->nomor_surat }}</td>
+                                <td>{{ $h->kategori }}</td>
+                                <td>{{ $h->judul }}</td>
+                                <td>{{ $h->updated_at }}</td>
+                                <td>
+                                    <div class="d-flex">
+                                        <form id="deleteForm_{{ $h->id }}" action="{{ route('home.delete', $h->id) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" class="btn btn-danger mr-2" data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal" data-id="{{ $h->id }}">
+                                                <i class="bi bi-trash3"></i>
+                                            </button>
+                                        </form>
+                                        {{-- <button onclick="exportData()" type="button" class="btn btn-info mr-2">
+                                            <i class="bi bi-download"></i>
+                                        </button> --}}
+                                        <button type="button" class="btn btn-warning mr-2" data-bs-toggle="modal"
+                                            data-bs-target="#viewModal" data-id="{{ $h->id }}"
+                                            data-nomor="{{ $h->nomor_surat }}" data-kategori="{{ $h->kategori }}"
+                                            data-judul="{{ $h->judul }}" data-waktu="{{ $h->updated_at }}"
+                                            data-file="{{ $h->file_path }}">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-info mr-2" data-bs-toggle="modal"
+                                            data-bs-target="#editArsipModal" data-id="{{ $h->id }}"
+                                            data-nomor="{{ $h->nomor_surat }}" data-kategori="{{ $h->kategori }}"
+                                            data-judul="{{ $h->judul }}" data-file="{{ $h->file_path }}">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                    </div>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -815,199 +207,63 @@ Halaman Utama
         </div>
     </div>
 </body>
-
-<script src="/sb_admin_2/jquery-3.6.4.min.js"></script>
 <script>
     $(document).ready(function() {
-        // Handle checkbox change event
-        $('input[name="sections[]"]').change(function() {
-            // Collect selected sections
-            var selectedSections = $('input[name="sections[]"]:checked').map(function() {
-                return this.value;
-            }).get();
-    
-            // Send AJAX request to server only if there are selected sections
-            if (selectedSections.length > 0) {
-                $.ajax({
-                    type: 'POST',
-                    url: '{{ route("filterBySection") }}',
-                    data: {
-                        "_token": "{{ csrf_token() }}",
-                        "sections": selectedSections
-                    },
-                    success: function(data) {
-                        // Update the content of your view with the filtered data
-                        $('#filtered-data-container').html(data);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText);
-                    }
-                });
-            } else {
-                // If no checkbox is selected, reset to the original state (load all data)
-                $.ajax({
-                    type: 'GET',
-                    url: '{{ route("loadOriginalData") }}',
-                    success: function(data) {
-                        $('#filtered-data-container').html(data);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText);
-                    }
-                });
-            }
-        });
-    
-    });
-    $(document).ready(function() {
-        // Handle checkbox change event for tahun
-        $('input[name="tahun[]"]').change(function() {
-            // Collect selected tahun
-            var selectedYear = $('input[name="tahun[]"]:checked').map(function() {
-                return this.value;
-            }).get();
-
-            // Send AJAX request to server only if there are selected tahun
-            if (selectedYear.length > 0) {
-                $.ajax({
-                    type: 'POST',
-                    url: '{{ route("filterByTahun") }}',
-                    data: {
-                        "_token": "{{ csrf_token() }}",
-                        "tahun": selectedYear
-                    },
-                    success: function(data) {
-                        // Update the content of your view with the filtered data
-                        $('#filtered-data-container').html(data);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText);
-                    }
-                });
-            } else {
-                // If no checkbox is selected, reset to the original state (load all data)
-                $.ajax({
-                    type: 'GET',
-                    url: '{{ route("loadOriginalData") }}',
-                    success: function(data) {
-                        $('#filtered-data-container').html(data);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText);
-                    }
-                });
-            }
-        });
-    });
-
-    function exportData() {
-        const selectedSections = $('input[name="sections[]"]:checked').map(function() {
-            return this.value;
-        }).get();
-    
-        const selectedYear = $('input[name="tahun[]"]:checked').map(function() {
-            return this.value;
-        }).get();
-    
-        var exportForm = $('<form action="{{ route("downloadFilteredData") }}" method="post"></form>');
-        exportForm.append('<input type="hidden" name="_token" value="{{ csrf_token() }}" />');
-    
-        // Tambahkan input untuk setiap bagian yang dipilih
-        for (var i = 0; i < selectedSections.length; i++) {
-            exportForm.append('<input type="hidden" name="sections[]" value="' + selectedSections[i] + '" />');
-        }
-    
-        // Tambahkan input untuk setiap tahun yang dipilih
-        for (var j = 0; j < selectedYear.length; j++) {
-            exportForm.append('<input type="hidden" name="tahun[]" value="' + selectedYear[j] + '" />');
-        }
-    
-        $('body').append(exportForm);
-        exportForm.submit();
-    }
-      
-</script>
-
-<script src="{{ asset('/sb_admin_2/jquery-3.6.0.min.js') }}"></script>
-<script>
-    $(document).ready(function () {
-        // Event change untuk #addCode
-        $('#addCode').change(function () {
-            var selectedCode = $(this).val();
-            
-            $.ajax({
-                url: '{{ url('getMasterBarangName') }}', // Sesuaikan dengan rute yang benar
-                method: 'GET',
-                data: { code: selectedCode },
-                success: function (response) {
-                    $('#addName').val(response.name);
-                },
-                error: function () {
-                    console.log('Gagal memuat data.');
-                }
-            });
-        });
-
-        // Fungsi untuk menghitung total amount pada input addQTY, addPrice, addAmount
-        function calculateAmount(bulan) {
-            const addQtyInput = document.querySelector(`#addQTY_${bulan}`);
-            const addPriceInput = document.querySelector(`#addPrice_${bulan}`);
-            const addAmountInput = document.querySelector(`#addAmount_${bulan}`);
-            
-            function updateAmount() {
-                const qty = parseFloat(addQtyInput.value) || 0;
-                const price = parseFloat(addPriceInput.value) || 0;
-                const amount = qty * price;
-                addAmountInput.value = amount;
-            }
-            
-            addQtyInput.addEventListener('input', updateAmount);
-            addPriceInput.addEventListener('input', updateAmount);
-        }
-
-        // Setelah perubahan pada elemen #addCode, panggil calculateAmount
-        const bulanList = ['jan', 'feb', 'mar','apr','may','jun', 'jul','aug','sep','okt','nov','dec']; // Sesuaikan dengan daftar bulan yang diperlukan
-
-        for (const bulan of bulanList) {
-            calculateAmount(bulan);
-        }
+        @if(session('success'))
+            var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+            successModal.show();
+        @elseif(session('error'))
+            var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+            errorModal.show();
+        @endif
     });
 </script>
 
 <script>
-    $(document).ready(function () {
-        // Click event for the Save button
-        $('#addSaveButton').click(function () {
-            // Assuming you are using jQuery
-            $.ajax({
-                type: 'POST',
-                url: '{{ url('add-home') }}', // Replace with your actual route
-                data: $('#addForm').serialize(),
-                success: function (response) {
-                    console.log(response);
+    document.addEventListener('DOMContentLoaded', function () {
+        var deleteModal = document.getElementById('deleteModal');
+        var confirmDeleteButton = document.getElementById('confirmDelete');
+        var formToSubmit;
 
-                    // Display a SweetAlert after successful submission
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: 'Berhasil Menambahkan Data',
-                    }).then(function () {
-                        location.reload();
-                    });
-                },
-                error: function (error) {
-                    console.log(error);
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget; // Tombol yang memicu modal
+            var id = button.getAttribute('data-id'); // Ekstrak info dari atribut data-*
+            formToSubmit = document.getElementById('deleteForm_' + id);
+        });
 
-                    // Display a SweetAlert after successful submission
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Tidak Berhasil Menambahkan Data',
-                    });
-                }
-            });
+        confirmDeleteButton.addEventListener('click', function () {
+            formToSubmit.submit(); // Submit form ketika tombol konfirmasi di klik
         });
     });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var viewModal = document.getElementById('viewModal');
+    
+        viewModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget; // Tombol yang memicu modal
+            
+            // Ambil data dari atribut data-* tombol
+            var nomor = button.getAttribute('data-nomor');
+            var kategori = button.getAttribute('data-kategori');
+            var judul = button.getAttribute('data-judul');
+            var waktu = button.getAttribute('data-waktu');
+            var file = button.getAttribute('data-file');
+            var id = button.getAttribute('data-id'); // Menyimpan ID arsip surat
+    
+            // Isi data modal
+            viewModal.querySelector('#viewNomor').textContent = nomor;
+            viewModal.querySelector('#viewKategori').textContent = kategori;
+            viewModal.querySelector('#viewJudul').textContent = judul;
+            viewModal.querySelector('#viewWaktu').textContent = waktu;
+            viewModal.querySelector('#viewFile').src = file;
+    
+            // Update href tombol unduh
+            var downloadButton = viewModal.querySelector('#downloadButton');
+            downloadButton.href = '/arsip_surat/download/' + id;
+        });
+    });    
 </script>
 
 <script>
@@ -1029,391 +285,30 @@ document.getElementById('searchp').addEventListener('input', function() {
         console.log('Checkbox with ID ' + id + ' changed.');
     }
 </script>
-
 <script>
-    var codeSelect = document.getElementById('editCode');
-    var namaSelect = document.getElementById('editNama');
-
-    codeSelect.addEventListener('change', function() {
-        var selectedCode = codeSelect.value;
+    document.addEventListener('DOMContentLoaded', function () {
+        var editArsipModal = document.getElementById('editArsipModal');
     
-        namaSelect.innerHTML = '';
-  
-        @foreach($master_barang as $code)
-            if ("{{ $code->code }}" === selectedCode) {
-                var option = document.createElement('option');
-                option.value = "{{ $code->name }}";
-                option.text = "{{ $code->name }}";
-                namaSelect.add(option);
-            }
-        @endforeach
-    });
-    // Inisialisasi dengan kode pertama (jika ada kode yang terpilih secara default)
-    if (codeSelect.value !== '') {
-        codeSelect.dispatchEvent(new Event('change'));
-    }
-</script>
-
-<script>
-    // JavaScript to handle checkbox change
-    function handleCheckboxChange() {
-      const selectedCheckboxes = document.querySelectorAll('.sub_chk:checked');
-      const editButton = document.querySelector('#editButton');
-      const deleteButton = document.querySelector('#deleteButton'); // Tambahkan tombol Hapus
-
-      if (selectedCheckboxes.length === 1) {
-        editButton.removeAttribute('disabled');
-        deleteButton.removeAttribute('disabled');
-      } else if (selectedCheckboxes.length > 0){
-        deleteButton.removeAttribute('disabled'); // Aktifkan tombol Hapus jika satu checkbox terpilih
-      }else if (selectedCheckboxes.length === 0) {
-        editButton.setAttribute('disabled', 'true');
-        deleteButton.setAttribute('disabled', 'true'); // Nonaktifkan tombol Hapus jika tidak ada checkbox terpilih
-      } else {
-        editButton.setAttribute('disabled', 'true');
-        deleteButton.setAttribute('disabled', 'true'); // Nonaktifkan tombol Hapus jika lebih dari satu checkbox terpilih
-      }
-    }
+        editArsipModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget; // Tombol yang memicu modal
+            
+            // Ambil data dari atribut data-* tombol
+            var id = button.getAttribute('data-id');
+            var nomor = button.getAttribute('data-nomor');
+            var kategori = button.getAttribute('data-kategori');
+            var judul = button.getAttribute('data-judul');
     
-    function handleDeleteClick() {
-        const selectedCheckboxes = document.querySelectorAll('.sub_chk:checked');
-        const selectedIds = Array.from(selectedCheckboxes).map(checkbox => checkbox.getAttribute('data-id'));
-      
-        if (selectedIds.length > 0) {
-          Swal.fire({
-            title: 'Konfirmasi Hapus',
-            text: 'Apakah Anda yakin ingin menghapus data yang dipilih?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Ya, Hapus',
-            cancelButtonText: 'Batal'
-          }).then((result) => {
-            if (result.isConfirmed) {
-              $.ajax({
-                url: '{{ url('delete-home') }}',
-                method: 'POST',
-                data: {
-                  _token: '{{ csrf_token() }}',
-                  ids: selectedIds, 
-                  _method: 'DELETE'
-                },
-                success: function (response) {
-                  console.log(response);
-      
-                  Swal.fire({
-                    icon: 'success',
-                    title: 'Data berhasil dihapus!',
-                    showConfirmButton: false,
-                    timer: 1500
-                  });
-      
-                  setTimeout(function () {
-                    window.location.href = '{{ url('home') }}';
-                  }, 2000);
-                },
-                error: function (error) {
-                  console.log(error);
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Terjadi kesalahan!',
-                    text: 'Data tidak dapat dihapus.'
-                  });
-                }
-              });
-            }
-          });
-        }
-      }
-
-function calculateAmount(bulan) {
-    const editQtyInput = document.querySelector(`#editQTY_${bulan}`);
-    const editPriceInput = document.querySelector(`#editPrice_${bulan}`);
-    const editAmountInput = document.querySelector(`#editAmount_${bulan}`);
+            // Isi data modal
+            editArsipModal.querySelector('#edit_id').value = id;
+            editArsipModal.querySelector('#edit_nomor_surat').value = nomor;
+            editArsipModal.querySelector('#edit_judul').value = judul;
     
-    function updateAmount() {
-      const qty = parseFloat(editQtyInput.value) || 0;
-      const price = parseFloat(editPriceInput.value) || 0;
-      const amount = qty * price;
-      editAmountInput.value = amount;
-    }
-    
-    editQtyInput.addEventListener('input', updateAmount);
-    editPriceInput.addEventListener('input', updateAmount);
-}
-  
-  
-    // JavaScript to open the modal and populate data for editing
-    function handleEditClick() {
-      const selectedCheckboxes = document.querySelectorAll('.sub_chk:checked');
-      const editModal = document.querySelector('#editModal');
-      const editForm = document.querySelector('#editForm');
-    
-      if (selectedCheckboxes.length === 1) {
-        const selectedId = selectedCheckboxes[0].getAttribute('data-id');
-        const section = document.querySelector(`#tr_${selectedId} td:nth-child(3)`).textContent;
-        const code = document.querySelector(`#tr_${selectedId} td:nth-child(4)`).textContent;
-        const nama = document.querySelector(`#tr_${selectedId} td:nth-child(5)`).textContent;
-        const kode_budget = document.querySelector(`#tr_${selectedId} td:nth-child(6)`).textContent;
-        const cur = document.querySelector(`#tr_${selectedId} td:nth-child(7)`).textContent;
-        const fixed = document.querySelector(`#tr_${selectedId} td:nth-child(8)`).textContent;
-        const prep = document.querySelector(`#tr_${selectedId} td:nth-child(9)`).textContent;
-        const kode_carline = document.querySelector(`#tr_${selectedId} td:nth-child(10)`).textContent;
-        const remark = document.querySelector(`#tr_${selectedId} td:nth-child(11)`).textContent;
-        const qty_jul = document.querySelector(`#tr_${selectedId} td:nth-child(12)`).textContent;
-        const price_jul = document.querySelector(`#tr_${selectedId} td:nth-child(13)`).textContent;
-        const amount_jul = document.querySelector(`#tr_${selectedId} td:nth-child(14)`).textContent;
-        const qty_aug = document.querySelector(`#tr_${selectedId} td:nth-child(15)`).textContent;
-        const price_aug = document.querySelector(`#tr_${selectedId} td:nth-child(16)`).textContent;
-        const amount_aug = document.querySelector(`#tr_${selectedId} td:nth-child(17)`).textContent;
-        const qty_sep = document.querySelector(`#tr_${selectedId} td:nth-child(18)`).textContent;
-        const price_sep = document.querySelector(`#tr_${selectedId} td:nth-child(19)`).textContent;
-        const amount_sep = document.querySelector(`#tr_${selectedId} td:nth-child(20)`).textContent;
-        const qty_okt = document.querySelector(`#tr_${selectedId} td:nth-child(21)`).textContent;
-        const price_okt = document.querySelector(`#tr_${selectedId} td:nth-child(22)`).textContent;
-        const amount_okt = document.querySelector(`#tr_${selectedId} td:nth-child(23)`).textContent;
-        const qty_nov = document.querySelector(`#tr_${selectedId} td:nth-child(24)`).textContent;
-        const price_nov = document.querySelector(`#tr_${selectedId} td:nth-child(25)`).textContent;
-        const amount_nov = document.querySelector(`#tr_${selectedId} td:nth-child(26)`).textContent;
-        const qty_dec = document.querySelector(`#tr_${selectedId} td:nth-child(27)`).textContent;
-        const price_dec = document.querySelector(`#tr_${selectedId} td:nth-child(28)`).textContent;
-        const amount_dec = document.querySelector(`#tr_${selectedId} td:nth-child(29)`).textContent;
-        const qty_jan = document.querySelector(`#tr_${selectedId} td:nth-child(30)`).textContent;
-        const price_jan = document.querySelector(`#tr_${selectedId} td:nth-child(31)`).textContent;
-        const amount_jan = document.querySelector(`#tr_${selectedId} td:nth-child(32)`).textContent;
-        const qty_feb = document.querySelector(`#tr_${selectedId} td:nth-child(33)`).textContent;
-        const price_feb = document.querySelector(`#tr_${selectedId} td:nth-child(34)`).textContent;
-        const amount_feb = document.querySelector(`#tr_${selectedId} td:nth-child(35)`).textContent;
-        const qty_mar = document.querySelector(`#tr_${selectedId} td:nth-child(36)`).textContent;
-        const price_mar = document.querySelector(`#tr_${selectedId} td:nth-child(37)`).textContent;
-        const amount_mar = document.querySelector(`#tr_${selectedId} td:nth-child(38)`).textContent;
-        const qty_apr = document.querySelector(`#tr_${selectedId} td:nth-child(39)`).textContent;
-        const price_apr = document.querySelector(`#tr_${selectedId} td:nth-child(40)`).textContent;
-        const amount_apr = document.querySelector(`#tr_${selectedId} td:nth-child(41)`).textContent;
-        const qty_may = document.querySelector(`#tr_${selectedId} td:nth-child(42)`).textContent;
-        const price_may = document.querySelector(`#tr_${selectedId} td:nth-child(43)`).textContent;
-        const amount_may = document.querySelector(`#tr_${selectedId} td:nth-child(44)`).textContent;
-        const qty_jun = document.querySelector(`#tr_${selectedId} td:nth-child(45)`).textContent;
-        const price_jun = document.querySelector(`#tr_${selectedId} td:nth-child(46)`).textContent;
-        const amount_jun = document.querySelector(`#tr_${selectedId} td:nth-child(47)`).textContent;
-
-        document.querySelector('#editSection').value = section;
-        document.querySelector('#editCode').value = code;
-        document.querySelector('#editNama').value = nama;
-        document.querySelector('#editKodeBudget').value = kode_budget;
-        document.querySelector('#editCur').value = cur;
-        document.querySelector('#editFixed').value = fixed;
-        document.querySelector('#editPrep').value = prep;
-        document.querySelector('#editKodeCarline').value = kode_carline;
-        document.querySelector('#editRemark').value = remark;
-        document.querySelector('#editQTY_jul').value = qty_jul;
-        document.querySelector('#editPrice_jul').value = price_jul;
-        document.querySelector('#editAmount_jul').value = amount_jul;
-        document.querySelector('#editQTY_aug').value = qty_aug;
-        document.querySelector('#editPrice_aug').value = price_aug;
-        document.querySelector('#editAmount_aug').value = amount_aug;
-        document.querySelector('#editQTY_sep').value = qty_sep;
-        document.querySelector('#editPrice_sep').value = price_sep;
-        document.querySelector('#editAmount_sep').value = amount_sep;
-        document.querySelector('#editQTY_okt').value = qty_okt;
-        document.querySelector('#editPrice_okt').value = price_okt;
-        document.querySelector('#editAmount_okt').value = amount_okt;
-        document.querySelector('#editQTY_nov').value = qty_nov;
-        document.querySelector('#editPrice_nov').value = price_nov;
-        document.querySelector('#editAmount_nov').value = amount_nov;
-        document.querySelector('#editQTY_dec').value = qty_dec;
-        document.querySelector('#editPrice_dec').value = price_dec;
-        document.querySelector('#editAmount_dec').value = amount_dec;
-        document.querySelector('#editQTY_jan').value = qty_jan;
-        document.querySelector('#editPrice_jan').value = price_jan;
-        document.querySelector('#editAmount_jan').value = amount_jan;
-        document.querySelector('#editQTY_feb').value = qty_feb;
-        document.querySelector('#editPrice_feb').value = price_feb;
-        document.querySelector('#editAmount_feb').value = amount_feb;
-        document.querySelector('#editQTY_mar').value = qty_mar;
-        document.querySelector('#editPrice_mar').value = price_mar;
-        document.querySelector('#editAmount_mar').value = amount_mar;
-        document.querySelector('#editQTY_apr').value = qty_apr;
-        document.querySelector('#editPrice_apr').value = price_apr;
-        document.querySelector('#editAmount_apr').value = amount_apr;
-        document.querySelector('#editQTY_may').value = qty_may;
-        document.querySelector('#editPrice_may').value = price_may;
-        document.querySelector('#editAmount_may').value = amount_may;
-        document.querySelector('#editQTY_jun').value = qty_jun;
-        document.querySelector('#editPrice_jun').value = price_jun;
-        document.querySelector('#editAmount_jun').value = amount_jun;
-
-        const bulanList = ['jul', 'aug', 'sep', 'okt', 'nov', 'dec', 'jan', 'feb', 'mar', 'apr', 'may', 'jun'];
-
-        for (const bulan of bulanList) {
-          calculateAmount(bulan);
-        }
-
-        $(editModal).modal('show');
-      }
-    }
-    function saveChanges() {
-        const section = document.querySelector('#editSection').value;
-        const code = document.querySelector('#editCode').value;
-        const nama = document.querySelector('#editNama').value;
-        const kode_budget = document.querySelector('#editKodeBudget').value;
-        const cur = document.querySelector('#editCur').value;
-        const fixed = document.querySelector('#editFixed').value;
-        const prep = document.querySelector('#editPrep').value;
-        const kode_carline = document.querySelector('#editKodeCarline').value;
-        const remark = document.querySelector('#editRemark').value;
-        const qty_jul = document.querySelector('#editQTY_jul').value;
-        const price_jul = document.querySelector('#editPrice_jul').value;
-        const amount_jul = document.querySelector('#editAmount_jul').value;
-        const qty_aug = document.querySelector('#editQTY_aug').value;
-        const price_aug = document.querySelector('#editPrice_aug').value;
-        const amount_aug = document.querySelector('#editAmount_aug').value;
-        const qty_sep = document.querySelector('#editQTY_sep').value;
-        const price_sep = document.querySelector('#editPrice_sep').value;
-        const amount_sep = document.querySelector('#editAmount_sep').value;
-        const qty_okt = document.querySelector('#editQTY_okt').value;
-        const price_okt = document.querySelector('#editPrice_okt').value;
-        const amount_okt = document.querySelector('#editAmount_okt').value;
-        const qty_nov = document.querySelector('#editQTY_nov').value;
-        const price_nov = document.querySelector('#editPrice_nov').value;
-        const amount_nov = document.querySelector('#editAmount_nov').value;
-        const qty_dec = document.querySelector('#editQTY_dec').value;
-        const price_dec = document.querySelector('#editPrice_dec').value;
-        const amount_dec = document.querySelector('#editAmount_dec').value;
-        const qty_jan = document.querySelector('#editQTY_jan').value;
-        const price_jan = document.querySelector('#editPrice_jan').value;
-        const amount_jan = document.querySelector('#editAmount_jan').value;
-        const qty_feb = document.querySelector('#editQTY_feb').value;
-        const price_feb = document.querySelector('#editPrice_feb').value;
-        const amount_feb = document.querySelector('#editAmount_feb').value;
-        const qty_mar = document.querySelector('#editQTY_mar').value;
-        const price_mar = document.querySelector('#editPrice_mar').value;
-        const amount_mar = document.querySelector('#editAmount_mar').value;
-        const qty_apr = document.querySelector('#editQTY_apr').value;
-        const price_apr = document.querySelector('#editPrice_apr').value;
-        const amount_apr = document.querySelector('#editAmount_apr').value;
-        const qty_may = document.querySelector('#editQTY_may').value;
-        const price_may = document.querySelector('#editPrice_may').value;
-        const amount_may = document.querySelector('#editAmount_may').value;
-        const qty_jun = document.querySelector('#editQTY_jun').value;
-        const price_jun = document.querySelector('#editPrice_jun').value;
-        const amount_jun = document.querySelector('#editAmount_jun').value;
-
-        const selectedCheckboxes = document.querySelectorAll('.sub_chk:checked');
-    
-        if (selectedCheckboxes.length === 1) {
-            const selectedId = selectedCheckboxes[0].getAttribute('data-id');
-    
-            $.ajax({
-                url: '{{ url('update-home') }}/' + selectedId,
-                method: 'POST',
-                data: {
-                    section: section,
-                    code: code,
-                    nama: nama,
-                    kode_budget: kode_budget,
-                    cur: cur,
-                    fixed: fixed,
-                    prep: prep,
-                    kode_carline: kode_carline,
-                    remark: remark,
-                    qty_jul: qty_jul,
-                    price_jul:price_jul,
-                    amount_jul:amount_jul,
-                    qty_aug: qty_aug,
-                    price_aug:price_aug,
-                    amount_aug:amount_aug,
-                    qty_sep: qty_sep,
-                    price_sep:price_sep,
-                    amount_sep:amount_sep,
-                    qty_okt: qty_okt,
-                    price_okt:price_okt,
-                    amount_okt:amount_okt,
-                    qty_nov: qty_nov,
-                    price_nov:price_nov,
-                    amount_nov:amount_nov,
-                    qty_dec: qty_dec,
-                    price_dec:price_dec,
-                    amount_dec:amount_dec,
-                    qty_jan: qty_jan,
-                    price_jan:price_jan,
-                    amount_jan:amount_jan,
-                    qty_feb: qty_feb,
-                    price_feb:price_feb,
-                    amount_feb:amount_feb,
-                    qty_mar: qty_mar,
-                    price_mar:price_mar,
-                    amount_mar:amount_mar,
-                    qty_apr: qty_apr,
-                    price_apr:price_apr,
-                    amount_apr:amount_apr,
-                    qty_may: qty_may,
-                    price_may:price_may,
-                    amount_may:amount_may,
-                    qty_jun: qty_jun,
-                    price_jun:price_jun,
-                    amount_jun:amount_jun,
-                    _token: '{{ csrf_token() }}',
-                },
-                success: function (response) {
-                    console.log(response);
-    
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Data berhasil diperbarui!',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-    
-                    setTimeout(function () {
-                        window.location.href = '{{ url('home') }}';
-                    }, 2000);
-                },
-                error: function (error) {
-                    console.log(error);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Terjadi kesalahan!',
-                        text: 'Data tidak dapat diperbarui.'
-                    });
-                }
-            });
-        }
-    }
-</script>
-
-<script>
-    document.getElementById('reset-home-button').addEventListener('click', function () {
-        $('#confirmResetModal').modal('show');
-    });
-
-    document.getElementById('confirmResetButton').addEventListener('click', function () {
-        // Tutup modal konfirmasi
-        $('#confirmResetModal').modal('hide');
-
-        // Kirim permintaan ke rute 'reset_home' menggunakan fetch
-        fetch('{{ route('reset_home') }}', {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                'Content-Type': 'application/json',
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Tampilkan modal pesan sukses
-                $('#successModal').modal('show');
-                location.reload();
-            } else {
-                alert('Terjadi kesalahan.'); // Menampilkan pesan kesalahan jika ada
-            }
-        })
-        .catch(error => {
-            console.error(error);
+            // Set nilai dropdown kategori
+            var kategoriDropdown = editArsipModal.querySelector('#edit_kategori');
+            kategoriDropdown.value = kategori; // Set dropdown value berdasarkan kategori yang diterima
         });
     });
 </script>
+
 
 @endsection

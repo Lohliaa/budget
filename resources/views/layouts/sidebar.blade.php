@@ -3,7 +3,7 @@
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url('home') }}">
-        <div class="sidebar-brand-text mx-6"><i class="bi bi-journal-bookmark-fill"></i> BUGDET <span>SYSTEM</span>
+        <div class="sidebar-brand-text mx-6"><i class="bi bi-journal-bookmark-fill"></i> KARANGDUREN <span>ARCHIVE</span>
         </div>
     </a>
 
@@ -20,44 +20,22 @@
 
     <!-- Heading -->
 
-    <div class="sidebar-heading">
-        Database
-    </div>
     <li class="nav-item">
-        <a class="nav-link" href="{{ url('master_barang') }}">
+        <a class="nav-link" href="{{ url('arsip_surat') }}">
             <i class="fas fa-fw fa-users"></i>
-            <span>Master Barang</span></a>
+            <span>Arsip</span></a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{{ url('cost') }}">
+        <a class="nav-link" href="{{ url('kategori_surat') }}">
             <i class="fas fa-fw fa-users"></i>
-            <span>Cost Center</span></a>
+            <span>Kategori Surat</span></a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{{ url('carline') }}">
+        <a class="nav-link" href="{{ url('about') }}">
             <i class="fas fa-fw fa-users"></i>
-            <span>Carline</span></a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ url('kode_budget') }}">
-            <i class="fas fa-fw fa-users"></i>
-            <span>Kode Budget</span></a>
+            <span>About</span></a>
     </li>
 
-    <hr class="sidebar-divider">
-    @if(Auth::check() && Auth::user()->role == 'Admin')
-    <li class="nav-item">
-        <a class="nav-link" href="{{ url('umh') }}">
-            <i class="fas fa-fw fa-users"></i>
-            <span>Nariyuki</span></a>
-    </li>
-    @endif
-
-    {{-- <li class="nav-item">
-        <a class="nav-link" href="{{ url('proses_nariyuki') }}">
-            <i class="fas fa-fw fa-users"></i>
-            <span>Summary</span></a>
-    </li> --}}
 
     @auth
     <!-- Pemisah -->
